@@ -1,6 +1,9 @@
 steal(
+    './searchbar/searchbar.js',
 	'./less/d3px.less',
 	'./models/fixtures/fixtures.js',
-function(){
+function(Searchbar){
 	
+    var searchbar = new Searchbar('#searchbar');
+
 })
