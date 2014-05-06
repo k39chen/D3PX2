@@ -7,6 +7,7 @@
         <h1>Diablo 3: Profile X</h1>
         
         <div id="searchbar"></div>
+        <div id="d3api"></div>
 
         <img width="800px" src="images/diablo3.jpg" />
 	
