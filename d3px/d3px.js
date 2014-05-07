@@ -1,9 +1,9 @@
 steal(
-    './controls/searchbar/searchbar.js',
+    './controls/searchtest/searchtest.js',
 	'./d3px.less',
     './models/fixtures/fixtures.js',
-function(Searchbar){
+function(SearchTest){
 	
-    var searchbar = new Searchbar('#searchbar');
+    var searchtest = new SearchTest('#searchtest');
 
 })

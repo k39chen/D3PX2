@@ -1,4 +1,4 @@
-steal('can', 'd3px/models/d3api.js', './init.ejs', './searchbar.less', 
+steal('can', 'd3px/models/d3api.js', './init.ejs', './searchtest.less', 
 function(can, D3API, initView) {
     var ENTER_KEY = 13;
 	return can.Control(
