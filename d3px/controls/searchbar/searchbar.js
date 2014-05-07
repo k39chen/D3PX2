@@ -15,23 +15,23 @@ function(can, D3API, initView) {
                 if (ev.keyCode === ENTER_KEY) {
 
                     var searchField = $('input',el);
-                    var battletag = can.trim(searchField.val());
+                    var battleTag = can.trim(searchField.val());
 
                     // clear the input field
                     searchField.val('');
 
-                    // process the battletag
-                    var matches = battletag.match(/(\w+)#(\d+)/);
+                    // process the battleTag
+                    var matches = battleTag.match(/(\w+)#(\d+)/);
 
                     // catch error cases
                     if (matches === null || matches.length != 3) {
-                        console.error("Misformatted Battletag: "+battletag);
+                        console.error("Misformatted Battletag: "+battleTag);
                         return;
                     }
 
-                    // perform a search against the D3 API for the corresponding battletag
+                    // perform a search against the D3 API for the corresponding battleTag
                     var searchQuery = matches[1] + '-' + matches[2];
-                    D3API.findBattletag({battletag:searchQuery}).done(function(model){
+                    D3API.getPlayerProfile({battleTag:searchQuery}).done(function(model){
 
                         console.log(model);
 
