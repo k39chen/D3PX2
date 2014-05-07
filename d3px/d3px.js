@@ -1,5 +1,6 @@
 steal(
 	'can',
+    './models/d3api.js',
 	'./views/nav/nav.ejs',
     './controls/nav-search/init.ejs',
     './views/toolbar/toolbar.ejs',
@@ -12,7 +13,21 @@ steal(
     './controls/profile-heroes/init.less',
     './controls/profile-career/init.less',
     './models/fixtures/fixtures.js',
-function(can, navView, navSearch, toolbar, profileHeroes, profileCareer){
+function(can, D3API, navView, navSearch, toolbar, profileHeroes, profileCareer){
+
+    var battleTag = 'gummypower-1650';
+
+
+    D3API.getPlayerProfile({battleTag:battleTag}).done(function(data){
+        
+        // here is the data:
+        console.log(data);
+
+        // it is returned as a CanJS model, so if you want to iterate over the attributes then use: [___]._data
+        // ...
+
+    });
+
 	$('#canvas').append(profileHeroes());
 	$('#canvas').append(profileCareer());
     $('body').append(navView({battletag: 'Parallax#1878', catchphrase: 'Stay a while and listen'}));
