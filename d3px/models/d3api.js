@@ -71,7 +71,9 @@ steal('can', function (can) {
         getItemData: function(params) {
             var self = this,
                 itemdata = params.itemdata,
-                url = 'http://us.battle.net/api/d3/data/item/'+itemdata;
+                url = 'http://us.battle.net/api/d3/data/'+itemdata;
+
+            console.log(url)
 
             // issue ajax call
             return $.ajax({
@@ -142,7 +144,7 @@ function formatHeroProfileData(data) {
  */
 function formatItemData(data) {
     var ret = _mapAttributes(data, []);
-    return ret;
+    return data;
 }
 /*******************************************************************
  * HELPERS

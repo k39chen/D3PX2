@@ -1,0 +1,6 @@
+<% for (var type in items._data) { %>
+<div>
+<a href='#' data-item='<%= items[type].tooltipParams %>'><%= items[type].name %></a>
+<i>(<%= type %>)</i>
+</div>
+<% } %>

@@ -14,12 +14,7 @@
 </div>
 
 <h3>Items</h3>
-<% for (var type in items._data) { %>
-<div>
-<a href='#' data-item='<%= items[type].tooltipParams %>'><%= items[type].name %></a>
-<i>(<%= type %>)</i>
-</div>
-<% } %>
+<div id='itemselect'></div>
 
 <h3>Active Skills</h3>
 <% for (var i=0; i<skills.active.length; i++) { %>
