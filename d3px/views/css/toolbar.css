@@ -1,0 +1,17 @@
+#toolbar {
+  width: 82px;
+  height: 100vh;
+  background-color: #252525;
+  position: fixed;
+}
+#toolbar #logo {
+  height: 82px;
+  width: 82px;
+  background-color: #c65618;
+  border-bottom: 1px solid black;
+  float: left;
+}
+#toolbar .toolbar-item.selected {
+  border-left: 7px solid #c65618;
+  background-color: #f7f9fa;
+}

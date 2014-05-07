@@ -1,0 +1,26 @@
+@bodyColor: #f7f9fa;
+@borderColor: #edeff0;
+@textColor: #727576;
+@themeShade: #c65618;
+@fontFamily: 'Helvetica Neue', 'Arial';
+
+#toolbar {
+	width: 82px;
+	height: 100vh;
+	background-color: #252525;
+	position: fixed;
+	
+	#logo {
+		height: 82px;
+		width: 82px;
+		background-color: @themeShade;
+		border-bottom: 1px solid black;
+		float: left;
+	}
+	
+	.toolbar-item.selected{
+		
+		border-left: 7px solid @themeShade;
+		background-color: @bodyColor;
+	}
+}
