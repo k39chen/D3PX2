@@ -1,0 +1,407 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+$bodyColor: #f7f9fa;
+$borderColor: #edeff0;
+$textColor: #727576;
+$themeShade: #c65618;
+$fontFamily: 'Helvetica Neue', 'Arial';
+
+@mixin hcenter {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@mixin noselect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+body, html{
+	height: 100%;
+	width: 100%;
+	background-color: $bodyColor;
+	min-width: 1100px;
+}
+
+.pane {
+	border: 1px solid $borderColor;
+	border-radius: 5px;
+	background-color: white;
+	margin: 20px auto;
+	
+	.pane-header {
+		width: 100%;
+		height: 58px;
+		border-bottom: 1px solid $borderColor;
+		line-height: 58px;
+		color: $textColor;
+		font-family: $fontFamily;
+		font-size: 18px;
+		font-weight: 200;
+		text-indent: 30px;
+	}
+}
+
+
+#navbar {
+	height: 82px;
+	width: 100%;
+	background-color: white;
+	border-bottom: 1px solid #edeff0;
+	
+	#logo {
+		height: 100%;
+		width: 82px;
+		background-color: $themeShade;
+		border-bottom: 1px solid black;
+		float: left;
+	}
+	
+	#title {
+		float: left;
+		line-height: 82px;
+		margin-left: 50px;
+		color: $textColor;
+		font-family: $fontFamily;
+		font-size: 36px;
+		font-weight: 100;
+	}
+	
+	#tag {
+		margin: 0px 10px;
+		line-height: 82px;
+		color: $textColor;
+		font-family: $fontFamily;
+		font-size: 18px;
+		font-weight: 200;
+		float: right;
+	}
+	
+	#greeting {
+		margin: 0px 10px;
+		font-weight: 100;
+		float: right;
+	}
+	
+	#search-module {
+		float: right;
+		margin-top: 23px;
+		margin-left: 10px;
+		margin-right: 10px;
+		
+		#search-field {
+			width: 204px;
+			height: 36px;
+			background-color: $bodyColor;
+			border-radius: 36px;
+			border: 1px solid $borderColor;
+			float: left;
+		}
+		
+		#region-dropdown {
+			margin: 0px 10px;
+			width: 83px;
+			height: 36px;
+			background-color: $themeShade;
+			border-radius: 36px;
+			float: right;
+		}
+		
+		img {
+			margin: 10px;
+		}
+		
+		input[type="text"] {
+			background-color: transparent;
+			border: none;
+			width: 75%;
+			height: 100%;
+			margin-right: 10px;
+			outline: none;
+			font-family: $fontFamily;
+			font-size: 16px;
+			font-weight: 200;
+			color: $textColor;
+			float: right;
+		}
+	}
+}
+
+#canvas {
+	width: 100%;
+	height: 100%;
+}
+
+#toolbar {
+	width: 82px;
+	height: 100vh;
+	background-color: #252525;
+	float: left;
+	
+	.toolbar-item.selected{
+		
+		border-left: 7px solid $themeShade;
+		background-color: $bodyColor;
+	}
+}
+
+#container {
+
+	float: left;
+	width: 95%;
+
+	#hero-pane, #career-pane {
+		height: 382px;
+		width: 98%;
+	}
+}
+
+// --------------
+
+
+.hero-card {
+	width: 184px;
+	height: 282px;
+	background-color: #52443d;
+	float: left;
+	margin: 19px 0px 19px 20px;
+	border-radius: 5px;
+	border: 1px solid $borderColor;
+	cursor: pointer;
+	@include noselect;
+	
+	.hero-level {
+		position: relative;
+		@include hcenter;
+		width: 83px;
+		height: 83px;
+		border: 3px solid $themeShade;
+		border-radius: 83px;
+		line-height: 83px;
+		text-align: center;
+		top: 20%;
+		color: white;
+		font-family: $fontFamily;
+		font-weight: 100;
+		font-size: 2em;
+	}
+	
+	.hero-hardcore {
+		height: 30px;
+		width: 30px;
+		position: relative;
+		@include hcenter;
+		top: 66%;
+		background-image: url(../res/hardcore.png);
+		background-repeat: no-repeat;
+	}
+	
+	.hero-name {
+		position: relative;
+		@include hcenter;
+		width: 100%;
+		text-align: center;
+		top: 38%;
+		color: white;
+		font-family: $fontFamily;
+		font-weight: 100;
+		font-size: 1.5em;
+	}
+	
+	.hero-class {
+		position: relative;
+		@include hcenter;
+		width: 100%;
+		text-align: center;
+		top: 40%;
+		color: $themeShade;
+		font-family: $fontFamily;
+		font-weight: 100;
+		font-size: 1em;
+	}
+}
+
+
+#career-pane {
+
+	.pane-content {
+		height: 323px;		
+	}
+
+	.career-table {
+		width: 83%;
+		height: 100%;
+		border-right: 1px solid $borderColor;
+		float: left;
+		
+		table {
+			
+			width: 100%;
+			float: left;
+			border-collapse:  separate; // changes border radius draw
+			padding: 20px;
+			font-family: $fontFamily;
+			font-size: 15px;
+			color: #727576;
+			
+			td, th {
+				text-align: left;
+				line-height: 46px;
+				vertical-align: middle;
+				border-bottom: 1px solid $borderColor;
+			}
+			
+			th {
+				background-color: #edeff0;
+			}
+			
+			th.left-border {
+				border-top: 1px solid #e3e9e9;
+				border-bottom: 1px solid #e3e9e9;
+				border-left: 1px solid #e3e9e9;
+				border-radius: 5px 0px 0px 5px;
+			}
+			
+			th.right-border {
+				border-top: 1px solid #e3e9e9;
+				border-bottom: 1px solid #e3e9e9;
+				border-right: 1px solid #e3e9e9;
+				border-radius: 0px 5px 5px 0px;
+			}
+			
+			.avatar {
+				width: 5%;
+			}
+			
+			.name {
+				width: 15%;
+			}
+			
+			.time {
+				width: 20%;
+			}
+			
+			.level {
+				width: 20%;
+			}
+			
+			.elite {
+				width: 10%;
+			}
+			
+			.dps {
+				width: 10%;
+			}
+			
+			.toughness {
+				width: 10%;
+			}
+			
+			.healing {
+				width: 10%;
+			}
+			
+			.time-percentage {
+					width: 20%;
+					line-height: 46px;
+					float: left;
+				}
+			
+			.time-progress {
+				width: 60%;
+				height: 7px;
+				float: left;
+				background-color: $bodyColor;
+				border-radius: 7px;
+				margin: 20px 20px 0px 10px;
+				
+				.filled {
+					width: 60%; // Percentage completion
+					height: 100%;
+					position: relative;
+					background-color: $themeShade;
+					border-radius: 7px;
+				}
+			}
+		}
+	}
+
+	.career-stats {
+		width: 17%;
+		height: 100%;
+		float: left;
+		
+		.section {
+			height: 33.3%;
+			text-indent: 20px;
+			
+			&#paragon-stats {
+				color: #56b0e4;
+			}
+			
+			.section-title {
+				font-family: $fontFamily;
+				font-size: 1em;
+				line-height: 60px;
+				color: $textColor;
+			}
+			.section-number {
+				font-family: $fontFamily;
+				font-weight: 100;
+				font-size: 2em;
+				line-height: 10px;
+			}
+		}
+		
+		.section.middle {
+			border-top: 1px solid $borderColor;
+			border-bottom: 1px solid $borderColor;
+		}
+	}
+}
