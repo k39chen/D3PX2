@@ -23,15 +23,14 @@ steal('can', function (can) {
                 battleTag = params.battleTag,
                 url = 'http://us.battle.net/api/d3/profile/'+battleTag+'/';
 
+            // issue ajax call
             return $.ajax({
                 type: 'GET', 
-                dataType: 'jsonp', 
-                url: url,
+                dataType: 'jsonp',
+                cache: true,
+                url: url
             }).then(function(data){
                 var formatted = formatPlayerProfileData(data);
-
-                self.getHeroProfile({battleTag:battleTag,id:data.heroes[0].id})
-
                 return self.model(formatted);
             });
         },
@@ -42,6 +41,7 @@ steal('can', function (can) {
          * @params {Object}
          *   - battleTag {String} The battletag of hte plyaer
          *   - id {Number} The unique identifier for the hero
+         * @return {Object} The formatted hero profile data.
          */
         getHeroProfile: function(params) {
             var self = this,
@@ -49,16 +49,42 @@ steal('can', function (can) {
                 id = params.id,
                 url = 'http://us.battle.net/api/d3/profile/'+battleTag+'/hero/'+id;
 
+            // issue ajax call
             return $.ajax({
                 type: 'GET', 
-                dataType: 'jsonp', 
-                url: url,
+                dataType: 'jsonp',
+                cache: true,
+                url: url
             }).then(function(data){
-                console.log(data);
-                return self.model(data);
+                var formatted = formatHeroProfileData(data);
+                return self.model(formatted);
+            });
+        },
+        /**
+         * Retrieves item data from D3 API.
+         *
+         * @method getItemData
+         * @params {Object}
+         *   - itemdata {String} The hash of the item data
+         * @return {Object} The formatted item data.
+         */
+        getItemData: function(params) {
+            var self = this,
+                itemdata = params.itemdata,
+                url = 'http://us.battle.net/api/d3/data/item/'+itemdata;
+
+            // issue ajax call
+            return $.ajax({
+                type: 'GET', 
+                dataType: 'jsonp',
+                cache: true,
+                url: url
+            }).then(function(data){
+                var formatted = formatItemData(data);
+                return self.model(formatted);
             });
         }
-    }, 
+    },
     /* @Prototype */
     {});
 });
@@ -74,21 +100,13 @@ steal('can', function (can) {
  * @return {Object} The formatted player profile data.
  */
 function formatPlayerProfileData(data) {
-    var ret = {}, mappings = [
+    var ret = _mapAttributes(data, [
         'battleTag',
         'kills',
         'paragonLevel',
         'paragonLevelHardcore',
-    ];
-    // set prelim mappings
-    for (var i=0; i<mappings.length; i++) {
-        var field = mappings[i],
-            datum = data[field];
-        // make sure that the data field that we are asking for exists
-        if (datum) {
-            ret[field] = data[field];   
-        }
-    }
+        'heroes'
+    ]);
     // set time played mapping
     var tpsum = 0;
     ret.timePlayed = {};
@@ -100,6 +118,52 @@ function formatPlayerProfileData(data) {
         // get the percentage value for each class
         for (var c in data.timePlayed) {
             ret.timePlayed[c] = data.timePlayed[c] / tpsum;
+        }
+    }
+    return ret;
+}
+/**
+ * Formats the hero profile data result.
+ *
+ * @method formatHeroProfileData
+ * @params {Object} Raw hero profile data.
+ * @return {Object} The formatted hero profile data.
+ */
+function formatHeroProfileData(data) {
+    var ret = _mapAttributes(data, []);
+    return data;
+}
+/**
+ * Formats the item data result.
+ *
+ * @method formatItemData
+ * @params {Object} Raw item data.
+ * @return {Object} The formatted item data.
+ */
+function formatItemData(data) {
+    var ret = _mapAttributes(data, []);
+    return ret;
+}
+/*******************************************************************
+ * HELPERS
+ *******************************************************************/
+/**
+ * Maps single layer attributes
+ *
+ * @private
+ * @method _mapAttributes
+ * @param data {Object} Raw response data.
+ * @return {Object} Filtered response data.
+ */
+function _mapAttributes(data, mappings) {
+    var ret = {};
+    // set prelim mappings
+    for (var i=0; i<mappings.length; i++) {
+        var field = mappings[i],
+            datum = data[field];
+        // make sure that the data field that we are asking for exists
+        if (datum) {
+            ret[field] = data[field];   
         }
     }
     return ret;

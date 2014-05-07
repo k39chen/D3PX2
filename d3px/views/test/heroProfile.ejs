@@ -1,0 +1,59 @@
+<div class='pane'>
+<h1>Hero Profile</h1>
+
+<h3>Name</h3>
+<div>
+    <b><%= name %></b>
+    (<i><%= this['class'] %></i>)
+    -
+    <% if (gender == 0) { %>
+    [M]
+    <% } else { %>
+    [F]
+    <% } %>
+</div>
+
+<h3>Items</h3>
+<% for (var type in items._data) { %>
+<div>
+<a href='#' data-item='<%= items[type].tooltipParams %>'><%= items[type].name %></a>
+<i>(<%= type %>)</i>
+</div>
+<% } %>
+
+<h3>Active Skills</h3>
+<% for (var i=0; i<skills.active.length; i++) { %>
+<div>
+    <% if (!skills.active[i].skill) { %>
+    -
+    <% } else { %>
+    <div>
+        <%= skills.active[i].skill.name %> 
+        <% if (!skills.active[i].rune) { %>
+        <% } else { %>
+        - <i><%= skills.active[i].rune.name %></i>
+        <% } %>
+    </div>
+    <% } %>
+</div>
+<% } %>
+
+<h3>Passive Skills</h3>
+<% for (var i=0; i<skills.passive.length; i++) { %>
+<div>
+    
+    <% if (!skills.passive[i].skill) { %>
+    -
+    <% } else { %>
+    <div><%= skills.passive[i].skill.name %></div>
+    <% } %>
+</div>
+<% } %>
+
+<h3>Kills</h3>
+<% for (var ki in kills._data) { %>
+<div><i><%= ki %></i>: <%= kills[ki] %></div>
+<% } %>
+</div>
+
+</div>

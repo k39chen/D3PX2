@@ -1,15 +1,19 @@
-steal('can', 'd3px/models/d3api.js', './init.ejs', './searchtest.less', 
-function(can, D3API, initView) {
+steal(
+    'can', 
+    '/d3px/models/d3api.js', 
+    '/d3px/controls/test/heroselect/heroselect.js',
+    './init.ejs',
+    '/d3px/views/test/playerProfile.ejs',
+    './searchbar.less', 
+function(can, D3API, HeroSelect, searchView, playerView) {
     var ENTER_KEY = 13;
 	return can.Control(
         {
-            defaults: {
-                D3API: D3API
-            }
+            defaults: {}
         },
         {
             init: function(){
-                this.element.html(initView());
+                this.element.html(searchView());
             },
             keyup: function(el,ev) {
                 if (ev.keyCode === ENTER_KEY) {
@@ -31,13 +35,13 @@ function(can, D3API, initView) {
 
                     // perform a search against the D3 API for the corresponding battleTag
                     var searchQuery = matches[1] + '-' + matches[2];
-                    D3API.getPlayerProfile({battleTag:searchQuery}).done(function(model){
-
-                        console.log(model);
-
-                        $('#playerProfile').html(can.view('/d3px/views/playerProfile/playerProfile.ejs', model._data));
+                    D3API.getPlayerProfile({battleTag:searchQuery}).done(function(data){
+                        console.log('FETCHED PLAYER DATA: ',data);
+                        $('#playerProfile').html(playerView(data));
+                        
+                        // create the hero select controller
+                        var heroSelect = new HeroSelect('#heroselect', {data:data});
                     });
-
                 }
             }
         }

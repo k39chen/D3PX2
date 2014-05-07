@@ -1,0 +1,22 @@
+<div class='pane'>
+<h1>Player Profile</h1>
+
+<h3>Battletag</h3>
+<div><%= battleTag %></div>
+
+<h3>Paragon Level</h3>
+<div><%= paragonLevel %></div>
+
+<h3>Heroes (<%= heroes.length %>)</h3>
+<div id='heroselect'></div>
+
+<h3>Time Played</h3>
+<% for (var cl in timePlayed._data) { %>
+<div><i><%= cl %></i>: <%= (timePlayed[cl] * 100).toFixed(1) %>%</div>
+<% } %>
+
+<h3>Kills</h3>
+<% for (var ki in kills._data) { %>
+<div><i><%= ki %></i>: <%= kills[ki] %></div>
+<% } %>
+</div>

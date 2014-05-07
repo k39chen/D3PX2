@@ -1,0 +1,8 @@
+<% if (this !== null) { %>
+<% for (var i=0; i<heroes.length; i++) { %>
+<div>
+    <a class='heroes' href='#' data-id='<%= heroes[i].id %>' data-battleTag='<%= battleTag %>'><%= heroes[i].name %></a>
+    <i>(<%= heroes[i].class %>)</i>
+</div>
+<% } %>
+<% } %>
