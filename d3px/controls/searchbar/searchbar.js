@@ -32,7 +32,10 @@ function(can, D3API, initView) {
                     // perform a search against the D3 API for the corresponding battletag
                     var searchQuery = matches[1] + '-' + matches[2];
                     D3API.findBattletag({battletag:searchQuery}).done(function(model){
-                        $('#playerProfile').html(can.view('./views/playerProfile.ejs', model._data));
+
+                        console.log(model);
+
+                        $('#playerProfile').html(can.view('./views/playerProfile/playerProfile.ejs', model._data));
                     });
 
                 }
