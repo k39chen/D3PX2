@@ -90,18 +90,13 @@ body, html{
 
 
 #navbar {
+
+	position: fixed;
+	left: 82px;
+	right: 0px;
 	height: 82px;
-	width: 100%;
 	background-color: white;
 	border-bottom: 1px solid #edeff0;
-	
-	#logo {
-		height: 100%;
-		width: 82px;
-		background-color: $themeShade;
-		border-bottom: 1px solid black;
-		float: left;
-	}
 	
 	#title {
 		float: left;
@@ -160,7 +155,7 @@ body, html{
 		input[type="text"] {
 			background-color: transparent;
 			border: none;
-			width: 75%;
+			width: 73%;
 			height: 100%;
 			margin-right: 10px;
 			outline: none;
@@ -174,31 +169,37 @@ body, html{
 }
 
 #canvas {
-	width: 100%;
+	position: absolute;
 	height: 100%;
+	left: 82px;
+	right: 0px;
+	top: 82px;
+	min-width: 1100px; // Controls overall min-width
+	
+	#hero-pane, #career-pane {
+		height: 382px;
+		width: 98%;
+	}
 }
 
 #toolbar {
 	width: 82px;
 	height: 100vh;
 	background-color: #252525;
-	float: left;
+	position: fixed;
+	
+	#logo {
+		height: 82px;
+		width: 82px;
+		background-color: $themeShade;
+		border-bottom: 1px solid black;
+		float: left;
+	}
 	
 	.toolbar-item.selected{
 		
 		border-left: 7px solid $themeShade;
 		background-color: $bodyColor;
-	}
-}
-
-#container {
-
-	float: left;
-	width: 95%;
-
-	#hero-pane, #career-pane {
-		height: 382px;
-		width: 98%;
 	}
 }
 
@@ -373,7 +374,7 @@ body, html{
 	}
 
 	.career-stats {
-		width: 17%;
+		width: 16%;
 		height: 100%;
 		float: left;
 		
