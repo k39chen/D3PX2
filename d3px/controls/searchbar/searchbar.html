@@ -7,13 +7,12 @@
 	    <h1>searchbar Demo</h1>
 
         <div id="searchbar"></div>
+        <div id="playerProfile"></div>
 
-		<script src='../../steal/steal.js'></script>
+		<script src='../../../steal/steal.js'></script>
 		<script type='text/javascript'>
-		steal('d3px/searchbar', function(Searchbar){
-			
-			new Searchbar("#searchbar");
-
+		steal('d3px/controls/searchbar/searchbar.js', function(Searchbar){
+			new Searchbar('#searchbar');
 		})
 		</script>
 	</body>

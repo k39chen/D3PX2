@@ -9,10 +9,6 @@
         <div id="searchbar"></div>
         <div id="playerProfile"></div>
 
-        <!--
-        <img width="800px" src="images/diablo3.jpg" />
-	   -->
-
         <script type='text/javascript' src='../steal/steal.js?d3px'></script>
     </body>
 </html>

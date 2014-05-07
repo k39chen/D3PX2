@@ -35,7 +35,7 @@ function(can, D3API, initView) {
 
                         console.log(model);
 
-                        $('#playerProfile').html(can.view('./views/playerProfile/playerProfile.ejs', model._data));
+                        $('#playerProfile').html(can.view('/d3px/views/playerProfile/playerProfile.ejs', model._data));
                     });
 
                 }
