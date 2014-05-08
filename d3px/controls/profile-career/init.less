@@ -15,28 +15,24 @@
 		height: 100%;
 		border-right: 1px solid @borderColor;
 		float: left;
-		
-		table {
+			
+		#header-table {
 			
 			width: 100%;
 			float: left;
 			border-collapse:  separate; // changes border radius draw
-			padding: 20px;
+			padding: 20px 20px 0px 20px;
 			font-family: @fontFamily;
 			font-size: 15px;
 			color: #727576;
 			
-			td, th {
-				text-align: left;
-				line-height: 46px;
-				vertical-align: middle;
-				border-bottom: 1px solid @borderColor;
-			}
-			
 			th {
+				text-align: left;
+				line-height: 30px;
+				vertical-align: middle;
 				background-color: #edeff0;
 			}
-			
+		
 			th.left-border {
 				border-top: 1px solid #e3e9e9;
 				border-bottom: 1px solid #e3e9e9;
@@ -82,27 +78,88 @@
 			.healing {
 				width: 10%;
 			}
+
+		}
+		
+		.scroll-container {
+			height: 83%;
+			width: 100%;
+			overflow: scroll;
 			
-			.time-percentage {
-					width: 20%;
-					line-height: 46px;
-					float: left;
-				}
-			
-			.time-progress {
-				width: 60%;
-				height: 7px;
-				float: left;
-				background-color: @bodyColor;
-				border-radius: 7px;
-				margin: 20px 20px 0px 10px;
+			#stat-table {
 				
-				.filled {
-					width: 0%; // Percentage completion
-					height: 100%;
-					position: relative;
-					background-color: @themeShade;
+				width: 100%;
+				float: left;
+				border-collapse:  separate; // changes border radius draw
+				padding: 0px 20px;
+				font-family: @fontFamily;
+				font-size: 15px;
+				color: #727576;
+				
+				td, th {
+					text-align: left;
+					line-height: 46px;
+					vertical-align: middle;
+					border-bottom: 1px solid @borderColor;
+				}
+				
+				th {
+					background-color: #edeff0;
+				}
+				
+				.avatar {
+					width: 5%;
+				}
+				
+				.name {
+					width: 15%;
+				}
+				
+				.time {
+					width: 20%;
+				}
+				
+				.level {
+					width: 20%;
+				}
+				
+				.elite {
+					width: 10%;
+				}
+				
+				.dps {
+					width: 10%;
+				}
+				
+				.toughness {
+					width: 10%;
+				}
+				
+				.healing {
+					width: 10%;
+				}
+				
+				.time-percentage {
+						width: 20%;
+						line-height: 46px;
+						float: left;
+					}
+				
+				.time-progress {
+					width: 60%;
+					height: 7px;
+					float: left;
+					background-color: @bodyColor;
 					border-radius: 7px;
+					margin: 20px 20px 0px 10px;
+					
+					.filled {
+						width: 0%; // Percentage completion
+						height: 100%;
+						position: relative;
+						background-color: #ea8c3f;
+						border-radius: 7px;
+					}
 				}
 			}
 		}

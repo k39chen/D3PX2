@@ -1,0 +1,156 @@
+#career-pane .pane-content {
+  height: 323px;
+}
+#career-pane .career-table {
+  width: 83%;
+  height: 100%;
+  border-right: 1px solid #edeff0;
+  float: left;
+}
+#career-pane .career-table #header-table {
+  width: 100%;
+  float: left;
+  border-collapse: separate;
+  padding: 20px 20px 0px 20px;
+  font-family: 'Helvetica Neue', 'Arial';
+  font-size: 15px;
+  color: #727576;
+}
+#career-pane .career-table #header-table th {
+  text-align: left;
+  line-height: 30px;
+  vertical-align: middle;
+  background-color: #edeff0;
+}
+#career-pane .career-table #header-table th.left-border {
+  border-top: 1px solid #e3e9e9;
+  border-bottom: 1px solid #e3e9e9;
+  border-left: 1px solid #e3e9e9;
+  border-radius: 5px 0px 0px 5px;
+}
+#career-pane .career-table #header-table th.right-border {
+  border-top: 1px solid #e3e9e9;
+  border-bottom: 1px solid #e3e9e9;
+  border-right: 1px solid #e3e9e9;
+  border-radius: 0px 5px 5px 0px;
+}
+#career-pane .career-table #header-table .avatar {
+  width: 5%;
+}
+#career-pane .career-table #header-table .name {
+  width: 15%;
+}
+#career-pane .career-table #header-table .time {
+  width: 20%;
+}
+#career-pane .career-table #header-table .level {
+  width: 20%;
+}
+#career-pane .career-table #header-table .elite {
+  width: 10%;
+}
+#career-pane .career-table #header-table .dps {
+  width: 10%;
+}
+#career-pane .career-table #header-table .toughness {
+  width: 10%;
+}
+#career-pane .career-table #header-table .healing {
+  width: 10%;
+}
+#career-pane .career-table .scroll-container {
+  height: 83%;
+  width: 100%;
+  overflow: scroll;
+}
+#career-pane .career-table .scroll-container #stat-table {
+  width: 100%;
+  float: left;
+  border-collapse: separate;
+  padding: 0px 20px;
+  font-family: 'Helvetica Neue', 'Arial';
+  font-size: 15px;
+  color: #727576;
+}
+#career-pane .career-table .scroll-container #stat-table td,
+#career-pane .career-table .scroll-container #stat-table th {
+  text-align: left;
+  line-height: 46px;
+  vertical-align: middle;
+  border-bottom: 1px solid #edeff0;
+}
+#career-pane .career-table .scroll-container #stat-table th {
+  background-color: #edeff0;
+}
+#career-pane .career-table .scroll-container #stat-table .avatar {
+  width: 5%;
+}
+#career-pane .career-table .scroll-container #stat-table .name {
+  width: 15%;
+}
+#career-pane .career-table .scroll-container #stat-table .time {
+  width: 20%;
+}
+#career-pane .career-table .scroll-container #stat-table .level {
+  width: 20%;
+}
+#career-pane .career-table .scroll-container #stat-table .elite {
+  width: 10%;
+}
+#career-pane .career-table .scroll-container #stat-table .dps {
+  width: 10%;
+}
+#career-pane .career-table .scroll-container #stat-table .toughness {
+  width: 10%;
+}
+#career-pane .career-table .scroll-container #stat-table .healing {
+  width: 10%;
+}
+#career-pane .career-table .scroll-container #stat-table .time-percentage {
+  width: 20%;
+  line-height: 46px;
+  float: left;
+}
+#career-pane .career-table .scroll-container #stat-table .time-progress {
+  width: 60%;
+  height: 7px;
+  float: left;
+  background-color: #f7f9fa;
+  border-radius: 7px;
+  margin: 20px 20px 0px 10px;
+}
+#career-pane .career-table .scroll-container #stat-table .time-progress .filled {
+  width: 0%;
+  height: 100%;
+  position: relative;
+  background-color: #ea8c3f;
+  border-radius: 7px;
+}
+#career-pane .career-stats {
+  width: 16%;
+  height: 100%;
+  float: left;
+}
+#career-pane .career-stats .section {
+  height: 33.3%;
+  text-indent: 20px;
+}
+#career-pane .career-stats .section#paragon-stats {
+  color: #56b0e4;
+}
+#career-pane .career-stats .section .section-title {
+  font-family: 'Helvetica Neue', 'Arial';
+  font-size: 1em;
+  line-height: 60px;
+  color: #727576;
+}
+#career-pane .career-stats .section .section-number {
+  font-family: 'Helvetica Neue', 'Arial';
+  font-weight: 100;
+  font-size: 2em;
+  line-height: 10px;
+}
+#career-pane .career-stats .section.middle {
+  border-top: 1px solid #edeff0;
+  border-bottom: 1px solid #edeff0;
+}

@@ -5,6 +5,12 @@
 @themeShade: #c65618;
 @fontFamily: 'Helvetica Neue', 'Arial';
 
+.pane-content {
+	overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
 .hero-card {
 	width: 184px;
 	height: 282px;
@@ -14,7 +20,7 @@
 	border-radius: 5px;
 	border: 1px solid @borderColor;
 	cursor: pointer;
-	@include noselect;
+	display: inline-block;
 	
 	.hero-level {
 		position: relative;

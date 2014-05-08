@@ -4,7 +4,7 @@ steal(
     './controls/nav-search/init.ejs',
     './views/toolbar/toolbar.ejs',
     './controls/profile-heroes/profile-heroes.js',
-    './controls/profile-career/init.ejs',
+    './controls/profile-career/profile-career.js',
     './d3px.less',
     './views/nav/nav.less',
     './controls/nav-search/init.less',
@@ -18,4 +18,5 @@ function(can, navView, navSearch, toolbar, profileHeroes, profileCareer){
     $('body').append(toolbar());
     
     var profileHeroes = new profileHeroes();
+    var profileCareer = new profileCareer();
 });

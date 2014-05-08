@@ -1,0 +1,1 @@
+steal("can","/d3px/models/d3api.js","./init.ejs","./calculator.less",function(e,t,n){return e.Control({defaults:{}},{init:function(){this.element.html(n());var e="gummypower-1650",r=0;t.getPlayerProfile({battleTag:e}).done(function(n){n.heroes.length>r&&t.getHeroProfile({battleTag:e,id:n.heroes[r].id}).done(function(e){})})}})});
