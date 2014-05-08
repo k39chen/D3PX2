@@ -5,16 +5,15 @@ steal(
 	'./init.less', function(can, D3API, careerView) {
 		
 		return can.Control({
-			defaults: {}
+			defaults: {
+				battletag: null
+			}
 		},
 		{
 			init: function() {
-				// Get list of heroes from D3API
-				var battleTag = 'GummyPower-1650';
-
 
 				// Loads player data
-				loadCompositePlayerProfile(D3API, battleTag, function(data) {
+				loadCompositePlayerProfile(D3API, this.options.battletag, function(data) {
 				
 					$('#mask').fadeOut(500);
 					$('#career-pane').html(careerView(data));

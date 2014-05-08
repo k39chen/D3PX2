@@ -2,20 +2,19 @@ steal(
 	'can',
 	'../../models/d3api.js',
 	'./init.ejs',
-	'd3px/lib/d3lib.js',
+	'/d3px/lib/d3lib.js',
 	'./init.less', function(can, D3API, heroesView) {
 		
 		return can.Control({
-			defaults: {}
+			defaults: {
+				battletag: null
+			}
 		},
 		{
-			init: function() {
+			init: function(element, options) {
 				// Get list of heroes from D3API
-				var battleTag = 'GummyPower-1650';				
-
-			    D3API.getPlayerProfile({battleTag:battleTag}).done(function(data){
-			        // here is the data:
-			        console.log(data);
+				
+			    D3API.getPlayerProfile({battleTag:this.options.battletag}).done(function(data){
 			        // Insert into HTML
 					$('#hero-pane').html(heroesView(data));
 			    });
