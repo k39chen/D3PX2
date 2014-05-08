@@ -14,9 +14,10 @@ steal('can', function (can) {
          * Retrieves player profile data from D3 API.
          * 
          * @method getPlayerProfile
-         * @params {Object}
+         * @param params {Object}
          *   - region {String} The region that the player [default=us]
          *   - battleTag {String} The battletag of the player
+         *   - ext {Object} An optional extension object that will be returned with the response
          * @return {Object} The formatted player profile data.
          */
         getPlayerProfile: function(params) {
@@ -32,7 +33,7 @@ steal('can', function (can) {
                 cache: true,
                 url: url
             }).then(function(data){
-                var formatted = formatPlayerProfileData(data);
+                var formatted = formatPlayerProfileData(can.extend(data,params.ext));
                 return self.model(formatted);
             });
         },
@@ -40,10 +41,11 @@ steal('can', function (can) {
          * Retrieves hero profile data from D3 API.
          *
          * @method getHeroProfile
-         * @params {Object}
+         * @param params {Object}
          *   - region {String} The region that the player [default=us]
          *   - battleTag {String} The battletag of the plyaer
          *   - id {Number} The unique identifier for the hero
+         *   - ext {Object} An optional extension object that will be returned with the response
          * @return {Object} The formatted hero profile data.
          */
         getHeroProfile: function(params) {
@@ -60,7 +62,7 @@ steal('can', function (can) {
                 cache: true,
                 url: url
             }).then(function(data){
-                var formatted = formatHeroProfileData(data);
+                var formatted = formatHeroProfileData(can.extend(data,params.ext));
                 return self.model(formatted);
             });
         },
@@ -68,9 +70,10 @@ steal('can', function (can) {
          * Retrieves item data from D3 API.
          *
          * @method getItemData
-         * @params {Object}
+         * @param params {Object}
          *   - region {String} The region that the player [default=us]
          *   - itemdata {String} The hash of the item data
+         *   - ext {Object} An optional extension object that will be returned with the response
          * @return {Object} The formatted item data.
          */
         getItemData: function(params) {
@@ -86,7 +89,7 @@ steal('can', function (can) {
                 cache: true,
                 url: url
             }).then(function(data){
-                var formatted = formatItemData(data);
+                var formatted = formatItemData(can.extend(data,params.ext));
                 return self.model(formatted);
             });
         }
@@ -102,7 +105,7 @@ steal('can', function (can) {
  * Formats the player profile data result
  *
  * @method formatPlayerProfileData
- * @params {Object} Raw player profile data.
+ * @param {Object} Raw player profile data.
  * @return {Object} The formatted player profile data.
  */
 function formatPlayerProfileData(data) {
@@ -132,7 +135,7 @@ function formatPlayerProfileData(data) {
  * Formats the hero profile data result.
  *
  * @method formatHeroProfileData
- * @params {Object} Raw hero profile data.
+ * @param {Object} Raw hero profile data.
  * @return {Object} The formatted hero profile data.
  */
 function formatHeroProfileData(data) {
@@ -150,7 +153,7 @@ function formatHeroProfileData(data) {
  * Formats the item data result.
  *
  * @method formatItemData
- * @params {Object} Raw item data.
+ * @param {Object} Raw item data.
  * @return {Object} The formatted item data.
  */
 function formatItemData(data) {

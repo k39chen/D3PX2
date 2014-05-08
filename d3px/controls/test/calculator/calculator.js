@@ -2,7 +2,8 @@ steal(
     'can', 
     '/d3px/models/d3api.js',
     './init.ejs',
-    './calculator.less', 
+    './calculator.less',
+    '/d3px/lib/d3lib.js',
 function(can, D3API, initView) {
 	return can.Control(
         {
@@ -13,24 +14,9 @@ function(can, D3API, initView) {
                 this.element.html(initView());
 
                 var battleTag = 'gummypower-1650';
-                var heroIndex = 0;
 
-                // fetch the player profile
-                D3API.getPlayerProfile({battleTag:battleTag}).done(function(playerData){
-                    
-                    // fetch the first hero profile
-                    if (playerData.heroes.length > heroIndex) {
-                        D3API.getHeroProfile({
-                            battleTag:battleTag,
-                            id:playerData.heroes[heroIndex].id
-                        }).done(function(heroData){
-
-                            // load all the item data from the hero
-
-
-                        });
-                    }
-
+                loadCompositePlayerProfile(D3API,battleTag,function(data){
+                    console.log(data);
                 });
 
 
