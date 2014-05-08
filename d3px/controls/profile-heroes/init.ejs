@@ -1,11 +1,14 @@
 <div id="hero-pane" class="pane">
 	<div class="pane-header">Heroes</div>
 	<div class="pane-content">
+		<% for(var i=0; i<heroes.length; i++) { %>
 		<div class="hero-card">
-			<div class="hero-hardcore"></div>
-			<div class="hero-level">70</div>
-			<div class="hero-name">Juno</div>
-			<div class="hero-class">Wizard</div>
-		</div>	<!-- hero-card -->				
+			<div class="hero-hardcore<% if(heroes[i].hardcore) { %> on<% } %>"></div>
+			<div class="hero-level"><%= heroes[i].level %></div>
+			<div class="hero-name"><%= heroes[i].name %></div>
+			<%# Capitalize Class %>
+			<div class="hero-class"><%= heroes[i].class[0].toUpperCase() + heroes[i].class.slice(1) %></div> 
+		</div>	<!-- hero-card -->
+		<% } %>				
 	</div> <!-- pane-content -->
 </div> <!-- pane -->

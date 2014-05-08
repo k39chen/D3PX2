@@ -37,10 +37,16 @@
 		height: 30px;
 		width: 30px;
 		position: relative;
-		@include hcenter;
+		margin-left: auto;
+		margin-right: auto;
 		top: 66%;
 		background-image: url(../../images/hardcore.png);
 		background-repeat: no-repeat;
+		opacity: 0;
+	}
+	
+	.hero-hardcore.on {
+		opacity: 1;
 	}
 	
 	.hero-name {

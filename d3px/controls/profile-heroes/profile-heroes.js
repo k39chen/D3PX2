@@ -11,15 +11,14 @@ steal(
 			init: function() {
 				// Get list of heroes from D3API
 				console.log("inside");
-				var battleTag = 'gummypower-1650';
+				var battleTag = 'MICHAEL-13785';
 
 			    D3API.getPlayerProfile({battleTag:battleTag}).done(function(data){
 			        // here is the data:
 			        console.log(data);
+			        // Insert into HTML
+					$('#canvas').append(heroesView(data));
 			    });
-			    
-			    // Insert into HTML
-			    $('#canvas').append(heroesView);
 			}
 		});
 		

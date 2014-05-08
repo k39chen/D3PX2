@@ -12,10 +12,10 @@ steal(
     './controls/profile-career/init.less',
 function(can, navView, navSearch, toolbar, profileHeroes, profileCareer){
 	
-	var profileHeroes = new profileHeroes();
-	
-	$('#canvas').append(profileCareer());
+	//$('#canvas').append(profileCareer());
     $('body').append(navView({battletag: 'Parallax#1878', catchphrase: 'Stay a while and listen'}));
     $('#navbar #search-module').html(navSearch());
     $('body').append(toolbar());
+    
+    var profileHeroes = new profileHeroes();
 });

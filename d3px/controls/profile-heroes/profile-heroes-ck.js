@@ -1,0 +1,1 @@
+steal("can","../../models/d3api.js","./init.ejs","./init.less",function(e,t,n){return e.Control({defaults:{}},{init:function(){console.log("inside");var e="MICHAEL-13785";t.getPlayerProfile({battleTag:e}).done(function(e){console.log(e);$("#canvas").append(n(e))})}})});
