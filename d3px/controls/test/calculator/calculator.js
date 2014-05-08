@@ -4,6 +4,7 @@ steal(
     './init.ejs',
     './calculator.less',
     '/d3px/lib/d3lib.js',
+    '/d3px/lib/utils.js',
 function(can, D3API, initView) {
 	return can.Control(
         {
