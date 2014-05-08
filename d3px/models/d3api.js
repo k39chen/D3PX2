@@ -15,13 +15,15 @@ steal('can', function (can) {
          * 
          * @method getPlayerProfile
          * @params {Object}
+         *   - region {String} The region that the player [default=us]
          *   - battleTag {String} The battletag of the player
          * @return {Object} The formatted player profile data.
          */
         getPlayerProfile: function(params) {
             var self = this,
+                region = params.region ? params.region : 'us',
                 battleTag = params.battleTag,
-                url = 'http://us.battle.net/api/d3/profile/'+battleTag+'/';
+                url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/';
 
             // issue ajax call
             return $.ajax({
@@ -39,15 +41,17 @@ steal('can', function (can) {
          *
          * @method getHeroProfile
          * @params {Object}
-         *   - battleTag {String} The battletag of hte plyaer
+         *   - region {String} The region that the player [default=us]
+         *   - battleTag {String} The battletag of the plyaer
          *   - id {Number} The unique identifier for the hero
          * @return {Object} The formatted hero profile data.
          */
         getHeroProfile: function(params) {
             var self = this,
+                region = params.region ? params.region : 'us',
                 battleTag = params.battleTag,
                 id = params.id,
-                url = 'http://us.battle.net/api/d3/profile/'+battleTag+'/hero/'+id;
+                url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/hero/'+id;
 
             // issue ajax call
             return $.ajax({
@@ -65,13 +69,15 @@ steal('can', function (can) {
          *
          * @method getItemData
          * @params {Object}
+         *   - region {String} The region that the player [default=us]
          *   - itemdata {String} The hash of the item data
          * @return {Object} The formatted item data.
          */
         getItemData: function(params) {
             var self = this,
+                region = params.region ? params.region : 'us',
                 itemdata = params.itemdata,
-                url = 'http://us.battle.net/api/d3/data/'+itemdata;
+                url = 'http://'+region+'.battle.net/api/d3/data/'+itemdata;
 
             // issue ajax call
             return $.ajax({

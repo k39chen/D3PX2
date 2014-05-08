@@ -24,7 +24,10 @@ function(can, D3API, initView) {
                             battleTag:battleTag,
                             id:playerData.heroes[heroIndex].id
                         }).done(function(heroData){
-                            
+
+                            // load all the item data from the hero
+
+
                         });
                     }
 
