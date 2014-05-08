@@ -3,12 +3,13 @@
  *
  * @method loadCompositePlayerProfile
  * @param D3API {can.Model} The D3 API model.
+ * @param region {String} The region.
  * @param battleTag {String} The player battletag.
  * @param cb {Function} The response callback function.
  * @param logging {Boolean} Flag for logging details
  * @return {Object} The raw player profile data.
  */
-function loadCompositePlayerProfile(D3API, battleTag, cb, logging) {
+function loadCompositePlayerProfile(D3API, region, battleTag, cb, logging) {
 
     // current number of active requests
     var activeRequests = 0;
@@ -21,6 +22,7 @@ function loadCompositePlayerProfile(D3API, battleTag, cb, logging) {
         console.log('Loading player {battleTag:'+battleTag+'}');
     }
     D3API.getPlayerProfile({
+        region: region,
         battleTag: battleTag
     }).done(function(playerData){
 
@@ -39,6 +41,7 @@ function loadCompositePlayerProfile(D3API, battleTag, cb, logging) {
                 console.log('Loading hero {battleTag:'+battleTag+',id:'+heroId+'}');
             }
             D3API.getHeroProfile({
+                region: region,
                 battleTag: battleTag,
                 id: heroId
             }).done(function(heroData){
@@ -65,6 +68,7 @@ function loadCompositePlayerProfile(D3API, battleTag, cb, logging) {
 
                     // load the item data
                     D3API.getItemData({
+                        region: region,
                         itemdata: itemdata,
                         ext: {
                             heroId: heroData.id,
