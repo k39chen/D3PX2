@@ -23,7 +23,7 @@ steal('can', function (can) {
         getPlayerProfile: function(params) {
             var self = this,
                 region = params.region ? params.region : 'us',
-                battleTag = params.battleTag,
+                battleTag = params.battleTag.replace(/#/g,'-'),
                 url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/';
 
             // issue ajax call
@@ -51,7 +51,7 @@ steal('can', function (can) {
         getHeroProfile: function(params) {
             var self = this,
                 region = params.region ? params.region : 'us',
-                battleTag = params.battleTag,
+                battleTag = params.battleTag.replace(/#/g,'-'),
                 id = params.id,
                 url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/hero/'+id;
 
