@@ -73,8 +73,6 @@ steal('can', function (can) {
                 itemdata = params.itemdata,
                 url = 'http://us.battle.net/api/d3/data/'+itemdata;
 
-            console.log(url)
-
             // issue ajax call
             return $.ajax({
                 type: 'GET', 
@@ -133,6 +131,13 @@ function formatPlayerProfileData(data) {
  */
 function formatHeroProfileData(data) {
     var ret = _mapAttributes(data, []);
+    
+    can.extend(data,{
+        dps: 1234,
+        toughness: 1234,
+        healing: 1234
+    });
+
     return data;
 }
 /**
