@@ -5,9 +5,10 @@
  * @param D3API {can.Model} The D3 API model.
  * @param battleTag {String} The player battletag.
  * @param cb {Function} The response callback function.
+ * @param logging {Boolean} Flag for logging details
  * @return {Object} The raw player profile data.
  */
-function loadCompositePlayerProfile(D3API, battleTag, cb) {
+function loadCompositePlayerProfile(D3API, battleTag, cb, logging) {
 
     // current number of active requests
     var activeRequests = 0;
@@ -16,7 +17,9 @@ function loadCompositePlayerProfile(D3API, battleTag, cb) {
     var response = {};
 
     // load the player profile with associated battletag
-    console.log('Loading player {battleTag:'+battleTag+'}');
+    if (logging) {
+        console.log('Loading player {battleTag:'+battleTag+'}');
+    }
     D3API.getPlayerProfile({
         battleTag: battleTag
     }).done(function(playerData){
@@ -32,7 +35,9 @@ function loadCompositePlayerProfile(D3API, battleTag, cb) {
             activeRequests++;
 
             // load the hero profile
-            console.log('Loading hero {battleTag:'+battleTag+',id:'+heroId+'}');
+            if (logging) {
+                console.log('Loading hero {battleTag:'+battleTag+',id:'+heroId+'}');
+            }
             D3API.getHeroProfile({
                 battleTag: battleTag,
                 id: heroId
@@ -49,7 +54,9 @@ function loadCompositePlayerProfile(D3API, battleTag, cb) {
                 response.heroes[h_ind] = can.extend(response.heroes[h_ind],heroData);
 
                 // load all the items owned by this hero
-                console.log('Loading items for '+heroData.id+' ['+Object.keys(heroData.items._data).length+']');
+                if (logging) {
+                    console.log('Loading items for '+heroData.id+' ['+Object.keys(heroData.items._data).length+']');
+                }
                 for (var type in heroData.items._data) {
                     var itemdata = heroData.items._data[type].tooltipParams;
 

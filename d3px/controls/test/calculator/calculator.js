@@ -17,7 +17,7 @@ function(can, D3API, initView) {
 
                 loadCompositePlayerProfile(D3API,battleTag,function(data){
                     console.log(data);
-                });
+                },true);
 
 
             },
