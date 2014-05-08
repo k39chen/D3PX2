@@ -18,10 +18,25 @@
 <div><%= this.dps.min %></div>
 <% } %>
 
-<h3>Attributes</h3>
+<h3>Attributes (Raw)</h3>
 <% for (var attr in attributesRaw._data) { %>
 <div><i><%= attr %></i>: <%= attributesRaw[attr].min %></div>
 <% } %>
 </div>
+
+<h3>Attributes (Primary)</h3>
+<% for (var i=0; i<attributes.primary.length; i++) { %>
+<div><%= attributes.primary[i].text %></div>
+<% } %>
+
+<h3>Attributes (Secondary)</h3>
+<% for (var i=0; i<attributes.secondary.length; i++) { %>
+<div><%= attributes.secondary[i].text %></div>
+<% } %>
+
+<h3>Attributes (Passive)</h3>
+<% for (var i=0; i<attributes.passive.length; i++) { %>
+<div><%= attributes.passive[i].text %></div>
+<% } %>
 
 </div>
