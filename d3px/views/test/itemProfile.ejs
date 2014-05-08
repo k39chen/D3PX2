@@ -1,17 +1,27 @@
 <div class='pane'>
 <h1>Item Profile</h1>
 
-<table>
-    <% for (var prop in this) { %>
-    <tr>
-        <td>
-            <b><%= prop %></b>
-        </td>
-        <td>
-            <%= this[prop] %>
-        </td>
-    </tr>
-    <% } %>
-</table>
+<h3>Name</h3>
+<div><%= name %></div>
+
+<h3>Type</h3>
+<div><%= type.typeName %></div>
+
+<h3>Required Level</h3>
+<div><%= requiredLevel %></div>
+
+<% if (this.armor != null) { %>
+<h3>Armor</h3>
+<div><%= this.armor.min %></div>
+<% } else if (this.dps != null) { %>
+<h3>Damage per Second</h3>
+<div><%= this.dps.min %></div>
+<% } %>
+
+<h3>Attributes</h3>
+<% for (var attr in attributesRaw._data) { %>
+<div><i><%= attr %></i>: <%= attributesRaw[attr].min %></div>
+<% } %>
+</div>
 
 </div>
