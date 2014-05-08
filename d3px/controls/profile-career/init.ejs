@@ -14,9 +14,10 @@
 					<th class="toughness">Toughness</th>
 					<th class="healing right-border">Healing</th>
 				</tr>
+				<% for(var i=0; i<heroes.length; i++) { %>
 				<tr>
 					<td class="avatar"></td>
-					<td class="name">Icarus</td>
+					<td class="name"><%= heroes[0].name %></td>
 					<td class="time">
 						<div class="time-percentage">35%</div>
 						<div class="time-progress">
@@ -34,6 +35,7 @@
 					<td class="toughness">30,231,791</td>
 					<td class="healing">4582</td>
 				</tr>
+				<% } %>
 			</table>
 		
 		</div> <!-- career-table -->
