@@ -15,10 +15,15 @@ function(can, D3API, initView) {
                 this.element.html(initView());
 
                 var battleTag = 'gummypower-1650';
+                var heroIndex = 0;
 
                 loadCompositePlayerProfile(D3API,battleTag,function(data){
-                    console.log(data);
-                },true);
+
+
+                    console.log( data.heroes[heroIndex].items._data );
+
+
+                });
 
 
             },

@@ -26,3 +26,13 @@ function formatNumber(num, options) {
     // return as a string
     return num+"";
 }
+/**
+ * Reports the number of properties in object
+ *
+ * @method getSize
+ * @param obj {Object} The object.
+ * @return {Number} The number of properties in the object.
+ */
+function getSize(obj) {
+    return Object.keys(obj).length;
+}
