@@ -18,7 +18,7 @@ function(can, D3API, itemselectView, itemView) {
             'a click': function(el){
                 var itemdata = el.attr('data-item');
 
-                console.log('FETCHED ITEM DATA: ',data);
+                console.log('FETCHED ITEM DATA: ',itemdata);
                 console.log(itemdata);
 
                 D3API.getItemData({itemdata:itemdata}).done(function(data){
