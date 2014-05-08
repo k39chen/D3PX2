@@ -2,6 +2,7 @@ steal(
 	'can',
 	'../../models/d3api.js',
 	'./init.ejs',
+	'd3px/lib/d3lib.js',
 	'./init.less', function(can, D3API, heroesView) {
 		
 		return can.Control({
@@ -10,13 +11,13 @@ steal(
 		{
 			init: function() {
 				// Get list of heroes from D3API
-				var battleTag = 'GummyPower-1650';
+				var battleTag = 'GummyPower-1650';				
 
 			    D3API.getPlayerProfile({battleTag:battleTag}).done(function(data){
 			        // here is the data:
 			        console.log(data);
 			        // Insert into HTML
-					$('#canvas').append(heroesView(data));
+					$('#hero-pane').html(heroesView(data));
 			    });
 			}
 		});

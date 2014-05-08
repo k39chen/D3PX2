@@ -12,13 +12,14 @@ steal(
 				// Get list of heroes from D3API
 				var battleTag = 'GummyPower-1650';
 
-			    D3API.getPlayerProfile({battleTag:battleTag}).done(function(data){
-			        // here is the data:
-			        console.log(data);
-			        
-			        // Insert into HTML (data includes completes hero attributes)
-					$('#canvas').append(careerView(data));
-			    });
+
+				// Loads player data
+				loadCompositePlayerProfile(D3API, battleTag, function(data) {
+				
+					$('#mask').fadeOut(500);
+					$('#career-pane').html(careerView(data));
+				
+				});
 			}
 		});
 		

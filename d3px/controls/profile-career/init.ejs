@@ -1,4 +1,3 @@
-<div id="career-pane" class="pane">
 	<div class="pane-header">Career</div>
 	<div class="pane-content">
 		<div class="career-table">
@@ -33,10 +32,10 @@
 								<div class="filled" style="width: <%= heroes[i].level / 70 * 100 %>%"></div>
 							</div>
 						</td>
-						<td class="elite">123123</td>
-						<td class="dps">1415</td>
-						<td class="toughness">351</td>
-						<td class="healing">1323</td>
+						<td class="elite"><%= heroes[i].kills.elites %></td>
+						<td class="dps"><%= heroes[i].dps %></td>
+						<td class="toughness"><%= heroes[i].toughness %></td>
+						<td class="healing"><%= heroes[i].healing %></td>
 					</tr>
 					<% } %>
 				</table>
@@ -60,4 +59,3 @@
 			</div> <!-- section -->
 		</div> <!-- career-stats -->
 	</div> <!-- pane-content -->
-</div> <!-- pane -->
