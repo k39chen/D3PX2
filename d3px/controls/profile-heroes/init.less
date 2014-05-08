@@ -1,0 +1,72 @@
+
+@bodyColor: #f7f9fa;
+@borderColor: #edeff0;
+@textColor: #727576;
+@themeShade: #c65618;
+@fontFamily: 'Helvetica Neue', 'Arial';
+
+.hero-card {
+	width: 184px;
+	height: 282px;
+	background-color: #52443d;
+	float: left;
+	margin: 19px 0px 19px 20px;
+	border-radius: 5px;
+	border: 1px solid @borderColor;
+	cursor: pointer;
+	@include noselect;
+	
+	.hero-level {
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		width: 83px;
+		height: 83px;
+		border: 3px solid @themeShade;
+		border-radius: 83px;
+		line-height: 83px;
+		text-align: center;
+		top: 20%;
+		color: white;
+		font-family: @fontFamily;
+		font-weight: 100;
+		font-size: 2em;
+	}
+	
+	.hero-hardcore {
+		height: 30px;
+		width: 30px;
+		position: relative;
+		@include hcenter;
+		top: 66%;
+		background-image: url(../../images/hardcore.png);
+		background-repeat: no-repeat;
+	}
+	
+	.hero-name {
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		text-align: center;
+		top: 38%;
+		color: white;
+		font-family: @fontFamily;
+		font-weight: 100;
+		font-size: 1.5em;
+	}
+	
+	.hero-class {
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		text-align: center;
+		top: 40%;
+		color: @themeShade;
+		font-family: @fontFamily;
+		font-weight: 100;
+		font-size: 1em;
+	}
+}
+
