@@ -6,20 +6,15 @@ steal(
 		
 		return can.Control({
 			defaults: {
-				battletag: null
+				data: null
 			}
 		},
 		{
-			init: function() {
-
+			init: function(element, options) {
 				// Loads player data
-				loadCompositePlayerProfile(D3API, this.options.battletag, function(data) {
-				
-					$('#mask').fadeOut(500);
-					$('#career-pane').html(careerView(data));
-				
-				});
-			}
+				$('#mask').fadeOut(500);
+				$('#career-pane').html(careerView(this.options.data));
+			},
 		});
 		
 	});

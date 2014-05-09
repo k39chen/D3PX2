@@ -5,7 +5,7 @@
 	margin-top: 23px;
 	margin-left: 10px;
 	margin-right: 10px;
-	
+
 	#search-field {
 		width: 204px;
 		height: 36px;
@@ -20,8 +20,25 @@
 		width: 83px;
 		height: 36px;
 		background-color: @themeShade;
-		border-radius: 36px;
+		border-radius: 18px;
 		float: right;
+		overflow: hidden;
+		font-family: @fontFamily;
+		font-size: 16px;
+		font-weight: 300;
+		color: white;
+		cursor: pointer;
+		
+		.region {
+			height: 36px;
+			width: 100%;
+			text-align: center;
+			line-height: 36px;	
+		}
+		
+		.region.hover {
+			background-color: darken(@themeShade, 10%);
+		}
 	}
 	
 	img {

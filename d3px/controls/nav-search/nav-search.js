@@ -2,8 +2,10 @@ steal('can',
 	  './init.ejs',
 	  '/d3px/controls/profile-heroes/profile-heroes.js',
 	  '/d3px/controls/profile-career/profile-career.js',
+	  '/d3px/models/d3api.js',
+	  '/d3px/lib/utils.js',
 	  './init.less',
-	   function(can, view, profileHeroes, profileCareer) {
+	   function(can, view, profileHeroes, profileCareer, D3API) {
 	
 	var ENTER_KEY = 13;
 	
@@ -12,17 +14,48 @@ steal('can',
 			}
 		}, {
 			init: function() {
-			
 				// Add to view
 				$('#navbar #search-module').html(view());
+				
+				// Interactions
+				$("#region-dropdown").hover(function() {
+					console.log("Hover");
+					$(this).stop().animate({height: 180}, 300); // 5 regions x 36 height
+				}, function() {
+					$(this).stop().animate({height: 36}, 300);
+				});
+				
+				$(".region").hover(function() {
+					$(this).addClass("hover");
+				}, function() {
+					$(this).removeClass("hover");
+				})
+				
+				$(".region").click(function() {
+					
+					// Change selected region
+					var selectedRegion = $(this).html();
+					$("#selected-region").empty().html(selectedRegion);
+					$('#region-dropdown').stop().animate({height: 36}, 300);
+				});
 			},
 			'#search-input keyup': function(el,ev) {
                 if (ev.keyCode === ENTER_KEY) {
-                	// Pass battletag and region and create panes
+                
+                	// Get battletag
                 	var battletag = el.val();
+                	var region = $("#selected-region").html().toLowerCase();
                 	
-                	new profileHeroes(null, {battletag: battletag});
-				    new profileCareer(null, {battletag: battletag});
+                	loadCompositePlayerProfile(D3API, region, battletag, function(data) {
+				
+						console.log(data);
+						new profileHeroes(null, {data: data});
+					    new profileCareer(null, {data: data});
+						
+						// Set Welcome message
+						$("#navbar #tag").prepend("Welcome " + data.battleTag);						
+						$('#mask').fadeOut(500);
+					});
 				    
 				    el.val('');
                 }
