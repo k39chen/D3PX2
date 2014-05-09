@@ -20,9 +20,9 @@ steal('can',
 				// Interactions
 				$("#region-dropdown").hover(function() {
 					console.log("Hover");
-					$(this).stop().animate({height: 180}, 300); // 5 regions x 36 height
+					$(this).stop().animate({height: 180}, 100); // 5 regions x 36 height
 				}, function() {
-					$(this).stop().animate({height: 36}, 300);
+					$(this).stop().animate({height: 36}, 100);
 				});
 				
 				$(".region").hover(function() {
@@ -36,7 +36,7 @@ steal('can',
 					// Change selected region
 					var selectedRegion = $(this).html();
 					$("#selected-region").empty().html(selectedRegion);
-					$('#region-dropdown').stop().animate({height: 36}, 300);
+					$('#region-dropdown').stop().animate({height: 36}, 100);
 				});
 			},
 			'#search-input keyup': function(el,ev) {
