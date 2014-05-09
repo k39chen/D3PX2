@@ -21,9 +21,14 @@
 						<td class="avatar"></td>
 						<td class="name"><%= heroes[i].name %></td>
 						<td class="time">
-							<div class="time-percentage">35%</div>
-							<div class="time-progress">
-								<div class="filled"></div>
+								<%
+									for (var name in timePlayed) {
+										if(heroes[i].class == name) { %>
+											<div class="time-percentage"><%= (timePlayed[name] * 100).toFixed(0)%>%</div>
+											<div class="time-progress">
+												<div class="filled" style="width: <%= timePlayed[name] * 100 %>%"></div>
+									<%	}
+									} %>
 							</div>
 						</td>
 						<td class="level">

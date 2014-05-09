@@ -46,6 +46,10 @@ steal('can',
                 	var battletag = el.val();
                 	var region = $("#selected-region").html().toLowerCase();
                 	
+                	// Show loader
+                	$('#loader').animate({opacity: 1}, 50);
+                	
+                	// Find player on Battle.net
                 	loadCompositePlayerProfile(D3API, region, battletag, function(data) {
 				
 						console.log(data);
