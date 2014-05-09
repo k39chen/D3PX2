@@ -14,21 +14,14 @@ function(can, D3API, initView) {
             init: function(){
                 this.element.html(initView());
 
-                var battleTag = 'gummypower#1550';
+                var battleTag = 'gummypower#1650';
                 var heroIndex = 0;
 
+                // load a composite player profile
                 loadCompositePlayerProfile(D3API,'us',battleTag,function(data){
-                    
-                    /*
-                    var hero = data.heroes[heroIndex];
-
                     // compute the attributes that the hero has with the gear set
-                    computeAttributes(hero);
-                    */
-                    console.log(data)
+                    computeAttributes(data.heroes[heroIndex]);
                 });
-
-
             },
         }
     );
@@ -230,15 +223,23 @@ function getBaseAttributes(heroData) {
  * @return {Object} The computed attributes.
  */
 function computeAttributes(heroData) {
-    var base = getBaseAttributes(heroData),
-        bonuses = getBonuses(heroData.items._data);
+    var stats = {
+        heroData: heroData,
+        base: getBaseAttributes(heroData),
+        bonuses: getBonuses(heroData.items._data)
+    };
+    var result = stats.base;
 
-    console.log('Compute Attributes');
-    console.log(base);
-    console.log(bonuses);
+    // compute each section
+    for (var title in stats.base) {
+        var section = stats.base[title];
 
-
-
+        // compute each attribute
+        for (var attr in section) {
+            result[title][attr].value = computeAttribute(attr,stats);
+        }
+    }
+    return result;
 }
 /*******************************************************************
  * BONUS COLLECTION
@@ -429,4 +430,336 @@ function isDualWielding(items) {
         }
     }
     return false;
+}
+/*******************************************************************
+ * ATTRIBUTE CALCULATORS
+ *******************************************************************/
+/**
+ * A list of calculators for computing attributes from base and bonus stats.
+ */
+var Calculators = {
+    'Strength': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Dexterity': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Intelligence': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Vitality': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Bonus Damage to Elites': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Attacks per Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Attacks per Second Off Hand': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },;
+    'Critical Hit Chance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Critical Hit Damage': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Area Damage': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Cooldown Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Armor': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Block Amount': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Block Chance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Dodge Chance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Physical Resistance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Cold Resistance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Fire Resistance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Lightning Resistance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Poison Resistance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Arcane/Holy Resistance': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Crowd Control Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Missile Damage Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Elite Damage Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Thorns': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Life': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Total Life Bonus': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Life per Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Life per Hit': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Life per Kill': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Life Steal': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Health Globe Healing Bonus': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Bonus to Gold/Globe Radius': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Movement Speed': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Gold Find': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Magic Find': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Bonus Experience': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Bonus Experience per Kill': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Life per Fury Spent': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Fury': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Fury Regeneration/Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Fury Cost Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Wrath': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Wrath Regeneration/Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Wrath Cost Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Life per Spirit Spent': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Spirit': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Spirit Regeneration/Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Spirit Cost Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Hatred': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Hatred Regeneration/Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Hatred Cost Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Discipline': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Discipline Regeneration/Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Discipline Cost Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Arcane Power': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Arcane Regeneration/Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Arcane Power Cost Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Arcane Power on Critical Hit': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Maximum Mana': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Mana Regeneration/Second': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    },
+    'Mana Cost Reduction': function(stats){
+        var value = 0;
+        // compute value
+        return value;
+    }
+};
+/**
+ * Computes a given attribute.
+ *
+ * @method computeAttribute
+ * @param attr {String} The attribute name/key.
+ * @param stats {String}
+ */
+function computeAttribute(attr,stats) {
+    var calculator = Calculators[attr];
+    if (calculator) {
+        return calculator(stats);
+    }
+    return 0;
 }
