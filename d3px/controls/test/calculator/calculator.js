@@ -14,7 +14,7 @@ function(can, D3API, initView) {
             init: function(){
                 this.element.html(initView());
 
-                var battleTag = 'gummypower-1650';
+                var battleTag = 'gummypower#1650';
                 var heroIndex = 0;
 
                 loadCompositePlayerProfile(D3API,'us',battleTag,function(data){

@@ -23,14 +23,16 @@ steal('can', function (can) {
         getPlayerProfile: function(params) {
             var self = this,
                 region = params.region ? params.region : 'us',
-                battleTag = params.battleTag,
-                url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/';
+                battleTag = params.battleTag;
 
             // format the region
             region = can.trim(region).toLowerCase();
 
             // format the battletag
             battleTag = can.trim(battleTag).toLowerCase().replace('#','-');
+
+            // build the url
+            var url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/';
 
             // issue ajax call
             return $.ajax({
@@ -58,14 +60,16 @@ steal('can', function (can) {
             var self = this,
                 region = params.region ? params.region : 'us',
                 battleTag = params.battleTag,
-                id = params.id,
-                url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/hero/'+id;
+                id = params.id;
 
             // format the region
             region = can.trim(region).toLowerCase();
 
             // format the battletag
             battleTag = can.trim(battleTag).toLowerCase().replace('#','-');
+
+            // build the url
+            url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/hero/'+id;
 
             // issue ajax call
             return $.ajax({
@@ -91,12 +95,14 @@ steal('can', function (can) {
         getItemData: function(params) {
             var self = this,
                 region = params.region ? params.region : 'us',
-                itemdata = params.itemdata,
-                url = 'http://'+region+'.battle.net/api/d3/data/'+itemdata;
+                itemdata = params.itemdata;
 
             // format the region
             region = can.trim(region).toLowerCase();
-            
+
+            // build the url
+            var url = 'http://'+region+'.battle.net/api/d3/data/'+itemdata;
+
             // issue ajax call
             return $.ajax({
                 type: 'GET', 
