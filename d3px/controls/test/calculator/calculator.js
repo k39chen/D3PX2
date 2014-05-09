@@ -14,21 +14,18 @@ function(can, D3API, initView) {
             init: function(){
                 this.element.html(initView());
 
-                var battleTag = 'gummypower#1650';
+                var battleTag = 'gummypower#1550';
                 var heroIndex = 0;
 
                 loadCompositePlayerProfile(D3API,'us',battleTag,function(data){
                     
-                    var base = getBaseAttributes(data.heroes[heroIndex]);
-
-                    console.log(base)
-
-                    var items = data.heroes[heroIndex].items._data;
-
                     /*
-                    // retrieve the bonuses
-                    var bonuses = getBonuses(items);
+                    var hero = data.heroes[heroIndex];
+
+                    // compute the attributes that the hero has with the gear set
+                    computeAttributes(hero);
                     */
+                    console.log(data)
                 });
 
 
@@ -39,6 +36,13 @@ function(can, D3API, initView) {
 /*******************************************************************
  * ATTRIBUTES TEMPLATES
  *******************************************************************/
+/**
+ * Creates a framework for the attribute template.
+ *
+ * @method createAttributeTemplate
+ * @param heroData {Object} The hero data.
+ * @return {Object} The template.
+ */
 function createAttributeTemplate(heroData) {
     // list sections
     var ordering = [
@@ -162,6 +166,10 @@ function createAttributeTemplate(heroData) {
 }
 /**
  * Gets the base attributes dependent on which class
+ *
+ * @method getBaseAttributes
+ * @param heroData {Object} The hero data.
+ * @return {Object} The template.
  */
 function getBaseAttributes(heroData) {
     var base = createAttributeTemplate(heroData);
@@ -214,6 +222,24 @@ function getBaseAttributes(heroData) {
     }
     return base;
 }
+/**
+ * Compute the attributes in the template.
+ *
+ * @method computeAttributes
+ * @param heroData {Object} The hero data.
+ * @return {Object} The computed attributes.
+ */
+function computeAttributes(heroData) {
+    var base = getBaseAttributes(heroData),
+        bonuses = getBonuses(heroData.items._data);
+
+    console.log('Compute Attributes');
+    console.log(base);
+    console.log(bonuses);
+
+
+
+}
 /*******************************************************************
  * BONUS COLLECTION
  *******************************************************************/
@@ -265,8 +291,7 @@ function getBonuses(itemSet) {
     // collect set bonuses
     bonuses = getSetBonuses(bonuses,set_bonuses);
 
-
-    console.log(bonuses)
+    return bonuses;
 }
 /**
  * Collects a post aggregation of all set bonuses given the 

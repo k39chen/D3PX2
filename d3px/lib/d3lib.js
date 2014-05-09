@@ -26,6 +26,14 @@ function loadCompositePlayerProfile(D3API, region, battleTag, cb, logging) {
         battleTag: battleTag
     }).done(function(playerData){
 
+        // premature exit if no player is found
+        if (!playerData.battleTag) {
+            if (cb) cb({
+                error: 'NOPLAYERFOUND'
+            });
+            return;
+        }
+
         // build the response
         response = playerData;
 
