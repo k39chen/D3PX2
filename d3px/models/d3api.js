@@ -26,6 +26,12 @@ steal('can', function (can) {
                 battleTag = params.battleTag,
                 url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/';
 
+            // format the region
+            region = can.trim(region).toLowerCase();
+
+            // format the battletag
+            battleTag = can.trim(battleTag).toLowerCase().replace('#','-');
+
             // issue ajax call
             return $.ajax({
                 type: 'GET', 
@@ -55,6 +61,12 @@ steal('can', function (can) {
                 id = params.id,
                 url = 'http://'+region+'.battle.net/api/d3/profile/'+battleTag+'/hero/'+id;
 
+            // format the region
+            region = can.trim(region).toLowerCase();
+
+            // format the battletag
+            battleTag = can.trim(battleTag).toLowerCase().replace('#','-');
+
             // issue ajax call
             return $.ajax({
                 type: 'GET', 
@@ -82,6 +94,9 @@ steal('can', function (can) {
                 itemdata = params.itemdata,
                 url = 'http://'+region+'.battle.net/api/d3/data/'+itemdata;
 
+            // format the region
+            region = can.trim(region).toLowerCase();
+            
             // issue ajax call
             return $.ajax({
                 type: 'GET', 
