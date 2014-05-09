@@ -1,1 +1,0 @@
-steal("can","/d3px/models/d3api.js","./init.ejs","./calculator.less","/d3px/lib/d3lib.js",function(e,t,n){return e.Control({defaults:{}},{init:function(){this.element.html(n());var e="gummypower-1650";loadCompositePlayerProfile(t,e,function(e){console.log(e)})}})});
