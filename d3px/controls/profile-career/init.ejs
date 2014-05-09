@@ -32,10 +32,10 @@
 								<div class="filled" style="width: <%= heroes[i].level / 70 * 100 %>%"></div>
 							</div>
 						</td>
-						<td class="elite"><%= heroes[i].kills.elites %></td>
-						<td class="dps"><%= heroes[i].dps %></td>
-						<td class="toughness"><%= heroes[i].toughness %></td>
-						<td class="healing"><%= heroes[i].healing %></td>
+						<td class="elite"><%= formatNumber(heroes[i].kills.elites) %></td>
+						<td class="dps"><%= formatNumber(heroes[i].dps) %></td>
+						<td class="toughness"><%= formatNumber(heroes[i].toughness) %></td>
+						<td class="healing"><%= formatNumber(heroes[i].healing) %></td>
 					</tr>
 					<% } %>
 				</table>
@@ -51,11 +51,11 @@
 			</div>
 			<div class="section middle">
 				<div class="section-title">Total Lifetime Kills</div>
-				<div class="section-number"><%= kills.monsters %></div>
+				<div class="section-number"><%= formatNumber(kills.monsters) %></div>
 			</div>
 			<div class="section">
 				<div class="section-title">Total Elite Kills</div>
-				<div class="section-number"><%= kills.elites %></div>
+				<div class="section-number"><%= formatNumber(kills.elites) %></div>
 			</div> <!-- section -->
 		</div> <!-- career-stats -->
 	</div> <!-- pane-content -->
