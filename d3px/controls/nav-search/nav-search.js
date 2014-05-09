@@ -47,6 +47,7 @@ steal('can',
                 	var region = $("#selected-region").html().toLowerCase();
                 	
                 	// Show loader
+                	$('#mask').fadeIn(200);
                 	$('#loader').animate({opacity: 1}, 50);
                 	
                 	// Find player on Battle.net
@@ -57,7 +58,7 @@ steal('can',
 					    new profileCareer(null, {data: data});
 						
 						// Set Welcome message
-						$("#navbar #tag").prepend("Welcome " + data.battleTag);						
+						$("#navbar #tag").html("Welcome " + data.battleTag);						
 						$('#mask').fadeOut(500);
 					});
 				    

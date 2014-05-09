@@ -10,7 +10,7 @@ steal(
 function(can, navView, navSearch, toolbar){
 	
 	//$('#canvas').append(profileCareer());
-    $('body').append(navView({battletag: 'Parallax#1878', catchphrase: 'Stay a while and listen'}));
+    $('body').append(navView({battletag: 'Parallax#1878'}));
     $('body').append(toolbar());
     new navSearch('#navbar');
 });
