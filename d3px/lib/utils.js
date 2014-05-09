@@ -28,13 +28,12 @@ function formatNumber(num, options) {
     num = num.toFixed(o.precision);
 
     // apply commas if requested
-    if (o.commas) {
-        var parts = num.toString().split(".");
+    num = num.toString();
+    if (num.length > 4 && o.commas) {
+        var parts = num.split(".");
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         num = parts.join(".");
     }
-    parts = num.split(',');
-    num = (parts.length <= 2) ? parts.join('') : parts.join(',');
 
     // add pre/postfix
     return o['prefix']+num+o.postfix;
