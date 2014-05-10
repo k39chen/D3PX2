@@ -224,7 +224,7 @@ function getBaseAttributes(heroData) {
  */
 function computeAttributes(heroData) {
     var stats = {
-        heroData: heroData,
+        hero: heroData,
         base: getBaseAttributes(heroData),
         bonuses: getBonuses(heroData.items._data)
     };
@@ -259,7 +259,6 @@ function getBonuses(itemSet) {
 
     // collect bonuses from every item
     for (var itemType in itemSet) {
-
         // collect bonuses from raw attributes
         bonuses = collectBonuses(
             bonuses, 
@@ -305,7 +304,7 @@ function getBonuses(itemSet) {
  */
 function getSetBonuses(bonuses,set_bonuses) {
     // calculate set discounts here:
-    var set_discount = sumBonuses(bonuses,'Attribute_Set_Item_Discount');
+    var set_discount = sumBonuses(bonuses['Attribute_Set_Item_Discount'])
 
     // see whether or not any set bonuses have been awarded
     for (var name in set_bonuses) {
@@ -381,15 +380,14 @@ function formatInteger(prefix) {
  * Sums all the bonus values together.
  *
  * @method sumBonuses
- * @param bonuses {Object} The dictionary of bonuses.
- * @param affix {String} The identifier of the affix.
+ * @param bonusArray {Array} The array of bonuses.
  * @return {Number} The value of the sum.
  */
-function sumBonuses(bonuses,affix) {
+function sumBonuses(bonusArray) {
     var sum = 0;
-    if (bonuses[affix]) {
-        for (var i=0; i<bonuses[affix].length; i++) {
-            sum += bonuses[affix][i].value;
+    if (bonusArray) {
+        for (var i=0; i<bonusArray.length; i++) {
+            sum += bonusArray[i].value;
         }
     }
     return sum;
@@ -406,13 +404,31 @@ function sumBonuses(bonuses,affix) {
  */
 function collectBonuses(bonuses,attrs,src) {
     for (var affix in attrs) {
-        if (!bonuses[affix]) {
-            bonuses[affix] = [];
+        var parts = affix.split('#');
+
+        // add the second part as a subcomponent of the first
+        if (parts.length == 2) {
+            if (!bonuses[parts[0]]) {
+                bonuses[parts[0]] = {};
+            }
+            if (!bonuses[parts[0]][parts[1]]) {
+                bonuses[parts[0]][parts[1]] = [];
+            }
+            bonuses[parts[0]][parts[1]].push({
+                from: src,
+                value: attrs[affix].min
+            });
+        } 
+        // include it as the single component of the affix
+        else {
+            if (!bonuses[affix]) {
+                bonuses[affix] = [];
+            }
+            bonuses[affix].push({
+                from: src,
+                value: attrs[affix].min
+            });
         }
-        bonuses[affix].push({
-            from: src,
-            value: attrs[affix].min
-        });
     }
     return bonuses;
 }
@@ -431,322 +447,320 @@ function isDualWielding(items) {
     }
     return false;
 }
+/**
+ * Determines whether a given attribute is a primary stat.
+ *
+ * @method isPrimaryStat
+ * @param attr {String} The attribute name.
+ * @param hero {Object} The hero object.
+ * @return {Boolean} Whether or not the stat is primary for this class.
+ */
+function isPrimaryStat(attr,hero) {
+    switch (attr) {
+        case 'Strength':
+            return hero['class'] == 'barbarian' ||
+                hero['class'] == 'crusader';
+        case 'Dexterity':
+            return hero['class'] == 'monk' ||
+                hero['class'] == 'demon-hunter';
+        case 'Intelligence':
+            return hero['class'] == 'wizard' ||
+                hero['class'] == 'witch-doctor';
+        default:
+            return false;
+    }
+}
 /*******************************************************************
  * ATTRIBUTE CALCULATORS
  *******************************************************************/
 /**
  * A list of calculators for computing attributes from base and bonus stats.
  */
+function calc(attr) {
+    return Calculators[attr](Calculators.stats);
+}
+function fetchHero() {
+    return Calculators.hero;
+}
+function fetchBase(attr) {
+    // search for the appropriate section
+    for (var section in Calculators.stats.base) {
+        if (Calculators.stats.base[section][attr]) {
+            return Calculators.stats.base[section][attr].value;
+        }
+    }
+    return 0;
+}
+function fetchBonuses(attr) {
+    return Calculators.stats.bonuses[attr];
+}
 var Calculators = {
-    'Strength': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    stats: null,
+    'Level': function() {
+        return Calculators.stats.hero.level;
     },
-    'Dexterity': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Strength': function() {
+        var base       = fetchBase('Strength'),
+            level      = calc('Level'),
+            multiplier = isPrimaryStat('Strength',fetchHero()) ? 3 : 1,
+            bonuses    = sumBonuses(fetchBonuses('Strength_Item'));
+
+        return base + (level - 1) * multiplier + bonuses;
     },
-    'Intelligence': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Dexterity': function() {
+        var base       = fetchBase('Dexterity'),
+            level      = calc('Level'),
+            multiplier = isPrimaryStat('Dexterity',fetchHero()) ? 3 : 1,
+            bonuses    = sumBonuses(fetchBonuses('Dexterity_Item'));
+
+        return base + (level - 1) * multiplier + bonuses;
     },
-    'Vitality': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Intelligence': function() {
+        var base       = fetchBase('Intelligence'),
+            level      = calc('Level'),
+            multiplier = isPrimaryStat('Intelligence',fetchHero()) ? 3 : 1,
+            bonuses    = sumBonuses(fetchBonuses('Intelligence_Item'));
+
+        return base + (level - 1) * multiplier + bonuses;
     },
-    'Bonus Damage to Elites': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Vitality': function() {
+        var base    = Calculators.stats.base['Core']['Vitality'].value,
+            level   = calc('Level'),
+            bonuses = sumBonuses(fetchBonuses('Vitality_Item'));
+
+        return base + (level - 1) * 2 + bonuses;
     },
-    'Attacks per Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Bonus Damage to Elites': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Attacks per Second Off Hand': function(stats){
-        var value = 0;
-        // compute value
-        return value;
-    },;
-    'Critical Hit Chance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Attacks per Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Critical Hit Damage': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Attacks per Second Off Hand': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Area Damage': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Critical Hit Chance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Cooldown Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Critical Hit Damage': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Armor': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Area Damage': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Block Amount': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Cooldown Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Block Chance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Armor': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Dodge Chance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Block Amount': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Physical Resistance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Block Chance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Cold Resistance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Dodge Chance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Fire Resistance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Physical Resistance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Lightning Resistance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Cold Resistance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Poison Resistance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Fire Resistance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Arcane/Holy Resistance': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Lightning Resistance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Crowd Control Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Poison Resistance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Missile Damage Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Arcane/Holy Resistance': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Elite Damage Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Crowd Control Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Thorns': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Missile Damage Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Life': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Elite Damage Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Total Life Bonus': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Thorns': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Life per Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Life': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Life per Hit': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Total Life Bonus': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Life per Kill': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Life per Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Life Steal': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Life per Hit': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Health Globe Healing Bonus': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Life per Kill': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Bonus to Gold/Globe Radius': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Life Steal': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Movement Speed': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Health Globe Healing Bonus': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Gold Find': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Bonus to Gold/Globe Radius': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Magic Find': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Movement Speed': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Bonus Experience': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Gold Find': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Bonus Experience per Kill': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Magic Find': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Life per Fury Spent': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Bonus Experience': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Fury': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Bonus Experience per Kill': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Fury Regeneration/Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Life per Fury Spent': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Fury Cost Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Fury': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Wrath': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Fury Regeneration/Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Wrath Regeneration/Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Fury Cost Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Wrath Cost Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Wrath': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Life per Spirit Spent': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Wrath Regeneration/Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Spirit': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Wrath Cost Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Spirit Regeneration/Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Life per Spirit Spent': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Spirit Cost Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Spirit': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Hatred': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Spirit Regeneration/Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Hatred Regeneration/Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Spirit Cost Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Hatred Cost Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Hatred': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Discipline': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Hatred Regeneration/Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Discipline Regeneration/Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Hatred Cost Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Discipline Cost Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Discipline': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Arcane Power': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Discipline Regeneration/Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Arcane Regeneration/Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Discipline Cost Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Arcane Power Cost Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Arcane Power': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Arcane Power on Critical Hit': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Arcane Regeneration/Second': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Maximum Mana': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Arcane Power Cost Reduction': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Mana Regeneration/Second': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Arcane Power on Critical Hit': function() {
+        // TODO: compute value
+        return -1;
     },
-    'Mana Cost Reduction': function(stats){
-        var value = 0;
-        // compute value
-        return value;
+    'Maximum Mana': function() {
+        // TODO: compute value
+        return -1;
+    },
+    'Mana Regeneration/Second': function() {
+        // TODO: compute value
+        return -1;
+    },
+    'Mana Cost Reduction': function() {
+        // TODO: compute value
+        return -1;
     }
 };
 /**
@@ -758,8 +772,11 @@ var Calculators = {
  */
 function computeAttribute(attr,stats) {
     var calculator = Calculators[attr];
+    Calculators.stats = stats;
     if (calculator) {
-        return calculator(stats);
+        var result = calculator();
+        console.log(attr,result);
+        return result;
     }
     return 0;
 }
