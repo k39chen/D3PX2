@@ -14,7 +14,10 @@ function(can, D3API, initView) {
             init: function(){
                 this.element.html(initView());
 
-                var battleTag = 'gummypower#1650';
+
+                // GoodIdea-1513
+
+                var battleTag = 'GoodIdea-1513';
                 var heroIndex = 0;
 
                 // load a composite player profile
@@ -54,6 +57,7 @@ function createAttributeTemplate(heroData) {
             'Vitality':                     {value: 0, format: formatInteger()}
         },
         'Offense': {
+            'Damage Increased by Skills':   {value: 0, format: formatPercentage()},
             'Bonus Damage to Elites':       {value: 0, format: formatPercentage()},
             'Attacks per Second':           {value: 0, format: formatFloat()},
             'Critical Hit Chance':          {value: 0, format: formatPercentage()},
@@ -99,30 +103,30 @@ function createAttributeTemplate(heroData) {
     }
     switch (heroData['class']) {
         case 'barbarian':
-            template['Life'] = {
-                'Life per Fury Spent':              {value: 0, format: formatFloat()}
-            };
             template['Resource'] = {
                 'Maximum Fury':                     {value: 0, format: formatInteger()},
                 'Fury Regeneration/Second':         {value: 0, format: formatFloat()},
-                'Fury Cost Reduction':              {value: 0, format: formatPercentage(0)}
+                'Fury Cost Reduction':              {value: 0, format: formatPercentage(0)},
+                'Fury on Critical Hit':             {value: 0, format: formatInteger()},
+                'Life per Fury Spent':              {value: 0, format: formatFloat()}
             };
             break;
         case 'crusader':
             template['Resource'] = {
                 'Maximum Wrath':                    {value: 0, format: formatIntger()},
                 'Wrath Regeneration/Second':        {value: 0, format: formatFloat()},
-                'Wrath Cost Reduction':             {value: 0, format: formatPercentage(0)}
+                'Wrath Cost Reduction':             {value: 0, format: formatPercentage(0)},
+                'Wrath on Critical Hit':            {value: 0, format: formatInteger()},
+                'Life per Wrath Spent':             {value: 0, format: formatFloat()}
             };
             break;
         case 'monk':
-            template['Life'] = {
-                'Life per Spirit Spent':            {value: 0, format: formatFloat()}
-            };
             template['Resource'] = {
                 'Maximum Spirit':                   {value: 0, format: formatInteger()},
                 'Spirit Regeneration/Second':       {value: 0, format: formatFloat()},
-                'Spirit Cost Reduction':            {value: 0, format: formatPercentage(0)}
+                'Spirit Cost Reduction':            {value: 0, format: formatPercentage(0)},
+                'Spirit on Critical Hit':           {value: 0, format: formatInteger()},
+                'Life per Spirit Spent':            {value: 0, format: formatFloat()}
             };
             break;
         case 'demon-hunter':
@@ -130,9 +134,13 @@ function createAttributeTemplate(heroData) {
                 'Maximum Hatred':                   {value: 0, format: formatInteger()},
                 'Hatred Regeneration/Second':       {value: 0, format: formatFloat()},
                 'Hatred Cost Reduction':            {value: 0, format: formatPercentage(0)},
+                'Hatred on Critical Hit':           {value: 0, format: formatInteger()},
+                'Life per Hatred Spent':            {value: 0, format: formatFloat()},
                 'Maximum Discipline':               {value: 0, format: formatInteger()},
                 'Discipline Regeneration/Second':   {value: 0, format: formatInteger()},
-                'Discipline Cost Reduction':        {value: 0, format: formatPercentage(0)}
+                'Discipline Cost Reduction':        {value: 0, format: formatPercentage(0)},
+                'Discipline on Critical Hit':       {value: 0, format: formatInteger()},
+                'Life per Discipline Spent':        {value: 0, format: formatFloat()}
             };
             break;
         case 'wizard':
@@ -140,14 +148,17 @@ function createAttributeTemplate(heroData) {
                 'Maximum Arcane Power':             {value: 0, format: formatInteger()},
                 'Arcane Regeneration/Second':       {value: 0, format: formatFloat()},
                 'Arcane Power Cost Reduction':      {value: 0, format: formatPercentage(0)},
-                'Arcane Power on Critical Hit':     {value: 0, format: formatInteger()}
+                'Arcane Power on Critical Hit':     {value: 0, format: formatInteger()},
+                'Life per Arcane Power Spent':      {value: 0, format: formatFloat()}
             };
             break;
         case 'witch-doctor':
             template['Resource'] = {
                 'Maximum Mana':                     {value: 0, format: formatInteger()},
                 'Mana Regeneration/Second':         {value: 0, format: formatFloat()},
-                'Mana Cost Reduction':              {value: 0, format: formatPercentage(0)}
+                'Mana Cost Reduction':              {value: 0, format: formatPercentage(0)},
+                'Mana on Critical Hit':             {value: 0, format: formatInteger()},
+                'Life per Mana Power Spent':        {value: 0, format: formatFloat()}
             };
             break;
         default:
@@ -229,6 +240,10 @@ function computeAttributes(heroData) {
         base: getBaseAttributes(heroData),
         bonuses: getBonuses(heroData.items._data)
     };
+
+
+    console.log(stats)
+
     var result = stats.base;
 
     // compute each section
@@ -425,13 +440,15 @@ function collectBonuses(bonuses,attrs,src) {
 
         // add the second part as a subcomponent of the first
         if (parts.length == 2) {
-            if (!bonuses[parts[0]]) {
-                bonuses[parts[0]] = {};
+            var p1 = parts[0], p2 = parts[1];
+
+            if (!bonuses[p1]) {
+                bonuses[p1] = {};
             }
-            if (!bonuses[parts[0]][parts[1]]) {
-                bonuses[parts[0]][parts[1]] = [];
+            if (!bonuses[p1][p2]) {
+                bonuses[p1][p2] = [];
             }
-            bonuses[parts[0]][parts[1]].push({
+            bonuses[p1][p2].push({
                 from: src,
                 value: attrs[affix].min
             });
@@ -509,6 +526,14 @@ function fetchBase(attr) {
     return 0;
 }
 function fetchBonuses(attr) {
+    var parts = attr.split('#');
+    if (parts.length == 2) {
+        var p1 = parts[0], p2 = parts[1];
+
+        return Calculators.stats.bonuses[p1]
+            ? Calculators.stats.bonuses[p1][p2]
+            : 0;
+    }
     return Calculators.stats.bonuses[attr];
 }
 var Calculators = {
@@ -516,6 +541,9 @@ var Calculators = {
     'Level': function() {
         return Calculators.stats.hero.level;
     },
+//===========================================================================================
+// CORE
+//===========================================================================================
     'Strength': function() {
         var base = fetchBase('Strength'),
             level = calc('Level'),
@@ -547,9 +575,16 @@ var Calculators = {
 
         return base + (level - 1) * 2 + bonuses;
     },
-    'Bonus Damage to Elites': function() {
-        // TODO: compute value
+//===========================================================================================
+// OFFENSE
+//===========================================================================================
+    'Damage Increased by Skills': function() {
+        //var bonuses = sumBonuses(fetchBonuses('Power_Damage_Percent_Bonus'));  
         return -1;
+    },
+    'Bonus Damage to Elites': function() {
+        var bonuses = sumBonuses(fetchBonuses('Damage_Percent_Bonus_Vs_Elites'));
+        return bonuses;
     },
     'Attacks per Second': function() {
         // TODO: compute value
@@ -572,13 +607,16 @@ var Calculators = {
         return base + bonuses;
     },
     'Area Damage': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Splash_Damage_Effect_Percent'));
+        return bonuses;
     },
     'Cooldown Reduction': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Power_Cooldown_Reduction_Percent_All'));
+        return bonuses;
     },
+//===========================================================================================
+// DEFENSE
+//===========================================================================================
     'Armor': function() {
         var strength = calc('Strength'),
             armor_bonuses = 
@@ -614,201 +652,265 @@ var Calculators = {
         var all_resist = sumBonuses(fetchBonuses('Resistance_All'));
         return all_resist;
     },
-    '{Element} Resistance': function(options) {
+    '{Element} Resistance': function(stats,options) {
         var intelligence = calc('Intelligence'),
             all_resist = calc('All Resistance'),
-            bonuses = sumBonuses(fetchBonuses('Resistance')[options.element]);
+            bonuses = sumBonuses(fetchBonuses('Resistance#'+options.element));
 
         return intelligence / 10 + all_resist + bonuses;
     },
     'Physical Resistance': function() {
-        return calc('{Element} Resistance',{element:'Physical'});
+        return calc('{Element} Resistance',{element: 'Physical'});
     },
     'Cold Resistance': function() {
-        return calc('{Element} Resistance',{element:'Cold'});
+        return calc('{Element} Resistance',{element: 'Cold'});
     },
     'Fire Resistance': function() {
-        return calc('{Element} Resistance',{element:'Fire'});
+        return calc('{Element} Resistance',{element: 'Fire'});
     },
     'Lightning Resistance': function() {
-        return calc('{Element} Resistance',{element:'Lightning'});
+        return calc('{Element} Resistance',{element: 'Lightning'});
     },
     'Poison Resistance': function() {
-        return calc('{Element} Resistance',{element:'Poison'});
+        return calc('{Element} Resistance',{element: 'Poison'});
     },
     'Arcane/Holy Resistance': function() {
-        return calc('{Element} Resistance',{element:'Arcane'}) +
-               calc('{Element} Resistance',{element:'Holy'});
+        return calc('{Element} Resistance',{element: 'Arcane'});
     },
-    '{Damage} Reduction': function(options) {
-        var sum_bonuses = multiplyBonuses(fetchBonuses(options['type'])),
-            multiply_bonuses = multiplyBonuses(fetchBonuses(options'type')),
+    '{Damage} Reduction': function(stats,options) {
+        var sum_bonuses = multiplyBonuses(fetchBonuses(options.key)),
+            multiply_bonuses = multiplyBonuses(fetchBonuses(options.key));
 
         return sum_bonuses - multiply_bonuses;
     },
     'Crowd Control Reduction': function() {
-        return calc('{Damage} Reduction',{type: 'CrowdControl_Reduction'});
+        return calc('{Damage} Reduction',{key: 'CrowdControl_Reduction'});
     },
     'Melee Damage Reduction': function() {
-        return calc('{Damage} Reduction',{type: 'Damage_Percent_Reduction_From_Melee'});
+        return calc('{Damage} Reduction',{key: 'Damage_Percent_Reduction_From_Melee'});
     },
     'Missile Damage Reduction': function() {
-        return calc('{Damage} Reduction',{type: 'Damage_Percent_Reduction_From_Ranged'});
+        return calc('{Damage} Reduction',{key: 'Damage_Percent_Reduction_From_Ranged'});
     },
     'Elite Damage Reduction': function() {
-        return calc('{Damage} Reduction',{type: 'Damage_Percent_Reduction_From_Elites'});
+        return calc('{Damage} Reduction',{key: 'Damage_Percent_Reduction_From_Elites'});
     },
     'Thorns': function() {
-        var bonuses = sumBonuses(fetchBonuses('Thorns_Fixed')['Physical']);
+        var bonuses = sumBonuses(fetchBonuses('Thorns_Fixed#Physical'));
         return bonuses;
     },
+//===========================================================================================
+// LIFE
+//===========================================================================================
     'Maximum Life': function() {
-        // TODO: compute value
-        return -1;
+        var level = calc('Level'),
+            vitality = calc('Vitality'),
+            life_per_vitality = Math.max(level - 25,10),
+            life_percent = calc('Total Life Bonus');
+
+        return (36 + 4 * level + vitality * life_per_vitality) * (1 + life_percent);
     },
     'Total Life Bonus': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Hitpoints_Max_Percent_Bonus_Item'));
+        return bonuses;
+    },
+    'Life per {Unit}': function(stats,options) {
+        var bonuses = sumBonuses(fetchBonuses(options.key));
+        return bonuses;
     },
     'Life per Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Life per {Unit}',{key: 'Hitpoints_Regen_Per_Second'});
     },
     'Life per Hit': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Life per {Unit}',{key: 'Hitpoints_On_Hit'});
     },
     'Life per Kill': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Life per {Unit}',{key: 'Hitpoints_On_Kill'});
     },
     'Life Steal': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Life per {Unit}',{key: 'Steal_Health_Percent'});
     },
     'Health Globe Healing Bonus': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Health_Globe_Bonus_Health'));
+        return bonuses;
     },
     'Bonus to Gold/Globe Radius': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Gold_PickUp_Radius'));
+        return bonuses;
     },
+//===========================================================================================
+// ADVENTURE
+//===========================================================================================
     'Movement Speed': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Movement_Scalar'));
+        return bonuses;
     },
     'Gold Find': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Gold_Find'));
+        return bonuses;
     },
     'Magic Find': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Magic_Find'));
+        return bonuses;
     },
     'Bonus Experience': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Experience_Bonus_Percent'));
+        return bonuses;
     },
     'Bonus Experience per Kill': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Experience_Bonus'));
+        return bonuses;
     },
+//===========================================================================================
+// RESOURCE
+//===========================================================================================
+    'Life per {Resource} Spent': function(stats,options) {
+        var bonuses = sumBonuses(fetchBonuses('Spending_Resource_Heals_Percent#'+options.resource));
+        return bonuses;
+    },
+    'Maximum {Resource}': function(stats,options) {
+        var base = fetchBase('Maximum '+options['name']),
+            bonuses = sumBonuses(fetchBonuses('Resource_Max_Bonus#'+options.resource));
+
+        return base + bonuses;
+    },
+    '{Resource} Regeneration/Second': function(stats,options) {
+        var base = fetchBase(options['name']+' Regeneration/Second'),
+            bonuses = sumBonuses(fetchBonuses('Resource_Regen_Per_Second#'+options.resource));
+
+        return base + bonuses;
+    },
+    '{Resource} Cost Reduction': function(stats,options) {
+        var bonuses = sumBonuses(fetchBonuses('Resource_Cost_Reduction_Percent_All'));
+        return bonuses;
+    },
+    '{Resource} on Critical Hit': function(stats,options) {
+        var bonuses = sumBonuses(fetchBonuses('Resource_On_Crit#'+options.resource));
+        return bonuses;
+    },
+    //---------------------------------------------------------------------------------------
+    // BARBARIAN
+    //---------------------------------------------------------------------------------------
     'Life per Fury Spent': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Life per {Resource} Spent',{resource: 'Fury'});
     },
     'Maximum Fury': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Maximum {Resource}',{name: 'Fury', resource: 'Fury'});
     },
     'Fury Regeneration/Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Regeneration/Second',{name: 'Fury', resource: 'Fury'});
     },
     'Fury Cost Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Cost Reduction',{resource: 'Fury'});
+    },
+    'Fury on Critical Hit': function() {
+        return calc('{Resource} on Critical Hit',{resource: 'Fury'});
+    },
+    //---------------------------------------------------------------------------------------
+    // CRUSADER
+    //---------------------------------------------------------------------------------------
+    'Life per Wrath Spent': function() {
+        return calc('Life per {Resource} Spent',{resource: 'Faith'});
     },
     'Maximum Wrath': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Maximum {Resource}',{name: 'Wrath', resource: 'Faith'});
     },
     'Wrath Regeneration/Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Regeneration/Second',{name: 'Wrath', resource: 'Faith'});
     },
     'Wrath Cost Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Cost Reduction',{resource: 'Faith'});
     },
+    'Wrath on Critical Hit': function() {
+        return calc('{Resource} on Critical Hit',{resource: 'Faith'});
+    },
+    //---------------------------------------------------------------------------------------
+    // MONK
+    //---------------------------------------------------------------------------------------
     'Life per Spirit Spent': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Life per {Resource} Spent',{resource: 'Spirit'});
     },
     'Maximum Spirit': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Maximum {Resource}',{name: 'Spirit', resource: 'Spirit'});
     },
     'Spirit Regeneration/Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Regeneration/Second',{name: 'Spirit', resource: 'Spirit'});
     },
     'Spirit Cost Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Cost Reduction',{resource: 'Spirit'});
+    },
+    'Spirit on Critical Hit': function() {
+        return calc('{Resource} on Critical Hit',{resource: 'Spirit'});
+    },
+    //---------------------------------------------------------------------------------------
+    // DEMON HUNTER
+    //---------------------------------------------------------------------------------------
+    'Life per Hatred Spent': function() {
+        return calc('Life per {Resource} Spent',{resource: 'Hatred'});
     },
     'Maximum Hatred': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Maximum {Resource}',{name: 'Hatred', resource: 'Hatred'});
     },
     'Hatred Regeneration/Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Regeneration/Second',{name: 'Hatred', resource: 'Hatred'});
     },
     'Hatred Cost Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Cost Reduction',{resource: 'Hatred'});
+    },
+    'Hatred on Critical Hit': function() {
+        return calc('{Resource} on Critical Hit',{resource: 'Hatred'});
+    },
+    //--------------------------------------------------------------------------------------
+    'Life per Discipline Spent': function() {
+        return calc('Life per {Resource} Spent',{resource: 'Discipline'});
     },
     'Maximum Discipline': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Maximum {Resource}',{name: 'Discipline', resource: 'Discipline'});
     },
     'Discipline Regeneration/Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Regeneration/Second',{name: 'Discipline', resource: 'Discipline'});
     },
     'Discipline Cost Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Cost Reduction',{resource: 'Discipline'});
+    },
+    'Discipline on Critical Hit': function() {
+        return calc('{Resource} on Critical Hit',{resource: 'Discipline'});
+    },
+    //---------------------------------------------------------------------------------------
+    // WIZARD
+    //---------------------------------------------------------------------------------------
+    'Life per Arcane Power Spent': function() {
+        return calc('Life per {Resource} Spent',{resource: 'Arcanum'});
     },
     'Maximum Arcane Power': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Maximum {Resource}',{name: 'Arcane Power', resource: 'Arcanum'});
     },
     'Arcane Regeneration/Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Regeneration/Second',{name: 'Arcane', resource: 'Arcanum'});
     },
     'Arcane Power Cost Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Cost Reduction',{resource: 'Arcanum'});
     },
     'Arcane Power on Critical Hit': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} on Critical Hit',{resource: 'Arcanum'});
+    },
+    //---------------------------------------------------------------------------------------
+    // WITCH DOCTOR
+    //---------------------------------------------------------------------------------------
+    'Life per Mana Power Spent': function() {
+        return calc('Life per {Resource} Spent',{resource: 'Mana'});
     },
     'Maximum Mana': function() {
-        // TODO: compute value
-        return -1;
+        return calc('Maximum {Resource}',{name: 'Mana', resource: 'Mana'});
     },
     'Mana Regeneration/Second': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Regeneration/Second',{name: 'Mana', resource: 'Mana'});
     },
     'Mana Cost Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Resource} Cost Reduction',{resource: 'Mana'});
+    },
+    'Mana on Critical Hit': function() {
+        return calc('{Resource} on Critical Hit',{resource: 'Mana'});
     }
 };
 /**
