@@ -73,6 +73,7 @@ function createAttributeTemplate(heroData) {
             'Poison Resistance':            {value: 0, format: formatInteger()},
             'Arcane/Holy Resistance':       {value: 0, format: formatInteger()},
             'Crowd Control Reduction':      {value: 0, format: formatPercentage()},
+            'Melee Damage Reduction':       {value: 0, format: formatPercentage()},
             'Missile Damage Reduction':     {value: 0, format: formatPercentage()},
             'Elite Damage Reduction':       {value: 0, format: formatPercentage()},
             'Thorns':                       {value: 0, format: formatFloat()}
@@ -393,6 +394,22 @@ function sumBonuses(bonusArray) {
     return sum;
 }
 /**
+ * Mulitplies all the bonus values together.
+ *
+ * @method multiplyBonuses
+ * @param bonusArray {Array} The array of bonuses.
+ * @return {Number} The value of the product.
+ */
+function multiplyBonuses(bonusArray) {
+    var product = 1;
+    if (bonusArray) {
+        for (var i=0; i<bonusArray.length; i++) {
+            product *= bonusArray[i].value;
+        }
+    }
+    return product;
+}
+/**
  * Collect all the bonuses and applies them to an existing dictionary of
  * bonuses of the same key.
  *
@@ -476,11 +493,11 @@ function isPrimaryStat(attr,hero) {
 /**
  * A list of calculators for computing attributes from base and bonus stats.
  */
-function calc(attr) {
-    return Calculators[attr](Calculators.stats);
+function calc(attr,options) {
+    return Calculators[attr](Calculators.stats,options);
 }
 function fetchHero() {
-    return Calculators.hero;
+    return Calculators.stats.hero;
 }
 function fetchBase(attr) {
     // search for the appropriate section
@@ -500,32 +517,32 @@ var Calculators = {
         return Calculators.stats.hero.level;
     },
     'Strength': function() {
-        var base       = fetchBase('Strength'),
-            level      = calc('Level'),
+        var base = fetchBase('Strength'),
+            level = calc('Level'),
             multiplier = isPrimaryStat('Strength',fetchHero()) ? 3 : 1,
-            bonuses    = sumBonuses(fetchBonuses('Strength_Item'));
+            bonuses = sumBonuses(fetchBonuses('Strength_Item'));
 
         return base + (level - 1) * multiplier + bonuses;
     },
     'Dexterity': function() {
-        var base       = fetchBase('Dexterity'),
-            level      = calc('Level'),
+        var base = fetchBase('Dexterity'),
+            level = calc('Level'),
             multiplier = isPrimaryStat('Dexterity',fetchHero()) ? 3 : 1,
-            bonuses    = sumBonuses(fetchBonuses('Dexterity_Item'));
+            bonuses = sumBonuses(fetchBonuses('Dexterity_Item'));
 
         return base + (level - 1) * multiplier + bonuses;
     },
     'Intelligence': function() {
-        var base       = fetchBase('Intelligence'),
-            level      = calc('Level'),
+        var base = fetchBase('Intelligence'),
+            level = calc('Level'),
             multiplier = isPrimaryStat('Intelligence',fetchHero()) ? 3 : 1,
-            bonuses    = sumBonuses(fetchBonuses('Intelligence_Item'));
+            bonuses = sumBonuses(fetchBonuses('Intelligence_Item'));
 
         return base + (level - 1) * multiplier + bonuses;
     },
     'Vitality': function() {
-        var base    = Calculators.stats.base['Core']['Vitality'].value,
-            level   = calc('Level'),
+        var base = Calculators.stats.base['Core']['Vitality'].value,
+            level = calc('Level'),
             bonuses = sumBonuses(fetchBonuses('Vitality_Item'));
 
         return base + (level - 1) * 2 + bonuses;
@@ -543,12 +560,16 @@ var Calculators = {
         return -1;
     },
     'Critical Hit Chance': function() {
-        // TODO: compute value
-        return -1;
+        var base = fetchBase('Critical Hit Chance'),
+            bonuses = sumBonuses(fetchBonuses('Crit_Percent_Bonus_Capped'));
+
+        return base + bonuses;
     },
     'Critical Hit Damage': function() {
-        // TODO: compute value
-        return -1;
+        var base = fetchBase('Critical Hit Chance'),
+            bonuses = sumBonuses(fetchBonuses('Crit_Damage_Percent'));
+
+        return base + bonuses;
     },
     'Area Damage': function() {
         // TODO: compute value
@@ -559,60 +580,87 @@ var Calculators = {
         return -1;
     },
     'Armor': function() {
-        // TODO: compute value
-        return -1;
+        var strength = calc('Strength'),
+            armor_bonuses = 
+                sumBonuses(fetchBonuses('Armor_Item')) +
+                sumBonuses(fetchBonuses('Armor_Bonus_Item'));
+
+        return strength + armor_bonuses;
     },
     'Block Amount': function() {
         // TODO: compute value
         return -1;
     },
     'Block Chance': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Block_Chance_Item'));
+        return bonuses;
     },
     'Dodge Chance': function() {
-        // TODO: compute value
-        return -1;
+        var dexterity = calc('Dexterity'),
+            dodge_chance = 0.0;
+
+        if (dexterity > 1000) {
+            dodge_chance = (dexterity - 1000) * 0.0001 + 0.3;
+        } else if (dexterity > 500) {
+            dodge_chance = (dexterity - 500) * 0.0002 + 0.2;
+        } else if (dexterity > 100) {
+            dodge_chance = (dexterity - 100) * 0.00025 + 0.1;
+        } else {
+            dodge_chance = dexterity * 0.001;
+        }
+        return dodge_chance;
+    },
+    'All Resistance': function() {
+        var all_resist = sumBonuses(fetchBonuses('Resistance_All'));
+        return all_resist;
+    },
+    '{Element} Resistance': function(options) {
+        var intelligence = calc('Intelligence'),
+            all_resist = calc('All Resistance'),
+            bonuses = sumBonuses(fetchBonuses('Resistance')[options.element]);
+
+        return intelligence / 10 + all_resist + bonuses;
     },
     'Physical Resistance': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Element} Resistance',{element:'Physical'});
     },
     'Cold Resistance': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Element} Resistance',{element:'Cold'});
     },
     'Fire Resistance': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Element} Resistance',{element:'Fire'});
     },
     'Lightning Resistance': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Element} Resistance',{element:'Lightning'});
     },
     'Poison Resistance': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Element} Resistance',{element:'Poison'});
     },
     'Arcane/Holy Resistance': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Element} Resistance',{element:'Arcane'}) +
+               calc('{Element} Resistance',{element:'Holy'});
+    },
+    '{Damage} Reduction': function(options) {
+        var sum_bonuses = multiplyBonuses(fetchBonuses(options['type'])),
+            multiply_bonuses = multiplyBonuses(fetchBonuses(options'type')),
+
+        return sum_bonuses - multiply_bonuses;
     },
     'Crowd Control Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Damage} Reduction',{type: 'CrowdControl_Reduction'});
+    },
+    'Melee Damage Reduction': function() {
+        return calc('{Damage} Reduction',{type: 'Damage_Percent_Reduction_From_Melee'});
     },
     'Missile Damage Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Damage} Reduction',{type: 'Damage_Percent_Reduction_From_Ranged'});
     },
     'Elite Damage Reduction': function() {
-        // TODO: compute value
-        return -1;
+        return calc('{Damage} Reduction',{type: 'Damage_Percent_Reduction_From_Elites'});
     },
     'Thorns': function() {
-        // TODO: compute value
-        return -1;
+        var bonuses = sumBonuses(fetchBonuses('Thorns_Fixed')['Physical']);
+        return bonuses;
     },
     'Maximum Life': function() {
         // TODO: compute value
