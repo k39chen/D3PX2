@@ -14,10 +14,10 @@ function(can, D3API, initView) {
             init: function(){
                 this.element.html(initView());
 
-
-                // GoodIdea-1513
-
-                var battleTag = 'GoodIdea-1513';
+                var battleTag = '';
+                battleTag = 'GoodIdea-1513';
+                //battleTag = 'pendragon#1365';
+                //battleTag = 'gummypower#1650';
                 var heroIndex = 0;
 
                 // load a composite player profile
@@ -33,15 +33,15 @@ function(can, D3API, initView) {
  * ATTRIBUTES TEMPLATES
  *******************************************************************/
 /**
- * Creates a framework for the attribute template.
+ * Gets an ordering for the template.
  *
- * @method createAttributeTemplate
+ * @method getTemplateOrder
  * @param heroData {Object} The hero data.
- * @return {Object} The template.
+ * @return {Object} The template order.
  */
-function createAttributeTemplate(heroData) {
-    // list sections
-    var ordering = [
+function getTemplateOrder(heroData) {
+    var section_order = [
+        'Summary',
         'Core',
         'Offense',
         'Defense',
@@ -49,7 +49,157 @@ function createAttributeTemplate(heroData) {
         'Resource',
         'Adventure'
     ];
+    var order = {
+        'Summary': [
+            'Damage',
+            'Elemental DPS',
+            'Elemental Elite DPS',
+            'Toughness',
+            'Healing',
+        ],
+        'Core': [
+            'Strength',                
+            'Dexterity',               
+            'Intelligence',            
+            'Vitality',                
+        ],
+        'Offense': [
+            'Bonus Damage to Elites',  
+            'Attacks per Second',
+            'Attacks per Second Off Hand',
+            'Attack Speed Increase',
+            'Critical Hit Chance',     
+            'Critical Hit Damage',     
+            'Area Damage',             
+            'Cooldown Reduction',      
+        ],
+        'Defense': [
+            'Armor',                   
+            'Block Amount',            
+            'Block Chance',            
+            'Dodge Chance',            
+            'Physical Resistance',     
+            'Cold Resistance',         
+            'Fire Resistance',         
+            'Lightning Resistance',    
+            'Poison Resistance',       
+            'Arcane/Holy Resistance',  
+            'Crowd Control Reduction', 
+            'Melee Damage Reduction',  
+            'Missile Damage Reduction',
+            'Elite Damage Reduction',  
+            'Thorns',                  
+        ],
+        'Life': [
+            'Maximum Life',            
+            'Total Life Bonus',        
+            'Life per Second',         
+            'Life per Hit',            
+            'Life per Kill',           
+            'Life Steal',              
+            'Health Globe Healing Bonus',
+            'Bonus to Gold/Globe Radius',
+        ],
+        'Resource': [ /* class specific */ ],
+        'Adventure': [
+            'Movement Speed',          
+            'Gold Find',               
+            'Magic Find',              
+            'Bonus Experience',        
+            'Bonus Experience per Kill',
+        ]
+    }
+    switch (heroData['class']) {
+        case 'barbarian':
+            order['Resource'].push(
+                'Maximum Fury',                
+                'Fury Regeneration/Second',    
+                'Fury Cost Reduction',         
+                'Fury on Critical Hit',        
+                'Life per Fury Spent' 
+            );
+            break;
+        case 'crusader':
+            order['Resource'].push(
+                'Maximum Wrath',               
+                'Wrath Regeneration/Second',   
+                'Wrath Cost Reduction',        
+                'Wrath on Critical Hit',       
+                'Life per Wrath Spent'
+            );
+            break;
+        case 'monk':
+            order['Resource'].push(
+                'Maximum Spirit',              
+                'Spirit Regeneration/Second',  
+                'Spirit Cost Reduction',       
+                'Spirit on Critical Hit',      
+                'Life per Spirit Spent'
+            );
+            break;
+        case 'demon-hunter':
+            order['Resource'].push(
+                'Maximum Hatred',              
+                'Hatred Regeneration/Second',  
+                'Hatred Cost Reduction',       
+                'Hatred on Critical Hit',      
+                'Life per Hatred Spent',       
+                'Maximum Discipline',          
+                'Discipline Regeneration/Second',
+                'Discipline Cost Reduction',   
+                'Discipline on Critical Hit',  
+                'Life per Discipline Spent'
+            );
+            break;
+        case 'wizard':
+            order['Resource'].push(
+                'Maximum Arcane Power',        
+                'Arcane Regeneration/Second',  
+                'Arcane Power Cost Reduction', 
+                'Arcane Power on Critical Hit',
+                'Life per Arcane Power Spent'
+            );
+            break;
+        case 'witch-doctor':
+            order['Resource'].push(
+                'Maximum Mana',                
+                'Mana Regeneration/Second',    
+                'Mana Cost Reduction',         
+                'Mana on Critical Hit',        
+                'Life per Mana Power Spent'
+            );
+            break;
+        default:
+            break;
+    }
+    if (!isDualWielding(heroData)) {
+        var index = order['Offense'].indexOf('Attacks per Second Off Hand')
+        if (index > -1) {
+            order['Offense'].splice(index,1)
+        }
+    }
+    return {
+        sectionOrder: section_order,
+        attributeOrder: order
+
+    };
+}
+/**
+ * Creates a framework for the attribute template.
+ *
+ * @method createAttributeTemplate
+ * @param heroData {Object} The hero data.
+ * @return {Object} The template.
+ */
+function createAttributeTemplate(heroData) {
     var template = {
+        'Summary': {
+            'Damage':                       {value: 0, format: formatFloat()},
+            'Elemental DPS':                {value: 0, format: formatFloat()},
+            'Elemental Elite DPS':          {value: 0, format: formatFloat()},
+            'Toughness':                    {value: 0, format: formatFloat()},
+            'Healing':                      {value: 0, format: formatFloat()},
+        },
         'Core': {
             'Strength':                     {value: 0, format: formatInteger()},
             'Dexterity':                    {value: 0, format: formatInteger()},
@@ -57,9 +207,9 @@ function createAttributeTemplate(heroData) {
             'Vitality':                     {value: 0, format: formatInteger()}
         },
         'Offense': {
-            'Damage Increased by Skills':   {value: 0, format: formatPercentage()},
             'Bonus Damage to Elites':       {value: 0, format: formatPercentage()},
             'Attacks per Second':           {value: 0, format: formatFloat()},
+            'Attack Speed Increase':        {value: 0, format: formatPercentage()},
             'Critical Hit Chance':          {value: 0, format: formatPercentage()},
             'Critical Hit Damage':          {value: 0, format: formatPercentage(2,'+')},
             'Area Damage':                  {value: 0, format: formatPercentage()},
@@ -113,7 +263,7 @@ function createAttributeTemplate(heroData) {
             break;
         case 'crusader':
             template['Resource'] = {
-                'Maximum Wrath':                    {value: 0, format: formatIntger()},
+                'Maximum Wrath':                    {value: 0, format: formatInteger()},
                 'Wrath Regeneration/Second':        {value: 0, format: formatFloat()},
                 'Wrath Cost Reduction':             {value: 0, format: formatPercentage(0)},
                 'Wrath on Critical Hit':            {value: 0, format: formatInteger()},
@@ -164,7 +314,7 @@ function createAttributeTemplate(heroData) {
         default:
             break;
     }
-    if (isDualWielding(heroData.items)) {
+    if (isDualWielding(heroData)) {
         template['Offense']['Attacks per Second Off Hand'] = {value: 0};
     }
     return template;
@@ -240,22 +390,29 @@ function computeAttributes(heroData) {
         base: getBaseAttributes(heroData),
         bonuses: getBonuses(heroData.items._data)
     };
+    var order = getTemplateOrder(heroData),
+        s_order = order.sectionOrder,
+        a_order = order.attributeOrder;
+ 
+    var results = {};
 
+    console.log(stats);
 
-    console.log(stats)
+    for (var i=0; i<s_order.length; i++) {
+        var section = s_order[i];
 
-    var result = stats.base;
+        if (!results[section]) {
+            results[section] = {};
+        }
 
-    // compute each section
-    for (var title in stats.base) {
-        var section = stats.base[title];
+        for (var j=0; j<a_order[section].length; j++) {
 
-        // compute each attribute
-        for (var attr in section) {
-            result[title][attr].value = computeAttribute(attr,stats);
+            var attr = a_order[section][j];
+
+            results[section][attr] = computeAttribute(attr,stats);
         }
     }
-    return result;
+    return results;
 }
 /*******************************************************************
  * BONUS COLLECTION
@@ -470,12 +627,12 @@ function collectBonuses(bonuses,attrs,src) {
  * Determines whether a character is dual wielding.
  *
  * @method isDualWielding
- * @param items {Object} The items list.
+ * @param hero {Object} The hero object.
  * @return {Boolean} Flag indicating whether or not the hero is dual wielding.
  */
-function isDualWielding(items) {
-    if (items['mainHand'] && items['offHand']) {
-        if (items['mainHand'].dps != null && items['offHand'].dps != null) {
+function isDualWielding(hero) {
+    if (hero.items['mainHand'] && hero.items['offHand']) {
+        if (hero.items['mainHand'].dps != null && hero.items['offHand'].dps != null) {
             return true;
         }
     }
@@ -491,17 +648,31 @@ function isDualWielding(items) {
  */
 function isPrimaryStat(attr,hero) {
     switch (attr) {
-        case 'Strength':
-            return hero['class'] == 'barbarian' ||
-                hero['class'] == 'crusader';
-        case 'Dexterity':
-            return hero['class'] == 'monk' ||
-                hero['class'] == 'demon-hunter';
-        case 'Intelligence':
-            return hero['class'] == 'wizard' ||
-                hero['class'] == 'witch-doctor';
+        case 'Strength':     return hero['class'] == 'barbarian' || hero['class'] == 'crusader';
+        case 'Dexterity':    return hero['class'] == 'monk'      || hero['class'] == 'demon-hunter';
+        case 'Intelligence': return hero['class'] == 'wizard'    || hero['class'] == 'witch-doctor';
+        default:             return false;
+    }
+}
+/**
+ * Gets the primary stat of the hero
+ *
+ * @method getPrimaryStat
+ * @param hero {Object} The hero object.
+ * @return {String} The name of the primary stat for this hero.
+ */
+function getPrimaryStat(hero) {
+    switch (hero['class']) {
         default:
-            return false;
+        case 'barbarian':
+        case 'crusader':
+            return 'Strength';
+        case 'monk':
+        case 'demon-hunter':
+            return 'Dexterity';
+        case 'wizard':
+        case 'witch-doctor':
+            return 'Intelligence';
     }
 }
 /*******************************************************************
@@ -542,6 +713,142 @@ var Calculators = {
         return Calculators.stats.hero.level;
     },
 //===========================================================================================
+// SUMMARY
+//===========================================================================================
+    '{Weapon} Diagnostics': function(stats,options) {
+        if (!options || !options.weapon || !options.weapon.dps) return {min: 0, max: 0, delta: 0, aps: 0};
+
+        var min = 0,
+            delta = 0,
+            aps_pct = 0,
+            aps = 0;
+
+        var bonuses  = options.weapon.attributesRaw._data;
+        for (var attr in bonuses) {
+            var bonus = bonuses[attr].min;
+
+            if (attr.indexOf('Damage_Weapon_Min') > -1) {
+                min += bonus;
+            } else if (attr.indexOf('Damage_Weapon_Delta') > -1) {
+                delta += bonus;
+            } else if (attr == 'Attacks_Per_Second_Item') {
+                aps = bonus;
+            } else if (attr == 'Attacks_Per_Second_Item_Percent') {
+                aps_pct += bonus;
+            }
+        }
+        return {min: min, max: min + delta, delta: delta, aps: aps * (1 + aps_pct)};
+    },
+    '{Weapon} Damage per Second': function(stats,options) {
+        var diag = calc('{Weapon} Diagnostics',options);
+
+        return diag 
+            ? (aps * (min + delta / 2)) 
+            : 0.0;
+    },
+    'Damage': function() {
+        var mh = calc('{Weapon} Diagnostics', {weapon:fetchHero().items.mainHand}),
+            oh = calc('{Weapon} Diagnostics', {weapon:fetchHero().items.offHand}),
+            pstat = calc(getPrimaryStat(fetchHero())),
+            aps_bonus = calc('Attack Speed Increase'),
+            dual_aps = (2 * mh.aps * oh.aps) / (mh.aps + oh.aps),
+            crit_chance = calc('Critical Hit Chance'),
+            crit_damage = calc('Critical Hit Damage'),
+            passive_damage = 0; // eg. 8% increased damage;
+
+        var dps = (1 + pstat / 100) *                                // primary stat modifer
+            (1 + crit_chance * crit_damage) *                        // critical damage modifier
+            (1 + aps_bonus) *                                        // attack speed modifier [1]
+            (oh.aps ? dual_aps : mh.aps) *                           // attack speed modifier [2] 
+            (mh.min + mh.max + oh.min + oh.max) / (oh.aps ? 4 : 2) * // average damage modifier
+            (1 + passive_damage);                                    // passive damage modifier
+
+        return dps;
+    },
+    'Elemental DPS': function() {
+        var dps = calc('Damage'),
+            bonuses = fetchBonuses('Damage_Dealt_Percent_Bonus'),
+            elements = {},
+            max_element = '';
+
+        // collect elemental bonuses
+        for (var element in bonuses) {
+            for (var i=0; i<bonuses[element].length; i++) {
+                var bonus = bonuses[element][i].value;
+            
+                if (!elements[element]) {
+                    elements[element] = 0;
+                }
+                elements[element] += bonus;
+            }
+        }
+        // look for largest elemental bonus
+        var largest = -1;
+        for (var element in elements) {
+            if (elements[element] > largest) {
+                largest = elements[element];
+                max_element = element;
+            }
+        }
+        return dps * (1 + largest);
+    },
+    'Elemental Elite DPS': function() {
+        var dps = calc('Elemental DPS'),
+            elite_damage = calc('Bonus Damage to Elites');
+
+        return dps * (1 + elite_damage);
+    },
+    'Toughness': function() {
+        var mlvl = calc('Level'),
+            hclass = fetchHero()['class'],
+            hp = calc('Maximum Life'),
+            dodge_reduction = calc('Dodge Chance'),
+            armor = calc('Armor'),
+            armor_reduction = armor / (armor + mlvl * 50),
+            total_resist = 
+                calc('Physical Resistance') + 
+                calc('Cold Resistance') +
+                calc('Fire Resistance') +
+                calc('Lightning Resistance') +
+                calc('Poison Resistance') +
+                calc('Arcane/Holy Resistance'),
+            avg_resist = total_resist / 6,
+            resist_reduction = avg_resist / (avg_resist + mlvl * 5),
+            class_reduction = (hclass == 'barbarian' || hclass == 'crusader') ? 0.30 : 0,
+            block_reduction = calc('Block Chance'),
+            cc_reduction = calc('Crowd Control Reduction'),
+            melee_reduction = calc('Melee Damage Reduction'),
+            missile_reduction = calc('Missile Damage Reduction'),
+            elite_reduction = calc('Elite Damage Reduction');
+
+        var reduction = 
+            (1 - dodge_reduction) *
+            (1 - armor_reduction) *
+            (1 - resist_reduction) *
+            (1 - class_reduction) *
+            (1 - block_reduction) *
+            (1 - cc_reduction) *
+            (1 - melee_reduction) *
+            (1 - missile_reduction) *
+            (1 - elite_reduction);
+
+        return hp / reduction;
+    },
+    'Healing': function() {
+        var loh = calc('Life per Hit'),
+            mh_aps = calc('Attacks per Second'),
+            oh_aps = calc('Attacks per Second Off Hand'),
+            lps = calc('Life per Second'),
+            ls = calc('Life Steal'),
+            damage = calc('Damage'),
+            lpk = calc('Life per Kill');
+
+        return lps +                  // life per second
+            loh * (mh_aps / oh_aps) + // life on hit
+            damage * ls * 0.1 +       // life steal
+            lpk * 0.16;               // life per kill
+    },
+//===========================================================================================
 // CORE
 //===========================================================================================
     'Strength': function() {
@@ -578,21 +885,37 @@ var Calculators = {
 //===========================================================================================
 // OFFENSE
 //===========================================================================================
-    'Damage Increased by Skills': function() {
-        //var bonuses = sumBonuses(fetchBonuses('Power_Damage_Percent_Bonus'));  
-        return -1;
-    },
     'Bonus Damage to Elites': function() {
         var bonuses = sumBonuses(fetchBonuses('Damage_Percent_Bonus_Vs_Elites'));
         return bonuses;
     },
+    'Attacks per Second {Weapon}': function(stats,options) {
+        if (!options || !options.weapon || !options.weapon.dps) return 1.0;
+
+        var pct_bonus = calc('Attack Speed Increase'),
+            wep_pct_bonus = options.weapon.attributesRaw['Attacks_Per_Second_Item_Percent'],
+            wep_bonus = options.weapon.attributesRaw['Attacks_Per_Second_Item_Bonus'],
+            aps_bonus = sumBonuses(fetchBonuses('Attacks_Per_Second_Bonus')),
+            wep_aps = options.weapon.attributesRaw['Attacks_Per_Second_Item'].min;
+
+        wep_pct_bonus = wep_pct_bonus ? wep_pct_bonus.min : 0;
+        wep_bonus = wep_bonus ? wep_bonus : 0;
+        aps_bonus = aps_bonus ? aps_bonus : 0;
+
+        return ((wep_aps + wep_bonus) * (1 + wep_pct_bonus) + aps_bonus) * (1 + pct_bonus);
+    },
     'Attacks per Second': function() {
-        // TODO: compute value
-        return -1;
+        var aps = calc('Attacks per Second {Weapon}',{weapon:fetchHero().items.mainHand});
+        return aps;
     },
     'Attacks per Second Off Hand': function() {
-        // TODO: compute value
-        return -1;
+        var aps = calc('Attacks per Second {Weapon}',{weapon:fetchHero().items.offHand});
+        return aps;
+    },
+    'Attack Speed Increase': function() {
+        var bonuses = sumBonuses(fetchBonuses('Attacks_Per_Second_Percent')),
+            dw_bonus = isDualWielding(fetchHero()) ? 0.15 : 0;
+        return bonuses + dw_bonus;
     },
     'Critical Hit Chance': function() {
         var base = fetchBase('Critical Hit Chance'),
@@ -601,7 +924,7 @@ var Calculators = {
         return base + bonuses;
     },
     'Critical Hit Damage': function() {
-        var base = fetchBase('Critical Hit Chance'),
+        var base = fetchBase('Critical Hit Damage'),
             bonuses = sumBonuses(fetchBonuses('Crit_Damage_Percent'));
 
         return base + bonuses;
@@ -626,8 +949,10 @@ var Calculators = {
         return strength + armor_bonuses;
     },
     'Block Amount': function() {
-        // TODO: compute value
-        return -1;
+        var block_min = sumBonuses(fetchBonuses('Block_Amount_Item_Min')),
+            block_delta = sumBonuses(fetchBonuses('Block_Amount_Item_Delta'));
+
+        return block_min + block_delta / 2;
     },
     'Block Chance': function() {
         var bonuses = sumBonuses(fetchBonuses('Block_Chance_Item'));
@@ -635,18 +960,19 @@ var Calculators = {
     },
     'Dodge Chance': function() {
         var dexterity = calc('Dexterity'),
-            dodge_chance = 0.0;
+            mlvl = calc('Level'),
+            dodge_chance = (mlvl == 70)
+                ? dexterity * 0.00461
+                : dexterity / (0.00031 * Math.pow(mlvl,3) + 0.0186 * Math.pow(mlvl,2) + 0.25 * mlvl + 1.93);
+        return dodge_chance / 100;
+    },
+    'Damage Reduced From {Element} Resistance': function(stats,options) {
+        var mlvl = calc('Level'),
+            resist = options.element == 'All' 
+            ? calc('All Resistance')
+            : calc('{Element} Resistance',{element:options.element});
 
-        if (dexterity > 1000) {
-            dodge_chance = (dexterity - 1000) * 0.0001 + 0.3;
-        } else if (dexterity > 500) {
-            dodge_chance = (dexterity - 500) * 0.0002 + 0.2;
-        } else if (dexterity > 100) {
-            dodge_chance = (dexterity - 100) * 0.00025 + 0.1;
-        } else {
-            dodge_chance = dexterity * 0.001;
-        }
-        return dodge_chance;
+        return resist / (resist + mlvl * 5);
     },
     'All Resistance': function() {
         var all_resist = sumBonuses(fetchBonuses('Resistance_All'));
@@ -705,8 +1031,10 @@ var Calculators = {
     'Maximum Life': function() {
         var level = calc('Level'),
             vitality = calc('Vitality'),
-            life_per_vitality = Math.max(level - 25,10),
+            life_per_vitality = Math.max(10 + (level - 35), 10),
             life_percent = calc('Total Life Bonus');
+
+        if (level == 70) life_per_vitality = 80;
 
         return (36 + 4 * level + vitality * life_per_vitality) * (1 + life_percent);
     },
