@@ -5,11 +5,22 @@ steal(
     './calculator.less',
     '/d3px/lib/d3lib.js',
     '/d3px/lib/utils.js',
-function(can, D3API, initView) {
+function(can, D3API, initView) {    
+    /**
+     * Creates a test calculator for computing the attributes of a given hero.
+     * 
+     * @constructor cookbook/recipe/create
+     * @alias RecipeCreate
+     * @parent d3px
+     * @inherits can.Control
+     */
 	return can.Control(
         {
             defaults: {}
         },
+        /**
+         * Renders the initial template.
+         */
         {
             init: function(){
                 this.element.html(initView());
@@ -17,8 +28,8 @@ function(can, D3API, initView) {
                 var battleTag = '';
                 battleTag = 'GoodIdea-1513';
                 //battleTag = 'pendragon#1365';
-                //battleTag = 'gummypower#1650';
-                var heroIndex = 0;
+                battleTag = 'gummypower#1650';
+                var heroIndex = 2;
 
                 // load a composite player profile
                 loadCompositePlayerProfile(D3API,'us',battleTag,function(data){
@@ -719,42 +730,81 @@ var Calculators = {
         if (!options || !options.weapon || !options.weapon.dps) return {min: 0, max: 0, delta: 0, aps: 0};
 
         var min = 0,
+            max = 0,
             delta = 0,
             aps_pct = 0,
-            aps = 0;
+            aps = 0,
+            dmg_pct = 0.0,
+            ruby = 0;
 
+        // apply base weapon damage ranges
         var bonuses  = options.weapon.attributesRaw._data;
         for (var attr in bonuses) {
             var bonus = bonuses[attr].min;
 
-            if (attr.indexOf('Damage_Weapon_Min') > -1) {
-                min += bonus;
-            } else if (attr.indexOf('Damage_Weapon_Delta') > -1) {
-                delta += bonus;
+            if (attr.indexOf('Damage_Weapon') > -1) {
+                if (attr.indexOf('Min') > -1) {
+                    min += bonus;
+                } else if (attr.indexOf('Delta') > -1) {
+                    delta += bonus;
+                } else if (attr.indexOf('Percent_Bonus') > -1) {
+                    dmg_pct += bonus;
+                }
             } else if (attr == 'Attacks_Per_Second_Item') {
                 aps = bonus;
             } else if (attr == 'Attacks_Per_Second_Item_Percent') {
                 aps_pct += bonus;
             }
         }
-        return {min: min, max: min + delta, delta: delta, aps: aps * (1 + aps_pct)};
-    },
-    '{Weapon} Damage per Second': function(stats,options) {
-        var diag = calc('{Weapon} Diagnostics',options);
+        // see if this weapon has a ruby in its socket
+        var gems = options.weapon.gems;
+        for (var i=0; i<gems.length; i++) {
+            var gem_bonuses = gems[i].attributesRaw._data;
+            for (var attr in gem_bonuses) {
+                var bonus = gem_bonuses[attr];
+                if (attr.indexOf('Damage_Weapon_Bonus_Flat') > -1) {
+                    ruby += bonus.min; 
+                }
+            }
+        }
+        // apply socket bonus
+        min += ruby;
+        max = min + delta;
 
-        return diag 
-            ? (aps * (min + delta / 2)) 
-            : 0.0;
+        // apply enhanced damage
+        min *= (1 + dmg_pct);
+        max *= (1 + dmg_pct);
+        aps *= (1 + aps_pct);
+
+        return {min: min, max: max, aps: aps};
+    },
+    'Average Damage {Element}': function(stats, options) {
+        var min_bonuses = sumBonuses(fetchBonuses('Damage_Min#'+options.element)),
+            delta_bonuses = sumBonuses(fetchBonuses('Damage_Delta#'+options.element));
+
+        return {min:min_bonuses, max:min_bonuses+delta_bonuses};
     },
     'Damage': function() {
+
         var mh = calc('{Weapon} Diagnostics', {weapon:fetchHero().items.mainHand}),
             oh = calc('{Weapon} Diagnostics', {weapon:fetchHero().items.offHand}),
+            ad = calc('Average Damage {Element}', {element:'Physical'}),
             pstat = calc(getPrimaryStat(fetchHero())),
             aps_bonus = calc('Attack Speed Increase'),
             dual_aps = (2 * mh.aps * oh.aps) / (mh.aps + oh.aps),
             crit_chance = calc('Critical Hit Chance'),
             crit_damage = calc('Critical Hit Damage'),
-            passive_damage = 0; // eg. 8% increased damage;
+            passive_damage = 0; // eg. 8% increased damage
+
+        //console.log(mh,oh,ad)
+
+        // apply average damage on jewellery and offhands and apply to weapon ranges
+        mh.min += ad.min;
+        mh.max += ad.max;
+        if (oh.aps) {
+            oh.min += ad.min;
+            oh.max += ad.max;
+        }
 
         var dps = (1 + pstat / 100) *                                // primary stat modifer
             (1 + crit_chance * crit_damage) *                        // critical damage modifier
@@ -814,23 +864,23 @@ var Calculators = {
                 calc('Arcane/Holy Resistance'),
             avg_resist = total_resist / 6,
             resist_reduction = avg_resist / (avg_resist + mlvl * 5),
-            class_reduction = (hclass == 'barbarian' || hclass == 'crusader') ? 0.30 : 0,
-            block_reduction = calc('Block Chance'),
-            cc_reduction = calc('Crowd Control Reduction'),
-            melee_reduction = calc('Melee Damage Reduction'),
-            missile_reduction = calc('Missile Damage Reduction'),
-            elite_reduction = calc('Elite Damage Reduction');
+            class_reduction = (hclass == 'barbarian' || hclass == 'crusader') ? 0.30 : 0;
+            //block_reduction = calc('Block Chance'),
+            //cc_reduction = calc('Crowd Control Reduction'),
+            //melee_reduction = calc('Melee Damage Reduction'),
+            //missile_reduction = calc('Missile Damage Reduction'),
+            //elite_reduction = calc('Elite Damage Reduction');
 
         var reduction = 
             (1 - dodge_reduction) *
             (1 - armor_reduction) *
             (1 - resist_reduction) *
-            (1 - class_reduction) *
-            (1 - block_reduction) *
-            (1 - cc_reduction) *
-            (1 - melee_reduction) *
-            (1 - missile_reduction) *
-            (1 - elite_reduction);
+            (1 - class_reduction);
+            //(1 - block_reduction) *
+            //(1 - cc_reduction) *
+            //(1 - melee_reduction) *
+            //(1 - missile_reduction) *
+            //(1 - elite_reduction);
 
         return hp / reduction;
     },
@@ -856,6 +906,9 @@ var Calculators = {
             level = calc('Level'),
             multiplier = isPrimaryStat('Strength',fetchHero()) ? 3 : 1,
             bonuses = sumBonuses(fetchBonuses('Strength_Item'));
+
+        console.log('STRENGTH');
+        console.log(base,bonuses,multiplier,level-1);
 
         return base + (level - 1) * multiplier + bonuses;
     },
@@ -1031,12 +1084,20 @@ var Calculators = {
     'Maximum Life': function() {
         var level = calc('Level'),
             vitality = calc('Vitality'),
-            life_per_vitality = Math.max(10 + (level - 35), 10),
+            life_per_vitality = 10,
             life_percent = calc('Total Life Bonus');
 
-        if (level == 70) life_per_vitality = 80;
+        if (level <= 34) {
+            life_per_vitality = 10;
+        } else if (level >= 35 && level <= 60) {
+            life_per_vitality = level - 25;
+        } else if (level >= 61 && level <= 65) {
+            life_per_vitality = 35 + (level - 60) * 4;
+        } else if (level >= 66 && level <= 70) {
+            life_per_vitality = 55 + (level - 65) * 5;
+        }
 
-        return (36 + 4 * level + vitality * life_per_vitality) * (1 + life_percent);
+        return ((36 + 4 * level) + life_per_vitality * vitality) * (1 + life_percent);
     },
     'Total Life Bonus': function() {
         var bonuses = sumBonuses(fetchBonuses('Hitpoints_Max_Percent_Bonus_Item'));
