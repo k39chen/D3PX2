@@ -28,8 +28,9 @@ function(can, D3API, initView) {
                 var battleTag = '';
                 battleTag = 'GoodIdea-1513';
                 //battleTag = 'pendragon#1365';
-                battleTag = 'gummypower#1650';
-                var heroIndex = 2;
+                //battleTag = 'gummypower#1650';
+                battleTag = 'parallax#1878';
+                var heroIndex = 0;
 
                 // load a composite player profile
                 loadCompositePlayerProfile(D3API,'us',battleTag,function(data){
@@ -906,9 +907,6 @@ var Calculators = {
             level = calc('Level'),
             multiplier = isPrimaryStat('Strength',fetchHero()) ? 3 : 1,
             bonuses = sumBonuses(fetchBonuses('Strength_Item'));
-
-        console.log('STRENGTH');
-        console.log(base,bonuses,multiplier,level-1);
 
         return base + (level - 1) * multiplier + bonuses;
     },
