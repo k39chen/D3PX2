@@ -9,8 +9,8 @@ function(can, D3API, initView) {
     /**
      * Creates a test calculator for computing the attributes of a given hero.
      * 
-     * @constructor cookbook/recipe/create
-     * @alias RecipeCreate
+     * @constructor d3px/controls/test/calculator
+     * @alias Calculator
      * @parent d3px
      * @inherits can.Control
      */

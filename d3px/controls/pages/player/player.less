@@ -1,0 +1,182 @@
+@import "../../../d3px.less";
+@import "../../../lib/mixins.less";
+
+@cardWidth: 184px;
+@cardHeight: 282px;
+
+#player-heroes-section .content {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.herocard {
+    display: inline-block;
+    cursor: pointer;
+    width: @cardWidth;
+    height: @cardHeight;
+    background-color: #52443d;
+    margin: 0px 8px;
+    .border-radius(5px);
+    border: 1px solid @borderColor;
+    color: #fff;
+
+    .level {
+        @circumference: 64px;
+        position: relative;
+        margin: 0 auto;
+        width: @circumference;
+        height: @circumference;
+        line-height: @circumference;
+        .border-radius(50%);
+        border: solid 3px @themeColor;
+        text-align: center;
+        top: 86px;
+        font-family: HelveticaNeueLt;
+        font-size: 2em;
+    }
+    .hardcore {
+        @imgSize: 30px;
+        position: relative;
+        width: @imgSize;
+        height: @imgSize;
+        margin: 0 auto;
+        top: 99px;
+        background-image: url(../../../assets/images/hardcore.png);
+        background-repeat: no-repeat;
+        visibility: hidden;
+    }
+    .hardcore.on {
+        visibility: visible;
+    }
+    .name {
+        position: relative;
+        margin: 0 auto;
+        width: 156px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        top: 109px;
+        color: white;
+        font-family: HelveticaNeueLt;
+        font-size: 1.5em;
+    }
+    .hclass {
+        position: relative;
+        margin: 0 auto;
+        width: 100%;
+        text-align: center;
+        top: 118px;
+        color: @themeColor;
+    }
+}
+
+@statHeight: 100px;
+#player-career-section .content {
+    overflow: hidden;
+    padding: 0px;
+    position: relative;
+    height: @statHeight * 3;
+}
+#player-career-summary {
+    position: absolute;
+    left: 0px;
+    width: 200px;
+}
+#player-career-heroes {
+    position: absolute;
+    left: 200px;
+    right: 0px;
+}
+
+#player-career-summary {
+    border-right: solid 1px @borderColor;
+
+    .stat {
+        border-bottom: solid 1px @borderColor;
+        padding: 24px;
+    }
+    .stat.elite-kills {
+        border-bottom: none;
+    }
+    .stat > .label {
+        font-size: 0.9em;
+        color: #a5a5a5;
+        margin-bottom: 8px;
+    }
+    .stat > .value {
+        font-family: HelveticaNeueLt;
+        font-size: 2.0em;
+    }
+    .paragon-level > .value {
+        color: #46a7e3;
+    }
+}
+
+#player-career-heroes {
+
+    height: 100%;
+    overflow-x: visible;
+    overflow-y: auto;
+
+    //table, tr, td, th { border: solid 1px black; }
+
+
+    // table layouts
+
+    table {
+        width: 100%;
+    }
+    th, td {
+        width: 10%;
+        padding: 12px;
+        text-align: left;
+    }
+    thead th {
+        background-color: #edeff0;
+    }
+    tbody tr {
+        border-bottom: solid 1px #e3e9e9;
+    }
+    .name, .time-played, .level {
+        width: 20%;
+    }
+    .elite-kills, .dps, .toughness, .healing {
+        width: 10%;
+    }
+
+    // table details
+
+    .time-played > .value, .level > .value, .bar {
+        display: inline-block;
+    }
+    .bar, .bar > .fill {
+        display: inline-block;
+        width: 100px;
+        height: 6px;
+        line-height: 1.0em;
+    }
+    .bar {
+        overflow: hidden;
+        .border-radius(8px);
+        background-color: #eeeef1;
+    }
+    .fill {
+        float: left;
+        background-color: @themeColor;
+    }
+
+    .name img {
+        position: absolute;
+    }
+    .name span {
+        margin-left: 32px;
+    }
+    tbody .name > span {
+        display: inline-block;
+        width: 108px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+

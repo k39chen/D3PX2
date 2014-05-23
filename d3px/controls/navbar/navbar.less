@@ -1,0 +1,61 @@
+@import "../../d3px.less";
+@import "../../lib/mixins.less";
+
+@width: 82px;
+@bgcolor: #252525;
+
+#navbar {
+    position: fixed;
+    width: @width;
+    top: 0px;
+    bottom: 0px;
+}
+
+#navhome {
+    height: 82px;
+    cursor: pointer;
+    background-color: lighten(@themeColor,10%);
+    img {
+        margin-top: 0px;
+    }
+}
+#navhome.hover {
+    background-color: lighten(@themeColor,15%);
+}
+#navgroup {
+    display: none;
+    position: absolute;
+    background-color: @bgcolor;
+    left: 0px;
+    top: 82px;
+    bottom: 0px;
+
+    .navitem {
+        @height: 82px;
+        width: @width;
+        height: @height;
+        position: relative;
+        img {
+            margin-top: (@height - 63) / 2;
+        }
+        .glow {
+            display: none;
+            position: absolute;
+            background-color: @themeColor;
+            width: 7px;
+            height: @height;
+            top: 0px;
+            left: 0px;
+        }
+    }
+    .navitem.hover {
+        cursor: pointer;
+        background-color: lighten(@bgcolor,10%);
+    }
+    .navitem.selected {
+        background-color: lighten(@bgcolor,10%);
+        .glow {
+            display: block;
+        }
+    }
+}

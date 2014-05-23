@@ -1,0 +1,32 @@
+@import "../../d3px.less";
+@import "../../lib/mixins.less";
+
+#banner {
+    min-width: 1100px - 82;
+    position: fixed;
+    top: 0px;
+    left: 82px;
+    right: 0px;
+    height: 81px;
+    background-color: #fff;
+    border-bottom: solid 1px @borderColor;
+    line-height: 82px;
+    padding: 0px 32px;
+}
+#page-title {
+    font-family: HelveticaNeueLt;
+    font-size: 28px;
+    float: left;
+}
+#greeting {
+    float: right;
+    color: #484a4c;
+
+    .battleTag {
+        color: @themeColor;
+    }
+}
+#remark {
+    margin-left: 32px;
+    color: #b9bcbd;
+}

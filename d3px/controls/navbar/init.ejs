@@ -1,0 +1,12 @@
+<div id='navhome' page='splash'>
+    <img src='assets/images/logo.png' />
+</div>
+<div id='navgroup'>
+    <% var pages = ['player','hero','progression']; %>
+    <% for (var i=0; i<pages.length; i++) { %>
+    <div class='navitem' page='<%= pages[i] %>'>
+        <div class='glow'></div>
+        <img src='assets/images/<%= pages[i] %>.png' />
+    </div>
+    <% } %>
+</div>

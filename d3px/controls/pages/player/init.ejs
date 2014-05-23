@@ -1,0 +1,80 @@
+
+
+<div id='player-heroes-section' class='section'>
+    <h1>Heroes</h1>
+    <div class='content'>
+
+
+        <% for (var i=0; i<4; i++) { %>
+        <div class='herocard'>
+            <div class='level'>70</div>
+            <div class='hardcore on'></div>
+            <div class='name'>Juno</div>
+            <div class='hclass'>Monk</div>
+        </div>
+        <% } %>
+
+    </div>
+</div>
+<div id='player-career-section' class='section'>
+    <h1>Career</h1>
+    <div class='content'>
+
+        <div id='player-career-summary'>
+            <div class='paragon-level stat'>
+                <div class='label'>Paragon Level</div>
+                <div class='value'>268</div>
+            </div>
+            <div class='lifetime-kills stat'>
+                <div class='label'>Total Lifetime Kills</div>
+                <div class='value'>1,062,934</div>
+            </div>
+            <div class='elite-kills stat'>
+                <div class='label'>Total Elite Kills</div>
+                <div class='value'>46,327</div>
+            </div>
+        </div>
+
+        <div id='player-career-heroes'>
+            <table>
+                <thead>
+                    <tr>
+                        <th class='name'>Name</th>
+                        <th class='time-played'>Time Played by Class</th>
+                        <th class='level'>Level</th>
+                        <th class='elite-kills'>Elite Kills</th>
+                        <th class='dps'>DPS</th>
+                        <th class='toughness'>Toughness</th>
+                        <th class='healing'>Healing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i=0; i<26; i++) { %>
+                    <tr>
+                        <td class='name'>
+                            <img src='http://media.blizzard.com/d3/icons/portraits/21/monk_female.png' />
+                            <span>Junoasdfqwerqewasdfasdf</span>
+                        </td>
+                        <td class='time-played'>
+                            <span class='value'>35%</span>
+                            <span class='bar'>
+                                <span class='fill' style='width:50%;'></span>
+                            </span>
+                        </td>
+                        <td class='level'>
+                            <span class='value'>35%</span>
+                            <span class='bar'>
+                                <span class='fill' style='width:50%;'></span>
+                            </span>
+                        </td>
+                        <td class='elite-kills'>13.7K</td>
+                        <td class='dps'>1.1M</td>
+                        <td class='toughness'>30.2M</td>
+                        <td class='healing'>4.5K</td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

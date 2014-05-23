@@ -1,0 +1,14 @@
+<span id='search-battletag'>
+    <img src='assets/images/search.png' />
+    <input id='search-battletag-value' type='text' placeholder='eg. GummyPower#1650' />
+</span>
+
+<div id='region-options'>
+    <div id='selected-region-option' region='<%= selectedRegion %>'>
+        <span><%= selectedRegion %></span>
+        <img src='assets/images/caret.png' />
+    </div>
+    <% for (var i=0; i<regions.length; i++) { %>
+    <div class='region-option' region='<%= regions[i] %>'><%= regions[i] %></div>
+    <% } %>
+</div>

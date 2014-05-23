@@ -1,119 +1,100 @@
-// Reset CSS -----------------------------------------------
+@import "lib/mixins.less";
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
+/**
+ * VARIABLES
+ */
+@themeColor: #c65618;
+@borderColor: #f0f1f3;
+@fontColor: #7c7f7c;
+@fontSize: 15px;
 
-// Rules -----------------------------------------------------------
+/** RESET.CSS **/
+a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
 
-@bodyColor: #f7f9fa;
-@borderColor: #edeff0;
-@textColor: #727576;
-@themeShade: #c65618;
-@fontFamily: 'Helvetica Neue', 'Arial';
-
-.hcenter() {
-	margin-left: auto;
-	margin-right: auto;
+/** FONTS **/
+@font-face { 
+    font-family: HelveticaNeue;
+    src: url("assets/fonts/HelveticaNeue.ttf"); 
+}
+@font-face { 
+    font-family: HelveticaNeueLt;
+    src: url("assets/fonts/HelveticaNeueLTPro-Lt.otf"); 
+}
+@font-face { 
+    font-family: HelveticaNeueUltLt;
+    src: url("assets/fonts/HelveticaNeueLTPro-UltLt.otf"); 
+}
+@font-face { 
+    font-family: HelveticaNeueBd;
+    src: url("assets/fonts/HelveticaNeueLTPro-Bd_0.otf"); 
+}
+@font-face { 
+    font-family: HelveticaNeueTh;
+    src: url("assets/fonts/HelveticaNeueLTPro-Th.otf"); 
+}
+@font-face { 
+    font-family: ProximaNovaLt;
+    src: url("assets/fonts/ProximaNova-Light.otf"); 
+}
+@font-face { 
+    font-family: ProximaNova;
+    src: url("assets/fonts/ProximaNova-Regular.otf"); 
+}
+@font-face { 
+    font-family: ProximaNovaBd;
+    src: url("assets/fonts/ProximaNova-Semibold.otf"); 
 }
 
-// -----------------------------------------------------------
-
-body, html{
-	height: 100%;
-	width: 100%;
-	background-color: @bodyColor;
-	min-width: 1100px;
+/** LAYOUT **/
+body, html {
+    height: 100%;
+    width: 100%;
+    min-width: 1200px;
+    background-color: #f7f8fa;
+    font-size: @fontSize;
+    font-family: HelveticaNeue, Helvetica, Arial;
+    color: @fontColor;
+}
+/** PAGE LAYOUTS **/
+.page-wrapper {
+    width: 100%;
+    background-color: #f7f8fa;
+}
+.page {
+    padding: 82px 0px 0px 82px;
+}
+#splash-page { display: block; }
+#player-page { display: none; }
+#hero-page { display: none; }
+#progression-page { display: none; }
+#error-page { display: none; }
+#page-mask {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: url(assets/images/loader2.gif) no-repeat 50% 50% #15191f;
+    opacity: 0.7;
+    z-index: 1001;
 }
 
-#canvas {
-	position: absolute;
-	height: 100%;
-	left: 82px;
-	right: 0px;
-	top: 82px;
-	min-width: 1100px; // Controls overall min-width
-	
-	#hero-pane, #career-pane {
-		height: 382px;
-		width: 98%;
-	}
-}
+/**
+ * SECTION LAYOUTS
+ */
+.section {
+    background-color: #fff;
+    //border: solid 1px @borderColor;
+    .border-radius(8px);
 
-.pane {
-	border: 1px solid @borderColor;
-	border-radius: 5px;
-	background-color: white;
-	margin: 20px auto;
-	
-	.pane-header {
-		width: 100%;
-		height: 58px;
-		border-bottom: 1px solid @borderColor;
-		line-height: 58px;
-		color: @textColor;
-		font-family: @fontFamily;
-		font-size: 18px;
-		font-weight: 200;
-		text-indent: 30px;
-	}
+    margin: 16px;
 }
-
-#mask {
-	height: 100%;
-	width: 100%;
-	position: absolute;
-	background-color: rgba(255,255,255,1);
-	
-	#loader {
-		background-image: url(images/loader.gif);
-		height: 100px;
-		width: 100px;
-		background-position: center center;
-		background-repeat: no-repeat;
-		position: fixed;
-		left: 50%;
-		top: 40%;
-		opacity: 0;
-	}
+.section > h1 {
+    padding: 16px 12px;
+    border-bottom: solid 1px @borderColor;
+    color: @themeColor;
+}
+.section > .content {
+    padding: 16px 12px;
 }
