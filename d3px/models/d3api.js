@@ -1,4 +1,7 @@
-steal('can', function (can) {
+steal(
+    'can',
+    'd3px/lib/d3calc.js',
+function (can) {
     /**
      * Wraps backend D3 API services.
      *
@@ -113,6 +116,16 @@ steal('can', function (can) {
                 var formatted = formatItemData(can.extend(data,params.ext));
                 return self.model(formatted);
             });
+        },
+        /**
+         * Compute all the attributes for a hero.
+         *
+         * @method calculateAttributes
+         * @param heroData {Object} The hero data.
+         * @return {Object} The attributes template object with the computed values.
+         */
+        calculateAttributes: function(heroData) {
+            return computeAttributes(heroData);
         }
     },
     /* @Prototype */
@@ -161,13 +174,6 @@ function formatPlayerProfileData(data) {
  */
 function formatHeroProfileData(data) {
     var ret = _mapAttributes(data, []);
-    
-    can.extend(data,{
-        dps: 1234,
-        toughness: 1234,
-        healing: 1234
-    });
-
     return data;
 }
 /**

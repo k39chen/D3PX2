@@ -56,8 +56,6 @@ function(can, initView, SearchBar) {
              * @param battleTag {String} The battletag string.
              */
             displayGreeting: function(battleTag) {
-                console.log(battleTag)
-
                 if (battleTag) {
                     $('#greeting-name').css({opacity:1}).animate({opacity:0},200,function(){
                         $('.battleTag',this).text(battleTag);

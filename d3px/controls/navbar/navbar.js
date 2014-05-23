@@ -19,7 +19,7 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
 	return can.Control(
         {
             defaults: {
-                defaultPage: 'player',
+                defaultPage: 'splash',
                 width: 82
             }
         },

@@ -2,8 +2,8 @@ steal(
     'can',
     'd3px/controls/pages/player/init.ejs',
     'd3px/controls/pages/player/player.less',
-    'd3px/plugins/jquery.tableScroll/jquery.tableScroll.js',
-    'd3px/plugins/jquery.tableScroll./jquery.tableScroll.css',
+    'd3px/lib/d3lib.js',
+    'd3px/lib/utils.js',
 function(can, initView) {    
     /**
      * The controller for handling the loading and interactions of the player page.
@@ -15,18 +15,16 @@ function(can, initView) {
      */
     return can.Control(
         {
-            defaults: {}
+            defaults: {
+                data: null
+            }
         },
         {
             /**
              * Renders the initial template.
              */
             init: function(){
-
-                this.element.html(initView());
-
-
-
+                this.element.html(initView(this.options.data));
             }
         }
     );

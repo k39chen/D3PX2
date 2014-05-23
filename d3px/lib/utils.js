@@ -39,6 +39,32 @@ function formatNumber(num, options) {
     return o['prefix']+num+o.postfix;
 }
 /**
+ * Shortens the number by showing the most significant thousandth.
+ *
+ * @method shortenNumber
+ * @param num {Number} The number to shorten.
+ * @return {String} The shortened number.
+ */
+function shortenNumber(num) {
+    var value = num;
+    var suffix = '';
+    if (num > 1000000000) {
+        value /= 1000000000;
+        suffix = 'B';
+    } else if (num > 1000000) {
+        value /= 1000000;
+        suffix = 'M';
+    } else if (num > 1000) {
+        value /= 1000;
+        suffix = 'K';
+    }
+    if (suffix != '') {
+        return formatNumber(value, {precision:1,postfix:suffix});    
+    } else {
+        return formatNumber(value);
+    }
+}
+/**
  * Reports the number of properties in object
  *
  * @method getSize

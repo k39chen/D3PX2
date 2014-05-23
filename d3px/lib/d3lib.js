@@ -10,6 +10,35 @@
  * @return {Object} The raw player profile data.
  */
 function loadCompositePlayerProfile(D3API, region, battleTag, cb, logging) {
+    loadCompositePlayerProfileCore(D3API, region, battleTag, function(data){
+        // compute the attributes for all the heroes after all the items and info have been loaded
+        if (data && data.heroes) {
+            for (var i=0; i<data.heroes.length; i++) {
+                var hero = data.heroes[i];
+
+                // compute the attributes that the hero has with the gear set
+                var attributes = computeAttributes(hero);
+
+                // append this result to the heroes data response
+                data.heroes[i].stats = attributes;
+            }
+        }
+        // now we will return the absolute, most complete response
+        if (cb) cb(data);
+    }, logging);
+}
+/**
+ * Loads player profile with everything included, except the attributes...
+ *
+ * @method loadCompositePlayerProfileCore
+ * @param D3API {can.Model} The D3 API model.
+ * @param region {String} The region.
+ * @param battleTag {String} The player battletag.
+ * @param cb {Function} The response callback function.
+ * @param logging {Boolean} Flag for logging details
+ * @return {Object} The raw player profile data.
+ */
+function loadCompositePlayerProfileCore(D3API, region, battleTag, cb, logging) {
 
     // current number of active requests
     var activeRequests = 0;
@@ -108,4 +137,47 @@ function loadCompositePlayerProfile(D3API, region, battleTag, cb, logging) {
             });
         }
     });
+}
+/**
+ * Provides displayable strings from API formatted strings.
+ *
+ * @method D
+ * @param str {String} The string that we want to translate.
+ * @return {String} The result of the lookup.
+ */
+function D(str) {
+    switch (str) {
+        case 'monk':
+            return 'Monk';
+        case 'demon-hunter':
+            return 'Demon Hunter';
+        case 'witch-doctor':
+            return 'Witch Doctor';
+        case 'barbarian':
+            return 'Barbarian';
+        case 'crusader':
+            return 'Crusader';
+        case 'wizard':
+            return 'Wizard';
+        case 'female':
+            return 'Female';
+        case 'male':
+            return 'Male';
+        default:
+            return str;
+    }
+}
+/**
+ * Determines gender from integer.
+ *
+ * @method getGender
+ * @param num {Number} The gender identifer.
+ * @return {String} The gender as a string.
+ */
+function getGender(num) {
+    switch (num) {
+        case 0: return 'male';
+        case 1:
+        default: return 'female';
+    }
 }

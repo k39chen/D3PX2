@@ -87,8 +87,6 @@ function(can, initView, D3API) {
                 // regardless of result, we must remove the loading gif.
                 this.hideLoading();
 
-                console.log(player);
-
                 // handle incorrect battletag
                 if (player.error) {
                     if (navBar) {

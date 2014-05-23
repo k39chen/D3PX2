@@ -1,19 +1,32 @@
-
+<% var modelWidth = 255, modelHeight = 300; %>
 
 <div id='player-heroes-section' class='section'>
     <h1>Heroes</h1>
     <div class='content'>
-
-
-        <% for (var i=0; i<4; i++) { %>
-        <div class='herocard'>
-            <div class='level'>70</div>
-            <div class='hardcore on'></div>
-            <div class='name'>Juno</div>
-            <div class='hclass'>Monk</div>
+        <% if (this && this.heroes) { %>
+            <% for (var i=0; i<this.heroes.length; i++) { %>
+            <% var hero = heroes[i]; %>
+            <div class='herocard'>
+                <div class='model <%= hero['class'] %> <%= getGender(hero.gender) %>'>
+                    <object xmlns="http://www.w3.org/1999/xhtml" type="application/x-shockwave-flash" data="assets/swf/d3/models/<%= hero['class'] %>-<%= getGender(hero.gender) %>.swf" width="<%= modelWidth %>" height="<%= modelHeight %>">
+                        <param name="bgcolor" value="#12110f" />
+                        <param name="quality" value="high" />
+                        <param name="wmode" value="transparent" />
+                    </object>
+                </div>
+                <div class='group'>
+                    <div class='level'><%= hero.level %></div>
+                    <div class='hardcore <% if (hero.hardcore) { %> on <% } %>'></div>
+                    <div class='name'><%= hero.name %></div>
+                    <div class='hclass'><%= D(hero['class']) %></div>
+                </div>
+            </div>
+            <% } %>
+        <% } else { %>
+        <div class='error-message'>
+            No heroes owned.
         </div>
         <% } %>
-
     </div>
 </div>
 <div id='player-career-section' class='section'>
@@ -23,19 +36,21 @@
         <div id='player-career-summary'>
             <div class='paragon-level stat'>
                 <div class='label'>Paragon Level</div>
-                <div class='value'>268</div>
+                <div class='value'><% if (this && this.paragonLevel) { %><%= this.paragonLevel %><% } else { %>0<% } %></div>
             </div>
             <div class='lifetime-kills stat'>
                 <div class='label'>Total Lifetime Kills</div>
-                <div class='value'>1,062,934</div>
+                <div class='value'><% if (this && this.kills && this.kills.monsters) { %><%= formatNumber(this.kills.monsters) %><% } else { %>0<% } %></div>
             </div>
             <div class='elite-kills stat'>
                 <div class='label'>Total Elite Kills</div>
-                <div class='value'>46,327</div>
+                <div class='value'><% if (this && this.kills && this.kills.elites) { %><%= formatNumber(this.kills.elites) %><% } else { %>0<% } %></div>
             </div>
         </div>
 
         <div id='player-career-heroes'>
+
+            <% if (this && this.heroes && this.heroes.length > 0) { %>
             <table>
                 <thead>
                     <tr>
@@ -43,38 +58,46 @@
                         <th class='time-played'>Time Played by Class</th>
                         <th class='level'>Level</th>
                         <th class='elite-kills'>Elite Kills</th>
-                        <th class='dps'>DPS</th>
+                        <th class='damage'>Damage</th>
                         <th class='toughness'>Toughness</th>
                         <th class='healing'>Healing</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% for (var i=0; i<26; i++) { %>
+                    <% for (var i=0; i<this.heroes.length; i++) { %>
+                    <% var hero = heroes[i]; %>
                     <tr>
                         <td class='name'>
-                            <img src='http://media.blizzard.com/d3/icons/portraits/21/monk_female.png' />
-                            <span>Junoasdfqwerqewasdfasdf</span>
+                            <img src='assets/images/d3/portraits/21/<%= hero['class'] %>_<%= getGender(hero.gender) %>.png' />
+                            <span><%= hero.name %></span>
                         </td>
                         <td class='time-played'>
-                            <span class='value'>35%</span>
+                            <% var timePlayed = this.timePlayed[hero['class']]; %>
+                            <span class='value'><%= formatNumber(timePlayed*100, {precision:1,postfix:'%'}) %></span>
                             <span class='bar'>
-                                <span class='fill' style='width:50%;'></span>
+                                <span class='fill' style='width:<%= timePlayed * 100 %>%;'></span>
                             </span>
                         </td>
                         <td class='level'>
-                            <span class='value'>35%</span>
+                            <% var level = hero.level, maxLevel = 70; %>
+                            <span class='value'><%= level %></span>
                             <span class='bar'>
-                                <span class='fill' style='width:50%;'></span>
+                                <span class='fill' style='width:<%= level/maxLevel * 100 %>%;'></span>
                             </span>
                         </td>
-                        <td class='elite-kills'>13.7K</td>
-                        <td class='dps'>1.1M</td>
-                        <td class='toughness'>30.2M</td>
-                        <td class='healing'>4.5K</td>
+                        <td class='elite-kills'><%= shortenNumber(hero.kills.elites) %></td>
+                        <td class='damage'><%= shortenNumber(hero.stats.Summary.Damage) %></td>
+                        <td class='toughness'><%= shortenNumber(hero.stats.Summary.Toughness) %></td>
+                        <td class='healing'><%= shortenNumber(hero.stats.Summary.Healing) %></td>
                     </tr>
                     <% } %>
                 </tbody>
             </table>
+            <% } else { %>
+            <div class='error-message'>
+                No heroes owned.
+            </div>
+            <% } %>
         </div>
     </div>
 </div>
