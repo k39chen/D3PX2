@@ -1,3 +1,80 @@
-#splash-page h1 {
-    color: blue;
+@import "../../../d3px.less";
+@import "../../../lib/mixins.less";
+
+@containerWidth: 1100px;
+@offsetTop: 50%;
+
+#splash-page {
+    padding-left: 0px;
+    background-color: #e8e9eb;
+}
+#splash-image {
+    width: 100%;
+    height: 480px;
+    background-position: center 13%;
+    background-image: url(../../../assets/images/splashMask.jpg);
+    background-repeat: no-repeat;
+    background-size: 1912px 560px;
+    background-color: #f7f8fa;
+    position: relative;
+    overflow: hidden;
+
+    h1 {
+        color: #c4c4c4;
+        width: @containerWidth;
+        margin: 0 auto;
+        position: relative;
+        top: @offsetTop;
+        font-size: 64px;
+        font-family: HelveticaNeueLt;
+
+        b {
+            font-family: HelveticaNeueBd;
+            color: #fff;
+        }
+    }
+    p {
+        width: @containerWidth;
+        margin: 0 auto;
+        margin-top: 16px;
+        position: relative;
+        top: @offsetTop;
+        color: #c0c0c0;
+        font-size: 1.2em;
+        font-family: HelveticaNeueLt;
+
+        span {
+            font-family: HelveticaNeueBd;
+            color: @themeColor;
+        }
+    }
+}
+#splash-details {
+    overflow: hidden;
+    background-color: #e8e9eb;
+    padding: 72px 0px 128px 0px;
+
+    .container {
+        width: @containerWidth;
+    margin: 0 auto;
+    }
+}
+.splash-detail {
+    float: left;
+    width: 100%/3;
+    text-align: center;
+
+    img {
+        margin-bottom: 24px;
+    }
+    h1 {
+        margin-bottom: 18px;
+        font-size: 1.25em;
+        color: #000;
+    }
+    p {
+        width: 300px;
+        margin: 0 auto;
+        line-height: 1.5em;
+    }
 }
