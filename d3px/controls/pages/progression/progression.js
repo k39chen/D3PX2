@@ -1,8 +1,8 @@
 steal(
     'can',
-    'd3px/controls/pages/progression/init.ejs',
+    'd3px/controls/pages/progression/progression.ejs',
     'd3px/controls/pages/progression/progression.less',
-function(can, initView) {    
+function(can, progressionView) {    
     /**
      * The controller for handling the loading and interactions of the progression page.
      * 
@@ -17,10 +17,10 @@ function(can, initView) {
         },
         {
             /**
-             * Renders the initial template.
+             * Renders the progressionial template.
              */
             init: function(){
-                this.element.html(initView());
+                this.element.html(progressionView());
             }
         }
     );

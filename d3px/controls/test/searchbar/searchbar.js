@@ -2,10 +2,10 @@ steal(
     'can', 
     '/d3px/models/d3api.js', 
     '/d3px/controls/test/heroselect/heroselect.js',
-    './init.ejs',
+    './searchbar.ejs',
     '/d3px/views/test/playerProfile.ejs',
     './searchbar.less', 
-function(can, D3API, HeroSelect, searchView, playerView) {
+function(can, D3API, HeroSelect, searchbarView, playerView) {
     var ENTER_KEY = 13;
 	return can.Control(
         {
@@ -13,7 +13,7 @@ function(can, D3API, HeroSelect, searchView, playerView) {
         },
         {
             init: function(){
-                this.element.html(searchView());
+                this.element.html(searchbarView());
             },
             keyup: function(el,ev) {
                 if (ev.keyCode === ENTER_KEY) {

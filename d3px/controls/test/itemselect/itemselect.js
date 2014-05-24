@@ -1,7 +1,7 @@
 steal(
     'can', 
     '/d3px/models/d3api.js', 
-    './init.ejs',
+    './itemselect.ejs',
     '/d3px/views/test/itemProfile.ejs',
     './itemselect.less', 
 function(can, D3API, itemselectView, itemView) {

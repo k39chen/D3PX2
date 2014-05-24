@@ -1,13 +1,13 @@
 steal(
     'can',
-    'd3px/controls/navbar/init.ejs',
+    'd3px/controls/navbar/navbar.ejs',
     'd3px/controls/pages/splash/splash.js',
     'd3px/controls/pages/player/player.js',
     'd3px/controls/pages/hero/hero.js',
     'd3px/controls/pages/progression/progression.js',
     'd3px/controls/pages/error/error.js',
     'd3px/controls/navbar/navbar.less',
-function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, ErrorPage) {    
+function(can, navbarView, SplashPage, PlayerPage, HeroPage, ProgressionPage, ErrorPage) {    
     /**
      * The controller for the side navbar that switches pages.
      * 
@@ -29,7 +29,7 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
              * Renders the initial template.
              */
             init: function(){
-                this.element.html(initView());
+                this.element.html(navbarView());
             
                 // we initially show the splash page
                 this.selectPage(this.options.defaultPage);
@@ -104,16 +104,16 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
                         prevBT = self.options.D3PX.get('prevBattleTag');
                         
                     if (currBT && currBT != prevBT) {
-                        new PlayerPage('#player-page',{data:data});
-                        new HeroPage('#hero-page',{data:data});
-                        new ProgressionPage('#progression-page',{data:data});
+                        new PlayerPage('#player-page',{D3PX: self.options.D3PX, data:data});
+                        new HeroPage('#hero-page',{D3PX: self.options.D3PX, data:data});
+                        new ProgressionPage('#progression-page',{D3PX: self.options.D3PX, data:data});
                     } else {
                         // create the splash page
-                        new SplashPage('#splash-page',{data:data});
+                        new SplashPage('#splash-page',{D3PX: self.options.D3PX, data:data});
 
                         // create the error page, if requested
                         if (page == 'error') {
-                            new ErrorPage('#error-page',{data:data});
+                            new ErrorPage('#error-page',{D3PX: self.options.D3PX, data:data});
                         }
                     }
                     // update the battletag flag

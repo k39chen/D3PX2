@@ -1,8 +1,8 @@
 steal(
     'can',
-    'd3px/controls/pages/splash/init.ejs',
+    'd3px/controls/pages/splash/splash.ejs',
     'd3px/controls/pages/splash/splash.less',
-function(can, initView) {    
+function(can, splashView) {    
     /**
      * The controller for handling the loading and interactions of the splash page.
      * 
@@ -17,10 +17,10 @@ function(can, initView) {
         },
         {
             /**
-             * Renders the initial template.
+             * Renders the splashial template.
              */
             init: function(){
-                this.element.html(initView());
+                this.element.html(splashView());
             }
         }
     );

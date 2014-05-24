@@ -1,9 +1,9 @@
 steal(
     'can',
-    'd3px/controls/pages/error/init.ejs',
+    'd3px/controls/pages/error/error.ejs',
     'd3px/controls/pages/error/error.less',
     'd3px/lib/d3lib.js',
-function(can, initView) {    
+function(can, errorView) {    
     /**
      * The controller for handling the loading and interactions of the error page.
      * 
@@ -26,7 +26,7 @@ function(can, initView) {
              * Renders the initial template.
              */
             init: function(){
-                this.element.html(initView(this.options.data));
+                this.element.html(errorView(this.options.data));
             }
         }
     );

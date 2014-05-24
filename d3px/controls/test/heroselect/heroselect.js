@@ -2,7 +2,7 @@ steal(
     'can', 
     '/d3px/models/d3api.js', 
     '/d3px/controls/test/itemselect/itemselect.js',
-    './init.ejs',
+    './heroselect.ejs',
     '/d3px/views/test/heroProfile.ejs',
     '/d3px/views/test/itemProfile.ejs',
     './heroselect.less', 

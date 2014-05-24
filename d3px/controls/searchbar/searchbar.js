@@ -1,10 +1,10 @@
 steal(
     'can',
-    'd3px/controls/searchbar/init.ejs',
+    'd3px/controls/searchbar/searchbar.ejs',
     'd3px/models/d3api.js',
     'd3px/lib/d3lib.js',
     'd3px/controls/searchbar/searchbar.less',
-function(can, initView, D3API) {    
+function(can, searchbarView, D3API) {    
     /**
      * The controller for the searchbar that queries the Diablo 3 API.
      * 
@@ -18,7 +18,8 @@ function(can, initView, D3API) {
         {
             defaults: {
                 D3PX: null,
-                selectedRegion: 'us'
+                selectedRegion: 'us',
+                regions: ['us','eu','kr','tw']
             }
         },
         {
@@ -27,9 +28,9 @@ function(can, initView, D3API) {
              */
             init: function(){
                 // select a default region
-                this.element.html(initView({
+                this.element.html(searchbarView({
                     selectedRegion: this.options.selectedRegion,
-                    regions: ['us','eu','kr','tw'],
+                    regions: this.options.regions,
                 }));
                 this.selectRegion(this.options.selectedRegion);
             },

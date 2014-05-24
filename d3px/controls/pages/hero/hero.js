@@ -1,8 +1,8 @@
 steal(
     'can',
-    'd3px/controls/pages/hero/init.ejs',
+    'd3px/controls/pages/hero/hero.ejs',
     'd3px/controls/pages/hero/hero.less',
-function(can, initView) {    
+function(can, heroView) {    
     /**
      * The controller for handling the loading and interactions of the hero page.
      * 
@@ -20,7 +20,7 @@ function(can, initView) {
              * Renders the initial template.
              */
             init: function(){
-                this.element.html(initView());
+                this.element.html(heroView());
             }
         }
     );

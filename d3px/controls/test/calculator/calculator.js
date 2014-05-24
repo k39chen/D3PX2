@@ -1,12 +1,12 @@
 steal(
     'can', 
     '/d3px/models/d3api.js',
-    './init.ejs',
+    './calculator.ejs',
     './calculator.less',
     '/d3px/lib/d3lib.js',
     '/d3px/lib/d3calc.js',
     '/d3px/lib/utils.js',
-function(can, D3API, initView) {    
+function(can, D3API, calculatorView) {    
     /**
      * Creates a test calculator for computing the attributes of a given hero.
      * 
@@ -24,7 +24,7 @@ function(can, D3API, initView) {
          */
         {
             init: function(){
-                this.element.html(initView());
+                this.element.html(calculatorView());
 
                 var battleTag = '';
                 battleTag = 'GoodIdea-1513';

@@ -1,8 +1,8 @@
 steal(
     'can',
-    'd3px/controls/banner/init.ejs',
+    'd3px/controls/banner/banner.ejs',
     'd3px/controls/banner/banner.less',
-function(can, initView) {
+function(can, bannerView) {
     /**
      * The controller for the banner that displays search queries.
      * 
@@ -24,7 +24,7 @@ function(can, initView) {
              */
             init: function(){
                 // initialize the view with the appropriate values
-                this.element.html(initView({
+                this.element.html(bannerView({
                     pageTitle: 'Diablo 3: Profile X',
                     battleTag: 'Nephalem',
                     remark: 'Stay a while and listen...'
