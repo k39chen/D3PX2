@@ -2,7 +2,6 @@
 @import "../../lib/mixins.less";
 
 @width: 82px;
-@bgcolor: #252525;
 
 #navbar {
     position: fixed;
@@ -25,7 +24,7 @@
 #navgroup {
     display: none;
     position: absolute;
-    background-color: @bgcolor;
+    background-color: @darkColor;
     left: 0px;
     top: 82px;
     bottom: 0px;
@@ -50,10 +49,10 @@
     }
     .navitem.hover {
         cursor: pointer;
-        background-color: lighten(@bgcolor,10%);
+        background-color: lighten(@darkColor,10%);
     }
     .navitem.selected {
-        background-color: lighten(@bgcolor,10%);
+        background-color: lighten(@darkColor,10%);
         .glow {
             display: block;
         }
