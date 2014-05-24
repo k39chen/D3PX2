@@ -147,6 +147,20 @@ function loadCompositePlayerProfileCore(D3API, region, battleTag, cb, logging) {
  */
 function D(str) {
     switch (str) {
+//============================================================
+// * SERVERS
+//============================================================
+        case 'us':
+            return 'American';
+        case 'kr':
+            return 'Korean';
+        case 'eu':
+            return 'European';
+        case 'tw':
+            return 'Taiwanese';
+//============================================================
+// * CLASSES
+//============================================================
         case 'monk':
             return 'Monk';
         case 'demon-hunter':

@@ -54,12 +54,12 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
                 this.selectPage(el.attr('page'));
             },
             '#navhome click': function(el,ev){
-                var banner = this.options.D3PX.banner;
+                var banner = this.options.D3PX.get('banner');
 
                 this.selectPage(el.attr('page'));
 
                 if (banner) {
-                    banner.displayGreeting('Nephalem');
+                    banner.displayGreeting(null);
                 }
             },
             /**
@@ -71,6 +71,8 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
              */
             selectPage: function(page,data) {
                 var self = this;
+                var banner = this.options.D3PX.get('banner');
+
                 if (page != 'splash' && page != 'error') {
                     // show the navgroup if it was previously not visible
                     if (!this.isNavGroupVisible()) {
@@ -85,6 +87,9 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
                     }
                     // unregister the cached battleTag
                     this.options.D3PX.set('battleTag', null);
+                    if (banner) {
+                        banner.displayGreeting(null);
+                    }
                 }
                 // fade out the pages
                 $('.page').css({opacity:1}).stop().animate({opacity:0},200,function(){

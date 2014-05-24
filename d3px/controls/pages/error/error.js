@@ -2,6 +2,7 @@ steal(
     'can',
     'd3px/controls/pages/error/init.ejs',
     'd3px/controls/pages/error/error.less',
+    'd3px/lib/d3lib.js',
 function(can, initView) {    
     /**
      * The controller for handling the loading and interactions of the error page.

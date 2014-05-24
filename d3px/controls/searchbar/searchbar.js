@@ -111,7 +111,7 @@ function(can, initView, D3API) {
              * @method showLoading
              */
             showLoading: function(){
-                $('#page-mask').css({display:'block',opacity:0}).stop().animate({opacity:0.7}, 400);
+                $('#page-mask').css({display:'block',opacity:0}).stop().animate({opacity:0.9}, 400);
             },
             /**
              * Hide loading gif.
@@ -119,7 +119,7 @@ function(can, initView, D3API) {
              * @method hideLoading
              */
             hideLoading: function(){
-                $('#page-mask').css({display:'block',opacity:0.7}).stop().animate({opacity:0}, 400, function(){
+                $('#page-mask').css({display:'block',opacity:0.9}).stop().animate({opacity:0}, 400, function(){
                     $(this).css({display:'none'});
                 });
             },

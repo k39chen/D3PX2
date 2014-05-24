@@ -14,7 +14,8 @@ function(can, initView) {
 	return can.Control(
         {
             defaults: {
-                D3PX: null
+                D3PX: null,
+                defaultGreeting: 'Nephalem'
             }
         },
         {
@@ -50,12 +51,11 @@ function(can, initView) {
              * @param battleTag {String} The battletag string.
              */
             displayGreeting: function(battleTag) {
-                if (battleTag) {
-                    $('#greeting-name').css({opacity:1}).animate({opacity:0},200,function(){
-                        $('.battleTag',this).text(battleTag);
-                        $(this).css({opacity:0}).animate({opacity:1},400);
-                    });
-                }
+                battleTag = (battleTag) ? battleTag : this.options.defaultGreeting;
+                $('#greeting-name').css({opacity:1}).animate({opacity:0},200,function(){
+                    $('.battleTag',this).text(battleTag);
+                    $(this).css({opacity:0}).animate({opacity:1},400);
+                });
             }
         }
     );
