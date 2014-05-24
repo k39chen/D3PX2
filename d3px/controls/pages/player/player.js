@@ -25,6 +25,18 @@ function(can, initView) {
              */
             init: function(){
                 this.element.html(initView(this.options.data));
+            },
+            '.herocard mouseover': function(el,ev) {
+                el.addClass('hover');
+            },
+            '.herocard mouseout': function(el,ev) {
+                el.removeClass('hover');
+            },
+            '.herorow mouseover': function(el,ev) {
+                el.addClass('hover');
+            },
+            '.herorow mouseout': function(el,ev) {
+                el.removeClass('hover');
             }
         }
     );

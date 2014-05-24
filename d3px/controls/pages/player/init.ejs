@@ -7,6 +7,10 @@
             <% for (var i=0; i<this.heroes.length; i++) { %>
             <% var hero = heroes[i]; %>
             <div class='herocard'>
+
+                <% if (true) { %>
+                <img class='cover' src='assets/images/d3/artwork/<%= hero['class']%>_<%= getGender(hero.gender) %>.jpg' />
+                <% } else { %>
                 <div class='model <%= hero['class'] %> <%= getGender(hero.gender) %>'>
                     <object xmlns="http://www.w3.org/1999/xhtml" type="application/x-shockwave-flash" data="assets/swf/d3/models/<%= hero['class'] %>-<%= getGender(hero.gender) %>.swf" width="<%= modelWidth %>" height="<%= modelHeight %>">
                         <param name="bgcolor" value="#12110f" />
@@ -14,9 +18,10 @@
                         <param name="wmode" value="transparent" />
                     </object>
                 </div>
+                <% } %>
                 <div class='group'>
                     <div class='level'><%= hero.level %></div>
-                    <div class='hardcore <% if (hero.hardcore) { %> on <% } %>'></div>
+                    <div class='hardcore <% if (hero.hardcore) { %> on <% } %> <% if (hero.dead) { %> dead <% }%>'></div>
                     <div class='name'><%= hero.name %></div>
                     <div class='hclass'><%= D(hero['class']) %></div>
                 </div>
@@ -66,7 +71,7 @@
                 <tbody>
                     <% for (var i=0; i<this.heroes.length; i++) { %>
                     <% var hero = heroes[i]; %>
-                    <tr>
+                    <tr class='herorow'>
                         <td class='name'>
                             <img src='assets/images/d3/portraits/21/<%= hero['class'] %>_<%= getGender(hero.gender) %>.png' />
                             <span><%= hero.name %></span>
