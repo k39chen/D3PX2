@@ -1,9 +1,8 @@
 steal(
     'can',
     'd3px/controls/banner/init.ejs',
-    'd3px/controls/searchbar/searchbar.js',
     'd3px/controls/banner/banner.less',
-function(can, initView, SearchBar) {
+function(can, initView) {
     /**
      * The controller for the banner that displays search queries.
      * 
@@ -15,7 +14,7 @@ function(can, initView, SearchBar) {
 	return can.Control(
         {
             defaults: {
-                navBar: null
+                D3PX: null
             }
         },
         {
@@ -29,11 +28,6 @@ function(can, initView, SearchBar) {
                     battleTag: 'Nephalem',
                     remark: 'Stay a while and listen...'
                 }));
-                // initialize the searchbar
-                var searchBar = new SearchBar('#searchbar', {
-                    banner: this,
-                    navBar: this.options.navBar
-                });
             },
             /**
              * Changes/shows the page title.

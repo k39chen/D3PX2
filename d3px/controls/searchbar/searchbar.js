@@ -17,7 +17,7 @@ function(can, initView, D3API) {
 	return can.Control(
         {
             defaults: {
-                banner: null,
+                D3PX: null,
                 selectedRegion: 'us'
             }
         },
@@ -81,8 +81,8 @@ function(can, initView, D3API) {
              * @param player {Object} The player object.
              */ 
             handleLoadedPlayer: function(player) {
-                var banner = this.options.banner,
-                    navBar = this.options.navBar;
+                var banner = this.options.D3PX.get('banner'),
+                    navBar = this.options.D3PX.get('navBar');
 
                 // regardless of result, we must remove the loading gif.
                 this.hideLoading();
@@ -94,6 +94,9 @@ function(can, initView, D3API) {
                     }
                     return;
                 }
+                // register this battletag as the currently active one in the D3PX controller
+                this.options.D3PX.set('battleTag',player.battleTag);
+
                 // update the banner
                 if (banner) {
                     banner.displayGreeting(player.battleTag);

@@ -19,6 +19,7 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
 	return can.Control(
         {
             defaults: {
+                D3PX: null,
                 defaultPage: 'splash',
                 width: 82
             }
@@ -53,10 +54,12 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
                 this.selectPage(el.attr('page'));
             },
             '#navhome click': function(el,ev){
+                var banner = this.options.D3PX.banner;
+
                 this.selectPage(el.attr('page'));
 
-                if (this.options.banner) {
-                    this.options.banner.displayGreeting('Nephalem');
+                if (banner) {
+                    banner.displayGreeting('Nephalem');
                 }
             },
             /**
@@ -67,6 +70,7 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
              * @param data {Object} The data that is required to load the page.
              */
             selectPage: function(page,data) {
+                var self = this;
                 if (page != 'splash' && page != 'error') {
                     // show the navgroup if it was previously not visible
                     if (!this.isNavGroupVisible()) {
@@ -79,6 +83,8 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
                     if (this.isNavGroupVisible()) {
                         this.hideNavGroup();
                     }
+                    // unregister the cached battleTag
+                    this.options.D3PX.set('battleTag', null);
                 }
                 // fade out the pages
                 $('.page').css({opacity:1}).stop().animate({opacity:0},200,function(){
@@ -88,36 +94,32 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
                     // hide every page
                     $('.page').css({display:'none',opacity:0});
 
-                    // determine which page to load
-                    switch (page) {
-                        case 'splash':
-                            // load the splash page
-                            new SplashPage('#splash-page',{data:data});
-                            break;
-                        case 'player':
-                            // load the player page
-                            new PlayerPage('#player-page',{data:data});
-                            break;
-                        case 'hero':
-                            // load the hero page
-                            new HeroPage('#hero-page',{data:data});
-                            break;
-                        case 'progression':
-                            // load the progression page
-                            new ProgressionPage('#progression-page',{data:data});
-                            break;
-                        case 'error':
-                            // load the error page
+                    // determine which page to populate
+                    var currBT = self.options.D3PX.get('battleTag'),
+                        prevBT = self.options.D3PX.get('prevBattleTag');
+                        
+                    if (currBT && currBT != prevBT) {
+                        new PlayerPage('#player-page',{data:data});
+                        new HeroPage('#hero-page',{data:data});
+                        new ProgressionPage('#progression-page',{data:data});
+                    } else {
+                        // create the splash page
+                        new SplashPage('#splash-page',{data:data});
+
+                        // create the error page, if requested
+                        if (page == 'error') {
                             new ErrorPage('#error-page',{data:data});
-                            break;
-                        default:
-                            break;
+                        }
                     }
+                    // update the battletag flag
+                    self.options.D3PX.set('prevBattleTag',currBT);
+
                     // show the loaded page
                     $('#'+page+'-page').addClass('selected').css({opacity:0,display:'block'}).stop().animate({opacity:1},400);
                 });
                 // parallel the above animation with updating the banner page title
-                if (this.options.banner) {
+                var banner = this.options.D3PX.get('banner');
+                if (banner) {
                     var title = '';
                     switch (page) {
                         case 'error':
@@ -127,7 +129,7 @@ function(can, initView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Error
                         case 'progression': title = 'Progression'; break;
                         default: break;
                     }
-                    this.options.banner.displayPageTitle(title);
+                    banner.displayPageTitle(title);
                 }
             },
             /**

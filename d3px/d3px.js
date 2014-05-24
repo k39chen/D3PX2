@@ -1,15 +1,9 @@
 steal(
 	'can',
-    'd3px/controls/banner/banner.js',
-    'd3px/controls/navbar/navbar.js',
-    'd3px/d3px.less',
-function(can,Banner,NavBar){
+    'd3px/controls/d3px.js',
+function(can,D3PX){
 
-    // initialize the core components
-    var navBar = new NavBar('#navbar');
-    var banner = new Banner('#banner', {navBar:navBar});
-
-    // let the navbar control the banner
-    navBar.options.banner = banner;
+    // initialize the client side D3PX application control
+    new D3PX();
 
 });
