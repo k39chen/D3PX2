@@ -33,6 +33,9 @@ function(can, searchbarView, D3API) {
                     regions: this.options.regions,
                 }));
                 this.selectRegion(this.options.selectedRegion);
+
+                // we will automatically set focus to the searchbar on page load
+                $('#search-battletag-value').focus();
             },
             /**
              * Define some basic interactions.
@@ -71,6 +74,9 @@ function(can, searchbarView, D3API) {
                     // we will start up the loading bar, and will remove it when the loading has been completed
                     this.showLoading();
 
+                    // unfocus the search field
+                    $('#search-battletag-value').blur();
+
                     // perform the search against the D3 API for the corresponding battleTag
                     loadCompositePlayerProfile(D3API, region, battleTag, $.proxy(this.handleLoadedPlayer,this));
                 }
@@ -90,6 +96,10 @@ function(can, searchbarView, D3API) {
 
                 // handle incorrect battletag
                 if (player.error) {
+                    // focus the search field
+                    $('#search-battletag-value').focus();
+                    
+                    // show the error page
                     if (navBar) {
                         navBar.selectPage('error',player);
                     }
@@ -112,7 +122,7 @@ function(can, searchbarView, D3API) {
              * @method showLoading
              */
             showLoading: function(){
-                $('#page-mask').css({display:'block',opacity:0}).stop().animate({opacity:0.9}, 400);
+                $('#page-mask').css({display:'block',opacity:0}).stop().animate({opacity:0.5}, 400);
             },
             /**
              * Hide loading gif.
@@ -120,7 +130,7 @@ function(can, searchbarView, D3API) {
              * @method hideLoading
              */
             hideLoading: function(){
-                $('#page-mask').css({display:'block',opacity:0.9}).stop().animate({opacity:0}, 400, function(){
+                $('#page-mask').css({display:'block',opacity:0.5}).stop().animate({opacity:0}, 400, function(){
                     $(this).css({display:'none'});
                 });
             },
