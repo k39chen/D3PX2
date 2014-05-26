@@ -1,5 +1,36 @@
 <div id='hero-left'>
+    <!-- HEROES SECTION -->
+    <div id='hero-heroes-section' class='section'>
+        <h1>Heroes</h1>
+        <div class='content'>
+            <% if (this && this.heroes) { %>
+                <% for (var i=0; i<this.heroes.length; i++) { %>
+                <% var hero = heroes[i]; %>
+                <% if (hero.dead) continue; %>
+                <div class='herochoice' heroIndex='<%= i %>'>
+                    <img src='assets/images/d3/portraits/nav/<%= hero['class'] %>_<%= getGender(hero.gender) %>.png' />
+                    <div class='name'>
+                        <span class='level'><%= hero.level %></span>
+                        <%= hero.name %>
+                    </div>
+                </div>
+                <% } %>
+            <% } else { %>
+            <div class='error-message'>
+                No heroes owned.
+            </div>
+            <% } %>
+        </div>
+    </div>
 
+    <!-- INFO SECTION -->
+    <div id='hero-info-section' class='section'>
+        <h1>Hero Information</h1>
+        <div id='hero-info-section-left'>
+            <!-- introduce subpages -->
+        </div>
+        <div id='hero-paper-doll'></div>
+    </div>
 
 </div>
 
