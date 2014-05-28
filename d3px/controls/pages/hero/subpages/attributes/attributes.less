@@ -1,2 +1,63 @@
 @import "../../../../../d3px.less";
 @import "../../../../../lib/mixins.less";
+
+#attributes-table {
+    margin: 16px 24px;
+}
+.attribute-section {
+    margin-bottom: 4px;
+    
+    .attribute-section-title {
+        cursor: pointer;
+        overflow: hidden;
+        padding: 12px;
+        background-color: @themeColor;
+        color: #fff;
+        .border-radius(5px);
+
+        .title {
+            float: left;
+        }
+        .caret {
+            float: right;
+            margin-top: 4px;
+            width: 9px;
+            height: 6px;
+            background-image: url('../../../../../assets/images/icons/caret.png');
+        }
+    }
+    .attribute-section-title.hover {
+        background-color: lighten(@themeColor,10%);
+    }
+    .attribute-section-content {
+        overflow: hidden;
+    }
+}
+.attribute-section.closed .caret {
+    background-image: url('../../../../../assets/images/icons/caret_closed.png');
+}
+.attribute-stat {
+    cursor: pointer;
+    overflow: hidden;
+    padding: 12px;
+    .border-radius(5px);
+    border-top: solid 1px #f6f7f7;
+
+    .field {
+        float: left;
+        color: #a5a5a5;
+    }
+    .value {
+        float: right;
+    }
+    .value.paragon {
+        color: #46a7e3;
+    }
+}
+.attribute-stat:nth-child(1) {
+    border-top: none;
+}
+.attribute-stat.hover {
+    background-color: #ddd;
+    
+}

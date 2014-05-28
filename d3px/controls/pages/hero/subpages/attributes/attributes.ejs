@@ -1,1 +1,23 @@
-ATTRIBUTES
+<div id='attributes-table'>
+    <% for (var i=0; i<order.sectionOrder.length; i++) { %>
+        <% var title = order.sectionOrder[i]; %>
+        <div class='attribute-section' section='<%= title %>'>
+            <h1 class='attribute-section-title'>
+                <span class='title'><%= title %></span>
+                <span class='caret'></span>
+            </h1>
+            <div class='attribute-section-content'>
+            <% for(var j=0; j<order.attributeOrder[title].length; j++) { %>
+                <% var field = order.attributeOrder[title][j]; %>
+                <% var value = stats[title][field].value; %>
+                <% var format = stats[title][field].format; %>
+
+                <div class='attribute-stat'>
+                    <div class='field'><%= field %></div>
+                    <div class='value'><%= formatNumber(value,format) %></div>
+                </div>
+            <% } %>
+            </div>
+        </div>
+    <% } %>
+<div>

@@ -14,7 +14,7 @@ function computeAttributes(heroData) {
     var order = getTemplateOrder(heroData),
         s_order = order.sectionOrder,
         a_order = order.attributeOrder;
- 
+
     var results = {};
 
     for (var i=0; i<s_order.length; i++) {
@@ -23,12 +23,15 @@ function computeAttributes(heroData) {
         if (!results[section]) {
             results[section] = {};
         }
-
         for (var j=0; j<a_order[section].length; j++) {
-
             var attr = a_order[section][j];
+            var value = computeAttribute(attr,stats);
+            var format = stats.base[section][attr].format;
 
-            results[section][attr] = computeAttribute(attr,stats);
+            results[section][attr] = {
+                value: value,
+                format: format
+            };
         }
     }
     return results;
@@ -185,7 +188,6 @@ function getTemplateOrder(heroData) {
     return {
         sectionOrder: section_order,
         attributeOrder: order
-
     };
 }
 /**
@@ -1267,5 +1269,5 @@ function computeAttribute(attr,stats) {
         var result = calculator();
         return result;
     }
-    return 0;
+    return null;
 }

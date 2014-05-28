@@ -91,9 +91,9 @@
                             </span>
                         </td>
                         <td class='elite-kills'><%= shortenNumber(hero.kills.elites) %></td>
-                        <td class='damage'><%= shortenNumber(hero.stats.Summary.Damage) %></td>
-                        <td class='toughness'><%= shortenNumber(hero.stats.Summary.Toughness) %></td>
-                        <td class='healing'><%= shortenNumber(hero.stats.Summary.Healing) %></td>
+                        <td class='damage'><%= shortenNumber(hero.stats.Summary.Damage.value) %></td>
+                        <td class='toughness'><%= shortenNumber(hero.stats.Summary.Toughness.value) %></td>
+                        <td class='healing'><%= shortenNumber(hero.stats.Summary.Healing.value) %></td>
                     </tr>
                     <% } %>
                 </tbody>

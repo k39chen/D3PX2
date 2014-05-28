@@ -22,7 +22,12 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
             defaults: {
                 D3PX: null,
                 data: null,
-                defaultSubPage: 'attributes'
+                defaultSubPage: 'attributes',
+
+                attributesSubPage: null,
+                skillsSubPage: null,
+                bonusesSubPage: null,
+                paragonSubPage: null
             }
         },
         {
@@ -65,10 +70,15 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
              * @param hero {Object} The hero data.
              */
             setHero: function(hero) {
-                new AttributesSubPage('#attributes-subpage',{data:hero});
-                new SkillsSubPage('#skills-subpage',{data:hero});
-                new BonusesSubPage('#bonuses-subpage',{data:hero});
-                new ParagonSubPage('#paragon-subpage',{data:hero});
+                if (this.options.attributesSubPage) this.options.attributesSubPage.destroy();
+                if (this.options.skillsSubPage) this.options.skillsSubPage.destroy();
+                if (this.options.bonusesSubPage) this.options.bonusesSubPage.destroy();
+                if (this.options.paragonSubPage) this.options.paragonSubPage.destroy();
+
+                this.options.attributesSubPage = new AttributesSubPage('#attributes-subpage',{data:hero});
+                this.options.skillsSubPage = new SkillsSubPage('#skills-subpage',{data:hero});
+                this.options.bonusesSubPage = new BonusesSubPage('#bonuses-subpage',{data:hero});
+                this.options.paragonSubPage = new ParagonSubPage('#paragon-subpage',{data:hero});
             },
             /**
              * Selects the hero with the corresponding hero array index.
@@ -77,14 +87,22 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
              * @param el {DOM Object} The DOM object that we are trying to select a hero with.
              */
             selectHero: function(el) {
-                var heroIndex = el.attr('heroIndex');
+                var heroIndex = el.attr('heroIndex'),
+                    self = this;
 
                 // update the hero selector view.
                 $('.herochoice').removeClass('selected');
                 $('.herochoice[heroIndex="'+heroIndex+'"]').addClass('selected');
 
-                // set the hero in all the subpages
-                this.setHero(this.options.data.heroes[heroIndex]);
+                // fade out the previous stuff
+                $('#hero-info-section > .content').css({opacity:1.0}).stop().animate({opacity:0.0},200,function(){
+
+                    // set the hero in all the subpages
+                    self.setHero(self.options.data.heroes[heroIndex]);
+
+                    // fade in the content area again
+                    $(this).css({opacity:0.0}).stop().animate({opacity:1.0},200);
+                });
             },
             /**
              * Selects a page and displays the contents of the page.
@@ -110,7 +128,6 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
                     // show the loaded subpage
                     $('#'+subpage+'-subpage').addClass('selected').css({opacity:0,display:'block'}).stop().animate({opacity:1},400);
                 });
-
             }
         }
     );
