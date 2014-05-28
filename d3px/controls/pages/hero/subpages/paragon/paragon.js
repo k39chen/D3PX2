@@ -1,19 +1,21 @@
 steal(
     'can',
-    'd3px/controls/pages/hero/subpage/paragon.ejs',
-    'd3px/controls/pages/hero/subpage/paragon.less',
+    'd3px/controls/pages/hero/subpages/paragon/paragon.ejs',
+    'd3px/controls/pages/hero/subpages/paragon/paragon.less',
 function(can, paragonView) {    
     /**
      * The controller for handling the loading and interactions of the paragon subpage.
      * 
-     * @constructor d3px/controls/pages/hero/subpage/paragon
+     * @constructor d3px/controls/pages/hero/subpages/paragon
      * @alias ParagonSubPage
      * @parent d3px
      * @inherits can.Control
      */
     return can.Control(
         {
-            defaults: {}
+            defaults: {
+                data: null
+            }
         },
         {
             /**

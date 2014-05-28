@@ -98,6 +98,7 @@ function(can, navbarView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Err
 
                     // hide every page
                     $('.page').css({display:'none',opacity:0});
+                    $('.page').removeClass('selected');
 
                     // determine which page to populate
                     var currBT = self.options.D3PX.get('battleTag'),

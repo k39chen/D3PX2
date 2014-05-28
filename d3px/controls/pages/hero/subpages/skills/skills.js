@@ -1,19 +1,21 @@
 steal(
     'can',
-    'd3px/controls/pages/hero/subpage/skills.ejs',
-    'd3px/controls/pages/hero/subpage/skills.less',
+    'd3px/controls/pages/hero/subpages/skills/skills.ejs',
+    'd3px/controls/pages/hero/subpages/skills/skills.less',
 function(can, skillsView) {    
     /**
      * The controller for handling the loading and interactions of the skills subpage.
      * 
-     * @constructor d3px/controls/pages/hero/subpage/skills
+     * @constructor d3px/controls/pages/hero/subpages/skills
      * @alias SkillsSubPage
      * @parent d3px
      * @inherits can.Control
      */
     return can.Control(
         {
-            defaults: {}
+            defaults: {
+                data: null
+            }
         },
         {
             /**
