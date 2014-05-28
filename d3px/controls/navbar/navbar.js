@@ -96,6 +96,9 @@ function(can, navbarView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Err
                     
                     if ( !$(this).hasClass('selected') ) return;
 
+                    // scroll to the top of the page (weird case...)
+                    window.scrollTo(0,0);
+
                     // hide every page
                     $('.page').css({display:'none',opacity:0});
                     $('.page').removeClass('selected');

@@ -37,8 +37,6 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
             init: function(){
                 this.element.html(heroView(this.options.data));
 
-                console.log(this.options.D3PX)
-
                 // automatically select the first hero
                 if (this.options.data && this.options.data.heroes && this.options.data.heroes.length > 0) {
                     this.selectHero( $('.herochoice').first().attr('heroIndex') );
