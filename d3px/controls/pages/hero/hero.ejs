@@ -1,12 +1,14 @@
 <div id='hero-left'>
     <!-- HEROES SECTION -->
     <div id='hero-heroes-section' class='section'>
-        <h1>Heroes</h1>
+        <h1 id='hero-heroes-section-title'>
+            <span class='title'>Heroes</span>
+            <span class='caret'></span>
+        </h1>
         <div class='content'>
             <% if (this && this.heroes) { %>
                 <% for (var i=0; i<this.heroes.length; i++) { %>
                 <% var hero = heroes[i]; %>
-                <% if (hero.dead) continue; %>
                 <div class='herochoice' heroIndex='<%= i %>'>
                     <img src='assets/images/d3/portraits/nav/<%= hero['class'] %>_<%= getGender(hero.gender) %>.png' />
                     <div class='name'>

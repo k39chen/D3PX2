@@ -3,6 +3,7 @@
 /**
  * VARIABLES
  */
+@bgColor: #f7f8fa;
 @themeColor: #c65618;
 @darkColor: #252525;
 @borderColor: #f0f1f3;
@@ -55,7 +56,7 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 body, html {
     width: 100%;
     min-width: @minWidth;
-    background-color: #f7f8fa;
+    background-color: @bgColor;
     font-size: @fontSize;
     font-family: HelveticaNeue, Helvetica, Arial;
     color: @fontColor;
@@ -63,7 +64,7 @@ body, html {
 /** PAGE LAYOUTS **/
 .page-wrapper {
     width: 100%;
-    background-color: #f7f8fa;
+    background-color: @bgColor;
 }
 .page {
     padding: 82px 0px 0px 82px;

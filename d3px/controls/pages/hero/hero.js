@@ -45,6 +45,31 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
                 this.selectSubPage(this.options.defaultSubPage,this.options.data);
                 $('#'+this.options.defaultSubPage+'-subpage').addClass('selected');
             },
+            '#hero-heroes-section-title mouseover': function(el,ev) {
+                el.addClass('hover');
+            },
+            '#hero-heroes-section-title mouseout': function(el,ev) {
+                el.removeClass('hover');
+            },
+            '#hero-heroes-section-title click': function(el,ev) {
+                // perform toggleable behaviour
+                var section = $('#hero-heroes-section');
+                var content = $('.content',section);
+                var prevHeight = content.css('height');
+                var contentHeight = content.css('height','auto').outerHeight();
+                var is_closed = section.hasClass('closed');
+
+                content.css('height',prevHeight);
+
+                if (is_closed) {
+                    section.removeClass('closed');
+                    content.css({opacity:0.0,height:0}).stop().animate({opacity:1.0,height:contentHeight},200);
+                } else {
+                    content.css({opacity:1.0,height:contentHeight}).stop().animate({opacity:0.0,height:0},200,function(){
+                        section.addClass('closed');
+                    });
+                }
+            },
             '.herochoice mouseover': function(el,ev) {
                 el.addClass('hover');
             },
