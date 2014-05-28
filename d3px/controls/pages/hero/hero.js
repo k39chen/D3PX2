@@ -5,10 +5,11 @@ steal(
     'd3px/controls/pages/hero/subpages/skills/skills.js',
     'd3px/controls/pages/hero/subpages/bonuses/bonuses.js',
     'd3px/controls/pages/hero/subpages/paragon/paragon.js',
+    'd3px/controls/pages/hero/paperdoll/paperdoll.js',
     'd3px/controls/pages/hero/hero.less',
     'd3px/lib/d3lib.js',
     'd3px/lib/utils.js',
-function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, ParagonSubPage) {    
+function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, ParagonSubPage, PaperDoll) {    
     /**
      * The controller for handling the loading and interactions of the hero page.
      * 
@@ -27,7 +28,8 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
                 attributesSubPage: null,
                 skillsSubPage: null,
                 bonusesSubPage: null,
-                paragonSubPage: null
+                paragonSubPage: null,
+                paperDoll: null
             }
         },
         {
@@ -89,21 +91,27 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
                 this.selectSubPage(el.attr('subpage'));
             },
             /**
-             * Initializes all the subpages.
+             * Initializes all the subpages and paper doll.
              *
              * @method setHero
              * @param hero {Object} The hero data.
              */
             setHero: function(hero) {
+                // clean up previous templates, if existing
                 if (this.options.attributesSubPage) this.options.attributesSubPage.destroy();
                 if (this.options.skillsSubPage) this.options.skillsSubPage.destroy();
                 if (this.options.bonusesSubPage) this.options.bonusesSubPage.destroy();
                 if (this.options.paragonSubPage) this.options.paragonSubPage.destroy();
+                if (this.options.paperDoll) this.options.paperDoll.destroy();
 
+                // (re)create the subpages
                 this.options.attributesSubPage = new AttributesSubPage('#attributes-subpage',{data:hero});
                 this.options.skillsSubPage = new SkillsSubPage('#skills-subpage',{data:hero});
                 this.options.bonusesSubPage = new BonusesSubPage('#bonuses-subpage',{data:hero});
                 this.options.paragonSubPage = new ParagonSubPage('#paragon-subpage',{data:hero});
+
+                // (re)create the paper doll
+                this.options.paperDoll = new PaperDoll('#hero-paper-doll',{data:hero});
             },
             /**
              * Selects the hero with the corresponding hero array index.

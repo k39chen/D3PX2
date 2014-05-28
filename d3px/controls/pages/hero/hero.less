@@ -5,6 +5,7 @@
 @dollWidth: 480px;
 @borderColor: #f4f7f6;
 @numSections: 4;
+@infoSectionHeight: 440px;
 
 #hero-page {
     overflow-x: auto;
@@ -92,12 +93,15 @@
 }
 #hero-info-section {
     overflow: hidden;
+    .content {
+        padding: 0px;
+    }
 }
 #hero-info-section-left {
     float: left;
     .box-sizing(border-box);
     width: 50%; 
-    height: 400px;
+    height: @infoSectionHeight;
     border-right: solid 1px @borderColor;
 }
 #hero-info-navbar {
@@ -135,7 +139,7 @@
         .box-shadow(inset 0px 4px 0px @themeColor);
     }
 }
-#subpage-wrapper { overflow: auto; height: 400px - 48px; }
+#subpage-wrapper { overflow: auto; height: @infoSectionHeight - 48px; }
 #attributes-subpage { display: none; }
 #skills-subpage { display: none; }
 #bonuses-subpage { display: none; }
@@ -144,7 +148,7 @@
 #hero-paper-doll {
     float: left;
     width: 50%;
-    height: 400px;
+    height: @infoSectionHeight;
     background-color: #fff;
 }
 #hero-right {
