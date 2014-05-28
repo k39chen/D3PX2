@@ -37,9 +37,11 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
             init: function(){
                 this.element.html(heroView(this.options.data));
 
+                console.log(this.options.D3PX)
+
                 // automatically select the first hero
                 if (this.options.data && this.options.data.heroes && this.options.data.heroes.length > 0) {
-                    this.selectHero( $('.herochoice').first() );
+                    this.selectHero( $('.herochoice').first().attr('heroIndex') );
                 }
                 // select the default subpage
                 this.selectSubPage(this.options.defaultSubPage,this.options.data);
@@ -52,7 +54,7 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
                 el.removeClass('hover');
             },
             '.herochoice click': function(el,ev) {
-                this.selectHero(el);
+                this.selectHero(el.attr('heroIndex'));
             },
             '.subnavitem mouseover': function(el,ev) {
                 el.addClass('hover');
@@ -84,11 +86,10 @@ function(can, heroView, AttributesSubPage, SkillsSubPage, BonusesSubPage, Parago
              * Selects the hero with the corresponding hero array index.
              *
              * @method selectHero
-             * @param el {DOM Object} The DOM object that we are trying to select a hero with.
+             * @param heroIndex {Number} The index of the hero that we are selecting.
              */
-            selectHero: function(el) {
-                var heroIndex = el.attr('heroIndex'),
-                    self = this;
+            selectHero: function(heroIndex) {
+                var self = this;
 
                 // update the hero selector view.
                 $('.herochoice').removeClass('selected');

@@ -35,8 +35,13 @@ function(can, playerView) {
             },
             '.herocard click': function(el,ev) {
                 var navBar = this.options.D3PX.get('navBar');
+                var heroPage = this.options.D3PX.get('heroPage');
+
                 if (navBar) {
                     navBar.selectPage('hero');
+                }
+                if (heroPage) {
+                    heroPage.selectHero(el.attr('heroIndex'));
                 }
             },
             '.herorow mouseover': function(el,ev) {
@@ -47,8 +52,13 @@ function(can, playerView) {
             },
             '.herorow click': function(el,ev) {
                 var navBar = this.options.D3PX.get('navBar');
+                var heroPage = this.options.D3PX.get('heroPage');
+                
                 if (navBar) {
                     navBar.selectPage('hero');
+                }
+                if (heroPage) {
+                    heroPage.selectHero(el.attr('heroIndex'));
                 }
             },
         }

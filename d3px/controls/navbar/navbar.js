@@ -105,16 +105,22 @@ function(can, navbarView, SplashPage, PlayerPage, HeroPage, ProgressionPage, Err
                         prevBT = self.options.D3PX.get('prevBattleTag');
                         
                     if (currBT && currBT != prevBT) {
-                        new PlayerPage('#player-page',{D3PX: self.options.D3PX, data:data});
-                        new HeroPage('#hero-page',{D3PX: self.options.D3PX, data:data});
-                        new ProgressionPage('#progression-page',{D3PX: self.options.D3PX, data:data});
+                        if (self.options.D3PX.playerPage) self.options.D3PX.playerPage.destroy();
+                        if (self.options.D3PX.heroPage) self.options.D3PX.heroPage.destroy();
+                        if (self.options.D3PX.progressionPage) self.options.D3PX.progressionPage.destroy();
+
+                        self.options.D3PX.set('playerPage', new PlayerPage('#player-page',{D3PX: self.options.D3PX, data:data}));
+                        self.options.D3PX.set('heroPage', new HeroPage('#hero-page',{D3PX: self.options.D3PX, data:data}));
+                        self.options.D3PX.set('progressionPage', new ProgressionPage('#progression-page',{D3PX: self.options.D3PX, data:data}));
                     } else {
                         // create the splash page
-                        new SplashPage('#splash-page',{D3PX: self.options.D3PX, data:data});
+                        if (self.options.D3PX.splashPage) self.options.D3PX.splashPage.destroy();
+                        self.options.D3PX.set('splashPage', new SplashPage('#splash-page',{D3PX: self.options.D3PX, data:data}));
 
                         // create the error page, if requested
                         if (page == 'error') {
-                            new ErrorPage('#error-page',{D3PX: self.options.D3PX, data:data});
+                            if (self.options.D3PX.errorPage) self.options.D3PX.errorPage.destroy();
+                            self.options.D3PX.set('errorPage', new ErrorPage('#error-page',{D3PX: self.options.D3PX, data:data}));
                         }
                     }
                     // update the battletag flag

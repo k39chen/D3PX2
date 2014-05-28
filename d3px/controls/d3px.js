@@ -20,7 +20,13 @@ function(can, Banner, NavBar, SearchBar) {
                 battleTag: null,
                 navBar: null,
                 banner: null,
-                searchbar: null,
+                searchBar: null,
+
+                splashPage: null,
+                errorPage: null,
+                playerPage: null,
+                heroPage: null,
+                progressionPage: null
             }
         },
         {

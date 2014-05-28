@@ -6,7 +6,7 @@
         <% if (this && this.heroes) { %>
             <% for (var i=0; i<this.heroes.length; i++) { %>
             <% var hero = heroes[i]; %>
-            <div class='herocard'>
+            <div class='herocard' heroIndex='<%= i %>'>
 
                 <% if (true) { %>
                 <img class='cover' src='assets/images/d3/artwork/<%= hero['class']%>_<%= getGender(hero.gender) %>.jpg' />
@@ -71,7 +71,7 @@
                 <tbody>
                     <% for (var i=0; i<this.heroes.length; i++) { %>
                     <% var hero = heroes[i]; %>
-                    <tr class='herorow'>
+                    <tr class='herorow' heroIndex='<%= i %>'>
                         <td class='name'>
                             <img src='assets/images/d3/portraits/21/<%= hero['class'] %>_<%= getGender(hero.gender) %>.png' />
                             <span><%= hero.name %></span>
