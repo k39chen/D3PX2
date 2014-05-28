@@ -17,7 +17,7 @@ function(can, splashView) {
         },
         {
             /**
-             * Renders the splashial template.
+             * Renders the initial template.
              */
             init: function(){
                 this.element.html(splashView());

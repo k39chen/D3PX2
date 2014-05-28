@@ -17,7 +17,7 @@ function(can, progressionView) {
         },
         {
             /**
-             * Renders the progressionial template.
+             * Renders the initial template.
              */
             init: function(){
                 this.element.html(progressionView());
